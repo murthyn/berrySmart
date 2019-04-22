@@ -11,7 +11,7 @@
 // The remote service we wish to connect to.
 static BLEUUID serviceUUID("336de7fe-34a3-4e9b-a527-d143bacd4579");
 // The characteristic of the remote service we are interested in.
-static BLEUUID    charUUID("beb5483e-36e1-4688-b7f5-ea07361b26a8");
+static BLEUUID    charUUID("f9f89149-d81e-434b-8cb7-6b296a68b545");
 
 static boolean doConnect = false;
 static boolean connected = false;

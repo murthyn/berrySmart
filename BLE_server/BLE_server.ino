@@ -12,7 +12,7 @@
 // https://www.uuidgenerator.net/
 
 #define SERVICE_UUID        "336de7fe-34a3-4e9b-a527-d143bacd4579"
-#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+#define CHARACTERISTIC_UUID "f9f89149-d81e-434b-8cb7-6b296a68b545"
 
 void setup() {
   Serial.begin(115200);
