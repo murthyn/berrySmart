@@ -26,8 +26,8 @@ def request_handler(request):
             values = tuple(values)
                            
             return  ''' 
-              <table style="width:100%" border="1">
-                 <tr>
+              <table  style=" width:100%; border-style:solid; border-collapse: collapse; border-color:teal; text-align:center; color:white; " border="1">
+                 <tr >
                    <th>Latitude</th>
                    <th>Longitude</th>
                    <th>Temperature</th> 
@@ -81,8 +81,13 @@ def request_handler(request):
 
     # POST:
     else:
-        lat = request['values']['lat']
-        lon =request['values']['lon']
-        temp = request['values']['temp']
-        humid = request['values']['humid']
-        light = request['values']['light']
+        lat = request['form']['lat']
+        lon =request['form']['lon']
+        temp = request['form']['temp']
+        humid = request['form']['humid']
+        light = request['form']['light']
+               
+        c.execute('''INSERT into berry_table VALUES (?,?,?,?,?,?);''', (lat,lon,temp,humid,light, datetime.datetime.now()))
+        
+    conn.commit() # commit commands
+    conn.close() # close connection to database
