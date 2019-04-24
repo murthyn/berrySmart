@@ -26,43 +26,43 @@ def request_handler(request):
             values = tuple(values)
                            
             return  ''' 
-              <table  style=" width:100%; border-style:solid; border-collapse: collapse; border-color:teal; text-align:center; color:white; " border="1">
-                 <tr >
+              <table style="background-color:white; width:100%; border:1px solid:white; text-align:center">
+                 <tr style="background-color: thistle">
                    <th>Latitude</th>
                    <th>Longitude</th>
                    <th>Temperature</th> 
                    <th>Humidity</th>
                    <th>Light</th>
                 </tr>
-                <tr>
+                <tr style="background-color: lavender">
                    <td>{}</td>
                    <td>{}</td> 
                    <td>{}</td>
                    <td>{}</td>
                    <td>{}</td>
                </tr>
-               <tr>
+               <tr style="background-color: pink">
                    <td>{}</td>
                    <td>{}</td> 
                    <td>{}</td>
                    <td>{}</td>
                    <td>{}</td>
                </tr>
-               <tr>
+               <tr style="background-color: lavender">
                    <td>{}</td>
                    <td>{}</td> 
                    <td>{}</td>
                    <td>{}</td>
                    <td>{}</td>
                </tr>
-               <tr>
+               <tr style="background-color: pink">
                    <td>{}</td>
                    <td>{}</td> 
                    <td>{}</td>
                    <td>{}</td>
                    <td>{}</td>
                </tr>
-               <tr>
+               <tr style="background-color: lavender">
                    <td>{}</td>
                    <td>{}</td> 
                    <td>{}</td>

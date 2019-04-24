@@ -26,8 +26,8 @@ uint32_t dot_state = 0; // state of dot for selecting request
 bool button_pressed_last = false; // for button1
 bool button_pressed_last2 = false; // for button2
 
-char network[] = "iPhone (2)";  //SSID for 6.08 Lab
-char password[] = "hello123"; //Password for 6.08 Lab
+char network[] = "6s08";  //SSID for 6.08 Lab
+char password[] = "iesc6s08"; //Password for 6.08 Lab
 
 const uint8_t LOOP_PERIOD = 10; //milliseconds
 uint32_t primary_timer = 0;
@@ -160,31 +160,35 @@ void loop() {
   }
 
   if (flag1 == 1) { //post
-    float temp = (rand() % 1000);
-    float humid = (rand() % 1000);
-    float light = (rand() % 1000);
+    float temp = (rand() % 100);
+    float humid = (rand() % 100);
+    float light = (rand()% 1000)/1000.0;
     
-    Serial.println("PUSHED!");
-    // if (gps.location.isValid()) {
-    Serial.println("GOOD DATA");
-    char body[200]; //for body;
-    //sprintf(body, "lat=%f&lon=%f&temp=%f&humid=%f&light=%f", 100gps.location.lng(), gps.location.lat(),temp,humid,light); //generate body, posting to User, 1 step
-    sprintf(body, "lat=%f&lon=%f&temp=%f&humid=%f&light=%f", 100.0, 180.0, temp, humid, light); //generate body, posting to User, 1 step
-    int body_len = strlen(body); //calculate body length (for header reporting)
-    Serial.println(body);
-    sprintf(request_buffer, "POST http://608dev.net/sandbox/sc/irin/berryhandler.py HTTP/1.1\r\n");
-    strcat(request_buffer, "Host: 608dev.net\r\n");
-    strcat(request_buffer, "Content-Type: application/x-www-form-urlencoded\r\n");
-    sprintf(request_buffer + strlen(request_buffer), "Content-Length: %d\r\n", body_len); //append string formatted to end of request buffer
-    strcat(request_buffer, "\r\n"); //new line from header to body
-    strcat(request_buffer, body); //body
-    strcat(request_buffer, "\r\n"); //header
-    Serial.println(request_buffer);
-    do_http_request("608dev.net", request_buffer, response_buffer, OUT_BUFFER_SIZE, RESPONSE_TIMEOUT, true);
-    tft.fillScreen(TFT_BLACK); //fill background
-    tft.setCursor(0, 0, 1); // set the cursor
-  }
 
+    Serial.println("PUSHED!");
+    if (gps.location.isValid()) {
+      Serial.println("GOOD DATA");
+      char body[200]; //for body;
+      sprintf(body, "lat=%f&lon=%f&temp=%f&humid=%f&light=%f", gps.location.lat(), gps.location.lng(), temp, humid, light); //generate body, posting to User, 1 step
+      //sprintf(body, "lat=%f&lon=%f&temp=%f&humid=%f&light=%f", 100.0, 180.0, temp, humid, light); //generate body, posting to User, 1 step
+      int body_len = strlen(body); //calculate body length (for header reporting)
+      Serial.println(body);
+      sprintf(request_buffer, "POST http://608dev.net/sandbox/sc/irin/berryhandler.py HTTP/1.1\r\n");
+      strcat(request_buffer, "Host: 608dev.net\r\n");
+      strcat(request_buffer, "Content-Type: application/x-www-form-urlencoded\r\n");
+      sprintf(request_buffer + strlen(request_buffer), "Content-Length: %d\r\n", body_len); //append string formatted to end of request buffer
+      strcat(request_buffer, "\r\n"); //new line from header to body
+      strcat(request_buffer, body); //body
+      strcat(request_buffer, "\r\n"); //header
+      Serial.println(request_buffer);
+      do_http_request("608dev.net", request_buffer, response_buffer, OUT_BUFFER_SIZE, RESPONSE_TIMEOUT, true);
+      tft.fillScreen(TFT_BLACK); //fill background
+      tft.setCursor(0, 0, 1); // set the cursor
+      char body1[200]; //for body;
+      sprintf(body1, "lat=%f        lon=%f       temp=%f       humid=%f      light=%f", gps.location.lat(), gps.location.lng(), temp, humid, light); //generate body, posting to User, 1 step
+      tft.println(body1);
+    }
+  }
 
 
   while (millis() - primary_timer < LOOP_PERIOD); //wait for primary timer to increment
