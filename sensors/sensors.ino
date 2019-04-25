@@ -33,7 +33,7 @@ void loop() {
 
     tft.setCursor(0, 30, 1);
     char message2[100]; //char buffer allocate
-    sprintf(message2, "Soil Moisture: %2.4f     ", analogRead(A14)); //message about soil moisture
+    sprintf(message2, "Soil Moisture: %2.4f     ", analogRead(A14) / 4096.0); //message about soil moisture
     tft.println(message2); //print
     Serial.println(message2);
 
