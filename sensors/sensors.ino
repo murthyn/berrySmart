@@ -8,6 +8,8 @@ TFT_eSPI tft = TFT_eSPI();
 #define DHT11_PIN 19
 
 uint32_t counter; //used for timing
+const float moisture_lower = 0.4;
+const float moisture_upper = 0.87;
 
 // https://github.com/RobTillaart/Arduino/tree/master/libraries/DHTstable
 
@@ -33,7 +35,8 @@ void loop() {
 
     tft.setCursor(0, 30, 1);
     char message2[100]; //char buffer allocate
-    sprintf(message2, "Soil Moisture: %2.4f     ", analogRead(A14) / 4096.0); //message about soil moisture
+    float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
+    sprintf(message2, "Soil Moisture: %2.4f     ", soil_moisture); //message about soil moisture
     tft.println(message2); //print
     Serial.println(message2);
 
