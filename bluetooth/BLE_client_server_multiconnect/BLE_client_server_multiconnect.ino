@@ -63,7 +63,7 @@ static BLEAdvertisedDevice* myDevice;
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
 
-#define SERVICE_UUID        "336de7fe-34a3-4e9b-a527-d143bacd4579"
+#define SERVICE_UUID        "df8f99f2-7c85-422a-91f6-73abc1fb40bd"
 #define CHARACTERISTIC_UUID "c7098593-62e0-4368-9e26-ad68242cda59" //UUID for ESP 2->3
 static BLEUUID serviceUUID("336de7fe-34a3-4e9b-a527-d143bacd4579");
 static BLEUUID    charUUID("f9f89149-d81e-434b-8cb7-6b296a68b545"); //UUID for ESP 1->2
@@ -302,7 +302,7 @@ void loopSend() {
     }
     // disconnecting
     if (!deviceConnected && oldDeviceConnected) {
-//        delay(500); // give the bluetooth stack the chance to get things ready
+        delay(500); // give the bluetooth stack the chance to get things ready
 //        pServer->startAdvertising(); // restart advertising
 //        Serial.println("start advertising");
         oldDeviceConnected = deviceConnected;
