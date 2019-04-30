@@ -27,6 +27,9 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 #include <BluetoothSerial.h>
+#include <TFT_eSPI.h>
+#include <TinyGPS++.h>
+#include <WiFi.h> //Connect to WiFi Network
 
 /* TODOs:
  * - Change name of client UUID
@@ -74,6 +77,24 @@ static BLEAdvertisedDevice* myDevice;
 static BLEUUID serviceUUID("336de7fe-34a3-4e9b-a527-d143bacd4579");
 static BLEUUID    charUUID("f9f89149-d81e-434b-8cb7-6b296a68b545"); //UUID for ESP 1->2
 
+
+//----------POSTING----------//
+ 
+const int RESPONSE_TIMEOUT = 6000; //ms to wait for response from host
+const int GETTING_PERIOD = 5000; //periodicity of getting a number fact.
+
+const uint16_t IN_BUFFER_SIZE = 1000; //size of buffer to hold HTTP request
+const uint16_t OUT_BUFFER_SIZE = 1000; //size of buffer to hold HTTP response
+char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
+char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
+
+char network[] = "6s08";  //SSID for 6.08 Lab
+char password[] = "iesc6s08"; //Password for 6.08 Lab
+//char network[] = "iPhone (2)";  //SSID for 6.08 Lab
+//char password[] = "hello123"; //Password for 6.08 Lab
+
+const uint8_t LOOP_PERIOD = 15000; //milliseconds
+uint32_t primary_timer = 0;
 
 
 //----------SERVER & CLIENT CALLBACKs----------//
@@ -258,6 +279,29 @@ void clientSetup() {
   pBLEScan->start(5, false);
 }
 
+void wifiSetup() {
+  // WIFI
+  WiFi.begin(network, password); //attempt to connect to wifi
+  uint8_t count = 0; //count used for Wifi check times
+  Serial.print("Attempting to connect to ");
+  Serial.println(network);
+  while (WiFi.status() != WL_CONNECTED && count < 6) {
+    delay(500);
+    Serial.print(".");
+    count++;
+  }
+  delay(2000);
+  if (WiFi.isConnected()) { //if we connected then print our IP, Mac, and SSID we're on
+    Serial.println("CONNECTED!");
+    Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
+    delay(500);
+  } else { //if we failed to connect just Try again.
+    Serial.println("Failed to Connect :/  Going to restart");
+    Serial.println(WiFi.status());
+    ESP.restart(); // restart the ESP (proper way)
+  }
+}
+
 
 void setup() {
   Serial.begin(115200);
@@ -274,6 +318,8 @@ void setup() {
     // Set up client
     clientSetup();
   }
+
+  wifiSetup();
 }
 
 //----------UNSETUP HELPER FUNCTIONS----------//
@@ -363,6 +409,32 @@ void loopSend() {
     }
 }
 
+void loopPost() {
+    Serial.println("Posting!");
+
+    for (int i = 0; i < endBuffer; i++) {
+      char body[200]; //for body;
+      sprintf(body, "text=%s",dataBuffer[i]);
+
+      int body_len = strlen(body); //calculate body length (for header reporting)
+      Serial.println(body);
+      sprintf(request_buffer, "POST http://608dev.net/sandbox/sc/garciag/blueberry_Handler.py HTTP/1.1\r\n");
+      strcat(request_buffer, "Host: 608dev.net\r\n");
+      strcat(request_buffer, "Content-Type: application/x-www-form-urlencoded\r\n");
+      sprintf(request_buffer + strlen(request_buffer), "Content-Length: %d\r\n", body_len); //append string formatted to end of request buffer
+      strcat(request_buffer, "\r\n"); //new line from header to body
+      strcat(request_buffer, body); //body
+      strcat(request_buffer, "\r\n"); //header
+      Serial.println(request_buffer);
+      do_http_request("608dev.net", request_buffer, response_buffer, OUT_BUFFER_SIZE, RESPONSE_TIMEOUT, true);
+    } 
+
+    endBuffer = 0;
+    for(int i = 0; i < 30; i++){
+      dataBuffer[i][0] = '\0';
+    }
+}
+
 void loop() {
 
     if (state == CLIENT) {
@@ -394,6 +466,11 @@ void loop() {
         state = CLIENT;
     }
 
+    // posting
+    if (endBuffer > 5) {
+      loopPost();
+    }
+
     // debugging
     Serial.println("BUFFER");
     for (int i = 0; i < 10; i++) {
@@ -406,4 +483,45 @@ void loop() {
     Serial.println(endBuffer);
     Serial.println("DEVICE CONNECTED");
     Serial.println(deviceConnected);
+}
+
+// POSTING HELPER FUNCTIONS
+
+uint8_t char_append(char* buff, char c, uint16_t buff_size) {
+  int len = strlen(buff);
+  if (len > buff_size) return false;
+  buff[len] = c;
+  buff[len + 1] = '\0';
+  return true;
+}
+
+void do_http_request(char* host, char* request, char* response, uint16_t response_size, uint16_t response_timeout, uint8_t serial) {
+  WiFiClient client; //instantiate a client object
+  if (client.connect(host, 80)) { //try to connect to host on port 80
+    if (serial) Serial.print(request);//Can do one-line if statements in C without curly braces
+    client.print(request);
+    memset(response, 0, response_size); //Null out (0 is the value of the null terminator '\0') entire buffer
+    uint32_t count = millis();
+    while (client.connected()) { //while we remain connected read out data coming back
+      client.readBytesUntil('\n', response, response_size);
+      if (serial) Serial.println(response);
+      if (strcmp(response, "\r") == 0) { //found a blank line!
+        break;
+      }
+      memset(response, 0, response_size);
+      if (millis() - count > response_timeout) break;
+    }
+    memset(response, 0, response_size);
+    count = millis();
+    while (client.available()) { //read out remaining text (body of response)
+      char_append(response, client.read(), OUT_BUFFER_SIZE);
+    }
+    if (serial) Serial.println(response);
+    client.stop();
+    if (serial) Serial.println("-----------");
+  } else {
+    if (serial) Serial.println("connection failed :/");
+    if (serial) Serial.println("wait 0.5 sec...");
+    client.stop();
+  }
 }
