@@ -92,7 +92,7 @@ table.grxd {
                     <form>
                         <div class="form-group" style="text-align: center;">
                             <label for="sel1">Select a parameter:</label>
-                            <select class="form-control glyphicon fa" id="sel1" onchange="if (this.selectedIndex) createGrid();">
+                            <select class="form-control glyphicon fa" id="sel1" onchange="if (this.selectedIndex) createStat();">
                                 <option value="-1">--</option>
                                 <option  value="1" >  Temperature</option>
                                 <option value="2"> Humidity</option>
@@ -104,7 +104,7 @@ table.grxd {
                 </div>
                 <div class="col-sm-2"></div>
                 <br><br><br><br>
-                <div id="drawTable" style="background:url('https://i.ibb.co/JCSWxg9/map.png');height:590px; " ></div>
+                <div id="drawTable" > </div>
                 <br>
                 <div id = "legend-parent" style="font-size:15px; text-align: center" > </div>
             </div>
@@ -246,6 +246,10 @@ table.grxd {
       </div>
     </div>
 </body> 
+<script data-plotly="garciag:12" sharekey-plotly="77S29tuYXt5n5Htng2TX5O" src="https://plot.ly/embed.js" async></script>
+<script data-plotly="garciag:14" sharekey-plotly="Abx85SFf1eFNKFNcRj5xnT" src="https://plot.ly/embed.js" async></script>
+<script data-plotly="garciag:16" sharekey-plotly="JLz6f4hCA6WzRTnhAELwWi" src="https://plot.ly/embed.js" async></script>
+<script data-plotly="garciag:18" sharekey-plotly="Ednw7UiM4aScS9eFaKBraG" src="https://plot.ly/embed.js" async></script>
 
 <script>
 
@@ -315,29 +319,24 @@ $(document).ready(function(){
     });
    });
     
-    function createGrid(){
-        console.log('I am here');
-        console.log(document.getElementById('sel1').value);
+    function createStat(){
+        let el = document.getElementById('drawTable');
+        el.innerHTML = '';
     if(document.getElementById('sel1').value=='1'){
-        drawTableTemperature();
+        el.innerHTML = ' <a href="https://plot.ly/~garciag/16/?share_key=JLz6f4hCA6WzRTnhAELwWi" target="_blank" title="Temp Map" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/16.png?share_key=JLz6f4hCA6WzRTnhAELwWi" alt="Temp Map" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
         }
     else if(document.getElementById('sel1').value=='2'){
-        drawTableHumidity();
+        el.innerHTML = '<a href="https://plot.ly/~garciag/18/?share_key=Ednw7UiM4aScS9eFaKBraG" target="_blank" title="Humid Map" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/18.png?share_key=Ednw7UiM4aScS9eFaKBraG" alt="Humid Map" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
         }  
     else if(document.getElementById('sel1').value=='3'){
-        drawTableLight();
+        el.innerHTML = '<a href="https://plot.ly/~garciag/14/?share_key=Abx85SFf1eFNKFNcRj5xnT" target="_blank" title="Light Map" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/14.png?share_key=Abx85SFf1eFNKFNcRj5xnT" alt="Light Map" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
         } 
     else if(document.getElementById('sel1').value=='4'){
-        drawTableMoist();
-    }  
-    else if(document.getElementById('sel1').value=='-1'){
-        drawOtherwise();  }       
+        el.innerHTML = '<a href="https://plot.ly/~garciag/12/?share_key=77S29tuYXt5n5Htng2TX5O" target="_blank" title="Soil Moisture" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/12.png?share_key=77S29tuYXt5n5Htng2TX5O" alt="Soil Moisture" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
+        }       
     }
 
-    function drawOtherwise(){
-      var el = document.getElementById('drawTable');
-      $("#drawTable").html('');
-    }
+    
 
     function drawTableTemperature() {
         console.log('drawing table')
