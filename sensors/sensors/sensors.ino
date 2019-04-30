@@ -19,6 +19,7 @@ char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
 int state;
 bool shouldPrint = true;
+const int espID = 2;
 
 char network[] = "6s08";  //SSID for 6.08 Lab
 char password[] = "iesc6s08"; //Password for 6.08 Lab
@@ -130,9 +131,14 @@ void loop() {
     Serial.println("State: pushing");
     if (gps.location.isValid()) {
       Serial.println("GPS is valid!");
+
+      // MESSAGE PROTOCOL
+      char body3[200]; //for body;
+      sprintf(body3, "%d&%f&%f&%f&%f&%f&%f", espID, gps.location.lat(), gps.location.lng(), temp, humid, light, soil_moisture);
+      
       char body[200]; //for body;
       sprintf(body, "lat=%f&lon=%f&temp=%f&humid=%f&light=%f&moist=%f", gps.location.lat(), gps.location.lng(), temp, humid, light, soil_moisture); //generate body, posting to User, 1 step
-
+      
       int body_len = strlen(body); //calculate body length (for header reporting)
       Serial.println(body);
       sprintf(request_buffer, "POST http://608dev.net/sandbox/sc/garciag/berryHandler_v2.py HTTP/1.1\r\n");
