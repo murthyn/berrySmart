@@ -14,28 +14,17 @@ const uint16_t OUT_BUFFER_SIZE = 1000; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
-char request_buffer2[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
-char response_buffer2[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
-
-char query_string[50] = {0};
-char message[500] = {0};
 int state;
 
-
-uint32_t dot_state = 0; // state of dot for selecting request
-bool button_pressed_last = false; // for button1
-bool button_pressed_last2 = false; // for button2
-
-//char network[] = "6s08";  //SSID for 6.08 Lab
-//char password[] = "iesc6s08"; //Password for 6.08 Lab
-char network[] = "iPhone (2)";  //SSID for 6.08 Lab
-char password[] = "hello123"; //Password for 6.08 Lab
+char network[] = "6s08";  //SSID for 6.08 Lab
+char password[] = "iesc6s08"; //Password for 6.08 Lab
+//char network[] = "iPhone (2)";  //SSID for 6.08 Lab
+//char password[] = "hello123"; //Password for 6.08 Lab
 
 const uint8_t LOOP_PERIOD = 10; //milliseconds
 uint32_t primary_timer = 0;
-uint32_t posting_timer = 0;
 
-const uint8_t PIN_1 = 27; //button 1
+const uint8_t PIN_1 = 16; //button 1
 
 HardwareSerial gps_serial(2);
 TinyGPSPlus gps;

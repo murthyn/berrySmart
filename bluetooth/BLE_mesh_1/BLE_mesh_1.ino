@@ -386,11 +386,12 @@ void loop() {
     }
     else {
       // switch from CLIENT to SERVER
-      if (state == CLIENT) {
-        clientUnsetup();
-        serverSetup();
-      }
-      state = SERVER;
+//      if (state == CLIENT) {
+//        clientUnsetup();
+//        serverSetup();
+//      }
+//      state = SERVER;
+        state = CLIENT;
     }
 
     // debugging
