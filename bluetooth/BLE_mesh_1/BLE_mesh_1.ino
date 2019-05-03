@@ -132,23 +132,22 @@ static void notifyCallback(
     }
 }
 
+void(* resetFunc) (void) = 0;//declare reset function at address 0
+
 class MyClientCallback : public BLEClientCallbacks {
   void onConnect(BLEClient* pclient) {
     Serial.println("onConnect (CLIENT) *******************");
   }
-  
+
+
 
   void onDisconnect(BLEClient* pclient) {
     connected = false;
     Serial.println("onDisconnect");
-    induceStacksmash();
+    resetFunc();
   }
 };
 
-void induceStacksmash(){
-  char smashThisStack[2] = {'a', 'a'};
-  smashThisStack[3] = {'a'};
-}
 
 //----------CLIENT HELPER FUNCTIONS----------//
 

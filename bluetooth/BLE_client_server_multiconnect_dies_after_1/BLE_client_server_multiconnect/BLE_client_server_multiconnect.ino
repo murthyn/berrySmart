@@ -27,8 +27,18 @@
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
 
+
+//-------UUIDs--------
+//d85fced7-9b29-4fe5-8ea7-27b148e5e57e
+//
+//4d67b803-b1de-4db5-ac9a-032387a9cda2
+//
+//3d932d72-9793-4789-b248-292e0eeab451
+
 #define SERVICE_UUID        "336de7fe-34a3-4e9b-a527-d143bacd4579"
-#define CHARACTERISTIC_UUID "c7098593-62e0-4368-9e26-ad68242cda59" //UUID for ESP 2->3
+//#define CHARACTERISTIC_UUID "c7098593-62e0-4368-9e26-ad68242cda59" //UUID for ESP 2->3
+//#define CHARACTERISTIC_UUID {"c7098593-62e0-4368-9e26-ad68242cda59", "d85fced7-9b29-4fe5-8ea7-27b148e5e57e", "4d67b803-b1de-4db5-ac9a-032387a9cda2", "3d932d72-9793-4789-b248-292e0eeab451"} //UUID for ESP 2->3
+char* CHARACTERISTIC_UUID[] {"c7098593-62e0-4368-9e26-ad68242cda59", "d85fced7-9b29-4fe5-8ea7-27b148e5e57e", "4d67b803-b1de-4db5-ac9a-032387a9cda2", "3d932d72-9793-4789-b248-292e0eeab451"}; //UUID for ESP 2->3
 static BLEUUID serviceUUID("336de7fe-34a3-4e9b-a527-d143bacd4579");
 static BLEUUID    charUUID("f9f89149-d81e-434b-8cb7-6b296a68b545"); //UUID for ESP 1->2
 
@@ -53,6 +63,7 @@ float receiveTime;
 const float MAX_RECEIVE_TIME = 3000.0;
 bool inClient; //init in setup with true
 bool previousState; //stores previous state (inClient)
+int uuidIndexer = 0;
 
 
 //--------CLIENT: NOTIFYCALLBACK, CALLBACK, ONDISCONNECT,
@@ -227,7 +238,7 @@ void serverSetup() {
   Serial.begin(115200);
 
   // Create the BLE Device
-  BLEDevice::init("ESP32");
+  BLEDevice::init("ESP32 - 2");
 
   // Create the BLE Server
   pServer = BLEDevice::createServer();
@@ -238,12 +249,14 @@ void serverSetup() {
 
   // Create a BLE Characteristic
   pCharacteristic = pService->createCharacteristic(
-                      CHARACTERISTIC_UUID,
+                      CHARACTERISTIC_UUID[uuidIndexer],
                       BLECharacteristic::PROPERTY_READ   |
                       BLECharacteristic::PROPERTY_WRITE  |
                       BLECharacteristic::PROPERTY_NOTIFY |
                       BLECharacteristic::PROPERTY_INDICATE
                     );
+  Serial.println(CHARACTERISTIC_UUID[uuidIndexer]);
+  uuidIndexer += 1;
 
   // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
   // Create a BLE Descriptor
@@ -291,6 +304,12 @@ void serverLoop() {
     
 }
 
+void clearBuffer(){
+  endBuffer = 0;
+  for (int i = 0; i < sizeof(dataBuffer); i++){
+    strcpy(dataBuffer[i],"");
+  }
+}
 void setup(){
   Serial.begin(115200);
   Serial.println("Starting Arduino BLE Server & Client application...");
@@ -301,11 +320,12 @@ void setup(){
 
 void loop() {
   previousState = inClient;
-  if (previousState == false){
+  if (previousState == false){ //coming back from being a server
     inClient == true;
+    clearBuffer();
   }
   else{
-    if (endBuffer == 0){
+    if (endBuffer < 15){
       inClient = true;
     }
     else{
@@ -370,4 +390,5 @@ void loop() {
 //    Serial.println("DEVICE CONNECTED");
 //    Serial.println(deviceConnected);
 }
+
 
