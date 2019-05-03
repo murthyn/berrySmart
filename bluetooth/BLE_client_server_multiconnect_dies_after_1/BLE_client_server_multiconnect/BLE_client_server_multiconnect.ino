@@ -49,6 +49,7 @@ bool deviceConnected = false;
 bool oldDeviceConnected = false;
 uint32_t value = 0;
 uint32_t counter = 0;
+float serverTimer = millis();
 //---------CLIENT CONST------
 static boolean doConnect = false;
 static boolean connected = false;
@@ -306,7 +307,9 @@ void serverLoop() {
         // do stuff here on connecting
         oldDeviceConnected = deviceConnected;
     }
-    
+    if (millis() - serverTimer < 5000){
+      serverLoop();
+    }
 }
 
 void clearBuffer(){
@@ -321,17 +324,14 @@ void setup(){
   receiveTime = millis();
   clientSetup();
   inClient = true;
-  previousState = true;
-  previousState2 = true;
-  previousState3 = true;
 }
 
 void loop() {
   previousState3 = previousState2;
   previousState2 = previousState;
   previousState = inClient;
-  if (previousState == false | previousState2 == false | previousState3 == false){ //coming back from being a server
-    inClient == true;
+  if (previousState == false){ //coming back from being a server
+    inClient = true;
     clearBuffer();
   }
   else{
@@ -351,6 +351,7 @@ void loop() {
     Serial.println("Setting up server");
     serverSetup();
     Serial.println("Server looping now");
+    serverTimer = millis();
     serverLoop();
     Serial.println("Server shutting down");
     serverSetdown();
