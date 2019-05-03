@@ -26,9 +26,6 @@
 #include <BLEServer.h>
 #include <BLEUtils.h>
 #include <BLE2902.h>
-#include <BluetoothSerial.h>
-#include <TFT_eSPI.h>
-#include <TinyGPS++.h>
 #include <WiFi.h> //Connect to WiFi Network
 
 /* TODOs:
@@ -48,7 +45,6 @@ const float MAX_RECEIVE_TIME = 3000.0;
 #define CLIENT 0
 #define SERVER 1
 int state = CLIENT;
-BluetoothSerial ESP_BT; //Object for Bluetooth
 
 //----------SERVER GLOBAL VARIABLES----------//
 BLEServer* pServer = NULL;
@@ -334,7 +330,6 @@ void serverUnsetup() {
   oldDeviceConnected = false;
   value = 0;
   counter = 0;
-//  pService->stop();
 }
 
 void clientUnsetup() {
@@ -432,6 +427,9 @@ void loopPost() {
     endBuffer = 0;
     for(int i = 0; i < 30; i++){
       dataBuffer[i][0] = '\0';
+//      for(int j = 0; j < 30; j++) {
+//         dataBuffer[i][j] = '\0';
+//      }
     }
 }
 
