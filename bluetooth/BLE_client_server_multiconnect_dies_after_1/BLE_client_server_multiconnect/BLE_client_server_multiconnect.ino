@@ -63,6 +63,8 @@ float receiveTime;
 const float MAX_RECEIVE_TIME = 3000.0;
 bool inClient; //init in setup with true
 bool previousState; //stores previous state (inClient)
+bool previousState2;
+bool previousState3;
 int uuidIndexer = 0;
 
 
@@ -91,6 +93,8 @@ static void notifyCallback(
     endBuffer++;
 }
 
+void(* resetFunc) (void) = 0;//declare reset function at address 0
+
 class MyClientCallback : public BLEClientCallbacks {
   void onConnect(BLEClient* pclient) {
   }
@@ -98,6 +102,7 @@ class MyClientCallback : public BLEClientCallbacks {
   void onDisconnect(BLEClient* pclient) {
     connected = false;
     Serial.println("onDisconnect");
+    resetFunc();
   }
 };
 
@@ -316,16 +321,21 @@ void setup(){
   receiveTime = millis();
   clientSetup();
   inClient = true;
+  previousState = true;
+  previousState2 = true;
+  previousState3 = true;
 }
 
 void loop() {
+  previousState3 = previousState2;
+  previousState2 = previousState;
   previousState = inClient;
-  if (previousState == false){ //coming back from being a server
+  if (previousState == false | previousState2 == false | previousState3 == false){ //coming back from being a server
     inClient == true;
     clearBuffer();
   }
   else{
-    if (endBuffer < 15){
+    if (endBuffer < 1){ //once buffer reaches the value specified, then be a server for one timestep
       inClient = true;
     }
     else{
