@@ -25,7 +25,7 @@ body {
   }
   div.col-sm-10 div {
     
-    font-size: 28px;
+    font-size: 24px;
   }
   #otherlink {
     color: white;
@@ -49,13 +49,28 @@ table.grxd {
    width:100%;
    height:100%;
 }
+ #weather-table{
+    width: 100%;
+    border-radius: 15px;
+    color: rgb(105, 105, 105)
+ }
+ #weather-table td{
+ background-color: white;   
+  border: 20px solid #B9B9B9;;
+  padding: 8px;
+  height:200px;
+  width: 33.33%;
+  text-align: center;
+}
+
+#weather-table td:hover {background-color:#B9B9B9;}
 
 
  
-  #section1 {color: #fff; background-color: #AAD62E;}
-  #section2 {color: rgb(61, 95, 139); background-color:  #b8e1ff;}
+  #section1 {color: #fff; background-color: white;}
+  #section2 {color: white ; background-color:  #B9B9B9;}
   #section3 {color:white; background-color: #A288A6;}
-  #section4 {color: #fff; background-color: #B9B9B9;}
+  #section4 {color: #fff; background-color: #b8e1ff;}
   #section5 {color: #fff; background-color: #5a2d53;}
   #section6 {color: #fff; background-color: #959595;}
   
@@ -67,34 +82,79 @@ table.grxd {
 </style>  
 </head>
 <body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
-    <div class="container">
-      <div class="row row-eq-height">
-        <nav class="col-sm-2" id="myScrollspy" style>
-          <ul class="nav nav-pills nav-stacked" style="font-size:18px">
-                <br><br><br><br><br><br><br><br><br><br>
-            <li class="active"><a href="#section1">Farm</a></li>
-            <li><a href="#section2">Today's Weather</a></li>
-            <li><a href="#section3">Statistics</a></li>
-            <li><a href="#section4">Recommendations</a></li>
-            <li><a href="#section5">About us</a></li>
-            <li><a href="#section6">Contact us</a></li>
 
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="text-align:center">
+          <h4 class="modal-title">Login to Berry Smart </h4>
+        </div>
+        <div class="modal-body">
+          
+                <form id="modal-form">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">User name</label>
+                          <input type="username" class="form-control" id="inputuser" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword1">Password</label>
+                          <input type="password" class="form-control" id="inputpassword" placeholder="Password">
+                        </div>
+                </form>
+        </div>
+        <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="log-in" onclick="loginHandler()">Log In</button>
+                <button type="submit" class="btn btn-primary" id="register" onclick="registerHandler()">Register</button>
+                <br>
+                <div class="alert alert-danger" role="alert" id="loginfail" style="display: none; float:left">
+                Invalid username or password &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="alert alert-danger" role="alert" id="registerfail" style="display: none; float:left">
+                    This username is already taken &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <div class="container-fluid">
+      <div class="row row-eq-height">
+        <nav class="col-sm-2" id="myScrollspy" style="text-align:center; background-color: grey;">
+          <ul class="nav nav-pills nav-stacked" style="font-size:18px;">
+            <li> <h3> Berry Smart</h3> <br><div id ="section0" style="text-align: center"><img src="https://i.ibb.co/2N9YCZx/logo-v2.png" alt="logo-v2"></div></li>
+            <br><br>
+            <li><span id="nameholder"></span> Dashboard</a></li>
+            <br><br>
+            
+            <li class="active" style="text-align: left"><a href="#section1">Farm</a></li>
+            <li><a href="#section2" style="text-align: left">Today's Weather</a></li>
+            <li><a href="#section3" style="text-align: left">Statistics</a></li>
+            <li><a href="#section4" style="text-align: left">Recommendations</a></li>
+            <li><a href="#section5" style="text-align: left">About us</a></li>
+            <li><a href="#section6" style="text-align: left">Contact us</a></li>
           </ul>
         </nav>
         <div class="col-sm-10">
-            <div id ="section0" style="text-align: center"> <img src="https://i.ibb.co/ZzsyHz2/logo1.png"  alt="logo1"> <h1> Berry Smart</h1></div>
-            <br><br><br>
-            <div id="section1" style="border-radius: 15px; padding:25px;"> 
-                <h1 style="text-align: center">Irin's Dashboard</h1>
-                <br><br>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-8">            
+            <br>
+            <div id="section1" style="border-radius: 15px;"> 
+                <div class="col-sm-5"></div>
+                <div class="col-sm-2">            
                     <form>
                         <div class="form-group" style="text-align: center;">
-                            <label for="sel1">Select a parameter:</label>
+                            <label for="sel1"></label>
                             <select class="form-control glyphicon fa" id="sel1" onchange="if (this.selectedIndex) createStat();">
-                                <option value="-1">--</option>
-                                <option  value="1" >  Temperature</option>
+                                <option value="-1">Choose an option</option>
+                                <option  value="1" > Temperature</option>
                                 <option value="2"> Humidity</option>
                                 <option value="3"> Light</option>
                                 <option value="4"> Moisture</option>
@@ -102,36 +162,38 @@ table.grxd {
                         </div>
                     </form>
                 </div>
-                <div class="col-sm-2"></div>
-                <br><br><br><br>
-                <div id="drawTable" > </div>
+                <div class="col-sm-5"></div>
+                <div class = "container-fluid" id="drawTable" > </div>
                 <br>
                 <div id = "legend-parent" style="font-size:15px; text-align: center" > </div>
             </div>
 
             <br><br><br>
             <div id="section2" style="border-radius: 15px; padding:25px;"> 
-                <div class="row" >    
-                    <h1 style="text-align: center">Today's Weather</h1>
-                </div>
                 
-                <div class="row" style="text-align:left">    
-                    <div class ="col-sm-3"></div> 
-                    <div class ="col-sm-6" style="text-align: center"> 
-                     <canvas id="weather-icon"></canvas> <br>
-                    <span id="description"></span>    
-                    <br><br>
-                    <span id="predict-temp"><i class="fas fa-temperature-low"> </i> Temperature </span><br>
-                    <span id="predict-cloud"><i class="fas fa-cloud"></i> Cloudiness</span><br>
-                    <span id="predict-humid"><i class="glyphicon glyphicon-tint"></i> Humidity </span><br>
-                    <span id="predict-wind"><i class="fas fa-wind"></i> Wind Speed</span><br>
-                    <span id="predict-sunrise"><i class="fas fa-sun"></i> Sunrise</span><br>
-                    <span id="predict-sunset"><i class="far fa-sun"></i> Sunset </span><br>
-                    <br><br><br> 
-                    </div>
-                    <div class ="col-sm-3"></div> 
-                    <br><br><br>
-                </div> 
+                
+            <div class="container" style="text-align:center">
+                <h1 style="text-align: center">Today's Weather</h1><br>
+                <canvas id="weather-icon" ></canvas>
+                <br> <span id="description" style="font-size:36px"></span> 
+            </div>
+            <br><br>
+                         
+                   
+
+                <table id="weather-table">
+                    <tr>
+                        <td> <span id="predict-temp"><i class="fas fa-temperature-low"> </i> Temperature </span></td>
+                        <td> <span id="predict-cloud"><i class="fas fa-cloud"></i> Cloudiness</span></td>
+                        <td> <span id="predict-humid"><i class="glyphicon glyphicon-tint"></i> Humidity </span></td>
+                    </tr>
+                    <tr>
+                        <td> <span id="predict-wind"><i class="fas fa-wind"></i> Wind Speed</span></td>
+                        <td> <span id="predict-sunrise"><i class="fas fa-sun"></i> Sunrise</span></td>
+                        <td> <span id="predict-sunset"><i class="far fa-sun"></i> Sunset </span></td>
+                    </tr>
+                </table>
+     
             </div>   
             <br><br><br>     
             <div id="section3"  style="border-radius: 15px; padding-left: 10px; padding-right: 10px;">         
@@ -223,22 +285,32 @@ table.grxd {
                           
                         
                         <br><br><br><br><br><br><br><br><br><br><br>
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-6" style="font-size:20px">
+                        
+                        <div class="container" style="text-align: center">
+                        <br><br>
                         <span >Contact us and we will get back to you</span>
                         <br>
-                        <span class="glyphicon glyphicon-map-marker" aria-hidden="true" > </span>
-                        <a id="otherlink" href="https://www.google.com/maps/search/MIT+cambridge+massachusetts/@42.3586467,-71.1020003,15z/data=!3m1!4b1">Cambridge, Massachusetts</a>
+                       </div>
+                       <br><br>
+                       
                         <br> 
-                        <span class="glyphicon glyphicon-envelope" aria-hidden="true"> </span>
+                        <div class="row">
+                        <div class="col-sm-4"></div>
+                        
+                        <div class="col-sm-5">
+                                <span class="glyphicon glyphicon-map-marker" aria-hidden="true" > </span>
+                                <a id="otherlink" href="https://www.google.com/maps/search/MIT+cambridge+massachusetts/@42.3586467,-71.1020003,15z/data=!3m1!4b1">Cambridge, Massachusetts</a>
+                                <br><br>
+                                <span class="glyphicon glyphicon-envelope" aria-hidden="true"> </span>
                         <ul> 
                             <li><a href = "mailto: garciag@mit.edu" id="otherlink">Gabriella Garcia</a></li>
                             <li><a href = "mailto: irin@mit.edu" id="otherlink">Irin Ghosh</a></li>
                             <li><a href = "mailto: nmurthy@mit.edu" id="otherlink">Nikhil Murthy</a></li>
                             <li><a href = "mailto: sunnyt@mit.edu" id="otherlink">Sunny Tran </a></li>
-                        </ul> 
-                       </div>
+                        </ul>
+                        </div>
                         <div class="col-sm-3"></div>
+                        </div> 
                 </div> 
             </div>
             <br><br><br>
@@ -253,6 +325,54 @@ table.grxd {
 
 <script>
 
+$(document).ready(function () {
+$('#myModal').modal('show');
+});
+
+function loginHandler(){
+    let form = document.getElementById('modal-form');
+    var user =  form.elements[0].value
+    var password = form.elements[1].value
+    
+    const Http = new XMLHttpRequest();
+    const url='https://608dev.net/sandbox/sc/irin/loginhandler.py'+'?user='+user+'&password='+password;
+    Http.open("GET", url);
+    Http.send();
+    Http.onreadystatechange=(e)=>{
+     console.log(Http.responseText)
+     if (Http.responseText=='success'){
+        document.getElementById('nameholder').innerText = user.charAt(0).toUpperCase() +user.slice(1)+"'s" ;
+        $('#myModal').modal('hide');
+     }
+     else if (Http.responseText=='fail'){
+        document.getElementById('loginfail').style.display = 'block';
+        document.getElementById('registerfail').style.display = 'none';
+     }
+    }
+  } 
+
+  function registerHandler(){
+    let form = document.getElementById('modal-form');
+    var user =  form.elements[0].value
+    var password = form.elements[1].value
+    
+    const Http = new XMLHttpRequest();
+    const url='https://608dev.net/sandbox/sc/irin/loginhandler.py'+'?user='+user+'&password='+password;
+    Http.open("POST", url);
+    Http.send();
+    Http.onreadystatechange=(e)=>{
+     console.log(Http.responseText)
+     if (Http.responseText=='success'){
+        document.getElementById('nameholder').innerText = user.charAt(0).toUpperCase() +user.slice(1)+"'s" ;
+        $('#myModal').modal('hide');
+     }
+     else if (Http.responseText=='fail'){
+        document.getElementById('registerfail').style.display = 'block';
+        document.getElementById('loginfail').style.display = 'none';
+     }
+    }
+  } 
+
 $(document).ready(function(){
     $.get("http://608dev.net/sandbox/sc/irin/weathericonhandler.py", function(data, status){
         var canvas = document.getElementById("weather-icon");
@@ -260,7 +380,7 @@ $(document).ready(function(){
 
         var img = new Image();
         img.onload = function() {
-        context.drawImage(img, 100, 50, 100, 100);
+        context.drawImage(img, 100, 50, 75, 75);
         };
         img.src =  "http://openweathermap.org/img/w/"+data+".png";
     });
@@ -275,7 +395,7 @@ $(document).ready(function(){
 
     $(document).ready(function(){
     $.get("http://608dev.net/sandbox/sc/irin/cloudhandler.py", function(data, status){
-        $("#predict-cloud").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+        $("#predict-cloud").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
         $("#predict-cloud").append(data);
         $("#predict-cloud").append('%');
     });
@@ -283,7 +403,7 @@ $(document).ready(function(){
 
     $(document).ready(function(){
     $.get("http://608dev.net/sandbox/sc/irin/temperaturehandler.py", function(data, status){
-        $("#predict-temp").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+        $("#predict-temp").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
         $("#predict-temp").append(data);
         $("#predict-temp").append( '&#176; C');
     });
@@ -291,15 +411,15 @@ $(document).ready(function(){
 
    $(document).ready(function(){
     $.get("http://608dev.net/sandbox/sc/irin/humidityhandler.py", function(data, status){
-        $("#predict-humid").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+        $("#predict-humid").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
         $("#predict-humid").append(data);
         $("#predict-humid").append('%');
     });
    });
 
    $(document).ready(function(){
-    $.get("http://608dev.net/sandbox/sc/irin/humidityhandler.py", function(data, status){
-        $("#predict-wind").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+    $.get("http://608dev.net/sandbox/sc/irin/windhandler.py", function(data, status){
+        $("#predict-wind").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
         $("#predict-wind").append(data);
         $("#predict-wind").append('m/s');
     });
@@ -307,14 +427,14 @@ $(document).ready(function(){
 
    $(document).ready(function(){
     $.get("http://608dev.net/sandbox/sc/irin/sunrisehandler.py", function(data, status){
-        $("#predict-sunrise").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+        $("#predict-sunrise").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
         $("#predict-sunrise").append(data);
     });
    });
 
    $(document).ready(function(){
     $.get("http://608dev.net/sandbox/sc/irin/sunsethandler.py", function(data, status){
-        $("#predict-sunset").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+        $("#predict-sunset").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
         $("#predict-sunset").append(data);
     });
    });
@@ -323,335 +443,18 @@ $(document).ready(function(){
         let el = document.getElementById('drawTable');
         el.innerHTML = '';
     if(document.getElementById('sel1').value=='1'){
-        el.innerHTML = ' <a href="https://plot.ly/~garciag/16/?share_key=JLz6f4hCA6WzRTnhAELwWi" target="_blank" title="Temp Map" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/16.png?share_key=JLz6f4hCA6WzRTnhAELwWi" alt="Temp Map" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
+        el.innerHTML = ' <a href="https://plot.ly/~garciag/16/?share_key=JLz6f4hCA6WzRTnhAELwWi" target="_blank" title="Click to view details" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/16.png?share_key=JLz6f4hCA6WzRTnhAELwWi" alt="Click to view details" style="width: 1000px; height:700px"   onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
         }
     else if(document.getElementById('sel1').value=='2'){
-        el.innerHTML = '<a href="https://plot.ly/~garciag/18/?share_key=Ednw7UiM4aScS9eFaKBraG" target="_blank" title="Humid Map" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/18.png?share_key=Ednw7UiM4aScS9eFaKBraG" alt="Humid Map" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
+        el.innerHTML = '<a href="https://plot.ly/~garciag/18/?share_key=Ednw7UiM4aScS9eFaKBraG" target="_blank" title="Click to view details" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/18.png?share_key=Ednw7UiM4aScS9eFaKBraG" alt="Click to view details" style="width: 1000px; height:700px"  onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
         }  
     else if(document.getElementById('sel1').value=='3'){
-        el.innerHTML = '<a href="https://plot.ly/~garciag/14/?share_key=Abx85SFf1eFNKFNcRj5xnT" target="_blank" title="Light Map" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/14.png?share_key=Abx85SFf1eFNKFNcRj5xnT" alt="Light Map" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
+        el.innerHTML = '<a href="https://plot.ly/~garciag/14/?share_key=Abx85SFf1eFNKFNcRj5xnT" target="_blank" title="Click to view details" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/14.png?share_key=Abx85SFf1eFNKFNcRj5xnT" alt="Click to view details" style="width: 1000px; height:700px"  onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
         } 
     else if(document.getElementById('sel1').value=='4'){
-        el.innerHTML = '<a href="https://plot.ly/~garciag/12/?share_key=77S29tuYXt5n5Htng2TX5O" target="_blank" title="Soil Moisture" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/12.png?share_key=77S29tuYXt5n5Htng2TX5O" alt="Soil Moisture" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
+        el.innerHTML = '<a href="https://plot.ly/~garciag/12/?share_key=77S29tuYXt5n5Htng2TX5O" target="_blank" title="Click to view details" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/12.png?share_key=77S29tuYXt5n5Htng2TX5O" alt="Soil Moisture" style="width: 1000px; height:700px"  onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
         }       
     }
-
-    
-
-    function drawTableTemperature() {
-        console.log('drawing table')
-        var x = 5;
-        var y = 5;
-        var t = '<table cellspacing="0" border="1"  class="grxd">';
-        for (var i = 1; i <= (x * y); i++) {
-            t += (i == 1 ? '<tr>' : '');
-            t += '<td style="cursor:pointer; border-color:rgb(247, 202, 54);" id=cell';   
-            t += i.toString(10);
-            t += '></td>';
-            if (i == (x * y)) {
-                t += '</tr>';
-            } else {
-            t += (i % y === 0 ? '</tr><tr>' : '');
-            }
-        }
-    t += '</table>';
-    $("#drawTable").html(t);
-    for (var i=1; i <= (x*y); i++){
-      var v = i/(x*y);   
-      drawTempSquare(i, v, 0.2, 0.8);
-    }
-    }
-
-    function drawTableHumidity() {
-        console.log('drawing table')
-        var x = 5;
-        var y = 5;
-        var t = '<table cellspacing="0" border="1"  class="grxd">';
-        for (var i = 1; i <= (x * y); i++) {
-            t += (i == 1 ? '<tr>' : '');
-            t += '<td style="cursor:pointer; border-color:skyblue;" id=cell';   
-            t += i.toString(10);
-            t += '></td>';
-            if (i == (x * y)) {
-                t += '</tr>';
-            } else {
-            t += (i % y === 0 ? '</tr><tr>' : '');
-            }
-        }
-    t += '</table>';
-    $("#drawTable").html(t);
-    for (var i=1; i <= (x*y); i++){
-      var v = i/(x*y);   
-      drawHumidSquare(i, v, 0.2, 0.8);
-    }
-    } 
-    
-    function drawTableLight() {
-        console.log('drawing table')
-        var x = 5;
-        var y = 5;
-        var t = '<table cellspacing="0" border="1"  class="grxd">';
-        for (var i = 1; i <= (x * y); i++) {
-            t += (i == 1 ? '<tr>' : '');
-            t += '<td style="cursor:pointer; border-color:white;" id=cell';   
-            t += i.toString(10);
-            t += '></td>';
-            if (i == (x * y)) {
-                t += '</tr>';
-            } else {
-            t += (i % y === 0 ? '</tr><tr>' : '');
-            }
-        }
-    t += '</table>';
-    $("#drawTable").html(t);
-    for (var i=1; i <= (x*y); i++){
-      var v = i/(x*y);   
-      drawLightSquare(i, v, 0.2, 0.8);
-    }
-    } 
-    
-    function drawTableMoist() {
-        console.log('drawing table')
-        var x = 5;
-        var y = 5;
-        var t = '<table cellspacing="0" border="1"  class="grxd">';
-        for (var i = 1; i <= (x * y); i++) {
-            t += (i == 1 ? '<tr>' : '');
-            t += '<td style="cursor:pointer; border-color:skyblue;" id=cell';   
-            t += i.toString(10);
-            t += '></td>';
-            if (i == (x * y)) {
-                t += '</tr>';
-            } else {
-            t += (i % y === 0 ? '</tr><tr>' : '');
-            }
-        }
-    t += '</table>';
-    $("#drawTable").html(t);
-    for (var i=1; i <= (x*y); i++){
-      var v = i/(x*y);   
-      drawMoistSquare(i, v, 0.2, 0.8);
-    }
-    } 
-
-    function drawTempSquare(i,v, thl, thh){
-            var element = document.getElementById("cell"+i.toString(10));
-            var el = document.createElement('div');
-            var square = document.createElement("div");
-            square.style.width = "40px";
-            square.style.height = "40px";
-            square.style.borderRadius="20px";
-            var r = Math.floor(255);
-            var b = 51;
-            var g = Math.floor(51+(1-v)*204);
-            square.setAttribute('id',v.toFixed(2).toString(10));
-            square.style.backgroundColor =  "rgb("+ r.toString(10)+","+g.toString(10)+","+b.toString(10)+")";
-            square.setAttribute('onclick', 'displayfntemp(this)');
-            element.appendChild(el);
-            el.appendChild(square);
-            element.appendChild(document.createElement('br'));
-            tempGradient(0.2,0.8);
-            if (v <= thl || v >= thh){  
-              var newel = document.createElement('span');
-              newel.setAttribute('class', "glyphicon glyphicon-alert");
-              element.appendChild(newel);
-            }
-        }
-  
-
-        function drawHumidSquare(i,v, thl, thh){
-            var element = document.getElementById("cell"+i.toString(10));
-            var el = document.createElement('div');
-            var square = document.createElement("div");
-            square.style.width = "40px";
-            square.style.height = "40px";
-            square.style.borderRadius="20px";
-            var r = Math.floor((1-v)*255);
-            var g = Math.floor(128+(1-v)*127);
-            var b = 255;
-            square.setAttribute('id',v.toFixed(2).toString(10));
-            square.style.backgroundColor =  "rgb("+ r.toString(10)+","+g.toString(10)+","+b.toString(10)+")";
-            square.setAttribute('onclick', 'displayfnhumid(this)');
-            element.appendChild(el);
-            el.appendChild(square);
-            element.appendChild(document.createElement('br'));
-            humidGradient(0.2,0.8);
-            if (v <= thl || v >= thh){  
-              var newel = document.createElement('span');
-              newel.setAttribute('class', "glyphicon glyphicon-alert");
-              element.appendChild(newel);
-            }
-        } 
-        
-        function drawLightSquare(i,v, thl, thh){
-            var element = document.getElementById("cell"+i.toString(10));
-            var el = document.createElement('div');
-            var square = document.createElement("div");
-            square.style.width = "40px";
-            square.style.height = "40px";
-            square.style.borderRadius="20px";
-            var j = Math.floor(v*255);
-            square.setAttribute('id',v.toFixed(2).toString(10));
-            square.style.backgroundColor =  "rgb("+ j.toString(10)+","+j.toString(10)+","+j.toString(10)+")";
-            square.setAttribute('onclick', 'displayfnlight(this)');
-            element.appendChild(el);
-            el.appendChild(square);
-            element.appendChild(document.createElement('br'));
-            lightGradient(0.2,0.8);
-            if (v <= thl || v >= thh){  
-              var newel = document.createElement('span');
-              newel.setAttribute('class', "glyphicon glyphicon-alert");
-              element.appendChild(newel);
-            }
-        }
-
-        function drawMoistSquare(i,v, thl, thh){
-            var element = document.getElementById("cell"+i.toString(10));
-            var el = document.createElement('div');
-            var square = document.createElement("div");
-            square.style.width = "40px";
-            square.style.height = "40px";
-            square.style.borderRadius="20px";
-            var r = Math.floor((1-v)*255);
-            var g = Math.floor(128+(1-v)*127);
-            var b = 255;
-            square.setAttribute('id',v.toFixed(2).toString(10));
-            square.style.backgroundColor =  "rgb("+ r.toString(10)+","+g.toString(10)+","+b.toString(10)+")";
-            square.setAttribute('onclick', 'displayfnmoist(this)');
-            element.appendChild(el);
-            el.appendChild(square);
-            element.appendChild(document.createElement('br'));
-            moistGradient(0.2,0.8);
-            if (v <= thl || v >= thh){  
-              var newel = document.createElement('span');
-              newel.setAttribute('class', "glyphicon glyphicon-alert");
-              element.appendChild(newel);
-            }
-        }
-
-        function displayfntemp(el){
-            el.innerHTML= '<span style="color:black; font-size:15px; text-align:center; padding:5px; ">'+el.id+'</span>' ; 
-        }
-        function displayfnhumid(el){
-            el.innerHTML= '<span style="color:slateblue; font-size:15px; text-align:center; padding:5px; ">'+el.id+'</span>' ; 
-        }
-        function displayfnlight(el){
-            el.innerHTML= '<span style="color:aqua; font-size:15px; text-align:center; padding:5px; ">'+el.id+'</span>' ; 
-        }
-        function displayfnmoist(el){
-            el.innerHTML= '<span style="color:slateblue; font-size:15px; text-align:center; padding:5px; ">'+el.id+'</span>' ; 
-        }    
-
-    function tempGradient(l,h){
-            var el = document.getElementById('legend-parent');
-            el.innerHTML = '<span id="legend"> </span>';
-            var first = document.createElement('span');
-            first.innerText = l.toString(10)+'   ';
-            el.prepend(first);
-
-            var legend = document.getElementById('legend');
-            var canvas = document.createElement('canvas');
-            canvas.setAttribute('width','200');
-            canvas.setAttribute('height','20');
-
-            legend.appendChild(canvas);
-
-            var ctx = canvas.getContext("2d");
-            var grd = ctx.createLinearGradient(0, 0, 200, 0);
-            grd.addColorStop(0, "yellow");
-            grd.addColorStop(1, "red");
-
-            ctx.fillStyle = grd;
-            ctx.fillRect(0, 0, 200, 20);
-
-            var last = document.createElement('span');
-            last.innerText = '   '+h.toString(10);
-            el.appendChild(last);
-        }
-
-        function humidGradient(l,h){
-            var el = document.getElementById('legend-parent');
-            el.innerHTML = '<span id="legend"> </span>';
-            var first = document.createElement('span');
-            first.innerText = l.toString(10)+'   ';
-            el.prepend(first);
-
-            var legend = document.getElementById('legend');
-            var canvas = document.createElement('canvas');
-            canvas.setAttribute('width','200');
-            canvas.setAttribute('height','20');
-
-            legend.appendChild(canvas);
-
-            var ctx = canvas.getContext("2d");
-            var grd = ctx.createLinearGradient(0, 0, 200, 0);
-            grd.addColorStop(0, "rgb(255,255,255");
-            grd.addColorStop(1, "rgb(0,128,255)");
-
-            ctx.fillStyle = grd;
-            ctx.fillRect(0, 0, 200, 20);
-
-
-            var last = document.createElement('span');
-            last.innerText = '   '+h.toString(10);
-            el.appendChild(last);
-        }  
-
-        function lightGradient(l,h){
-            var el = document.getElementById('legend-parent');
-            el.innerHTML = '<span id="legend"> </span>';
-            var first = document.createElement('span');
-            first.innerText = l.toString(10)+'   ';
-            el.prepend(first);
-
-            var legend = document.getElementById('legend');
-            var canvas = document.createElement('canvas');
-            canvas.setAttribute('width','200');
-            canvas.setAttribute('height','20');
-
-            legend.appendChild(canvas);
-
-            var ctx = canvas.getContext("2d");
-            var grd = ctx.createLinearGradient(0, 0, 200, 0);
-            grd.addColorStop(0, "black");
-            grd.addColorStop(1, "white");
-
-            ctx.fillStyle = grd;
-            ctx.fillRect(0, 0, 200, 20);
-
-
-            var last = document.createElement('span');
-            last.innerText = '   '+h.toString(10);
-            el.appendChild(last);
-        } 
-        
-        function moistGradient(l,h){
-            var el = document.getElementById('legend-parent');
-            el.innerHTML = '<span id="legend"> </span>';
-            var first = document.createElement('span');
-            first.innerText = l.toString(10)+'   ';
-            el.prepend(first);
-
-            var legend = document.getElementById('legend');
-            var canvas = document.createElement('canvas');
-            canvas.setAttribute('width','200');
-            canvas.setAttribute('height','20');
-
-            legend.appendChild(canvas);
-
-            var ctx = canvas.getContext("2d");
-            var grd = ctx.createLinearGradient(0, 0, 200, 0);
-            grd.addColorStop(0, "rgb(255,255,255");
-            grd.addColorStop(1, "rgb(0,128,255)");
-
-            ctx.fillStyle = grd;
-            ctx.fillRect(0, 0, 200, 20);
-
-
-            var last = document.createElement('span');
-            last.innerText = '   '+h.toString(10);
-            el.appendChild(last);
-        } 
             
 </script>       
 
