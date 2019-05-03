@@ -49,6 +49,7 @@ bool deviceConnected = false;
 bool oldDeviceConnected = false;
 uint32_t value = 0;
 uint32_t counter = 0;
+float serverTimer = millis();
 //---------CLIENT CONST------
 static boolean doConnect = false;
 static boolean connected = false;
@@ -63,6 +64,8 @@ float receiveTime;
 const float MAX_RECEIVE_TIME = 3000.0;
 bool inClient; //init in setup with true
 bool previousState; //stores previous state (inClient)
+bool previousState2;
+bool previousState3;
 int uuidIndexer = 0;
 
 
@@ -91,6 +94,8 @@ static void notifyCallback(
     endBuffer++;
 }
 
+void(* resetFunc) (void) = 0;//declare reset function at address 0
+
 class MyClientCallback : public BLEClientCallbacks {
   void onConnect(BLEClient* pclient) {
   }
@@ -98,6 +103,7 @@ class MyClientCallback : public BLEClientCallbacks {
   void onDisconnect(BLEClient* pclient) {
     connected = false;
     Serial.println("onDisconnect");
+    resetFunc();
   }
 };
 
@@ -301,7 +307,9 @@ void serverLoop() {
         // do stuff here on connecting
         oldDeviceConnected = deviceConnected;
     }
-    
+    if (millis() - serverTimer < 5000){
+      serverLoop();
+    }
 }
 
 void clearBuffer(){
@@ -319,13 +327,15 @@ void setup(){
 }
 
 void loop() {
+  previousState3 = previousState2;
+  previousState2 = previousState;
   previousState = inClient;
   if (previousState == false){ //coming back from being a server
-    inClient == true;
+    inClient = true;
     clearBuffer();
   }
   else{
-    if (endBuffer < 15){
+    if (endBuffer < 1){ //once buffer reaches the value specified, then be a server for one timestep
       inClient = true;
     }
     else{
@@ -341,6 +351,7 @@ void loop() {
     Serial.println("Setting up server");
     serverSetup();
     Serial.println("Server looping now");
+    serverTimer = millis();
     serverLoop();
     Serial.println("Server shutting down");
     serverSetdown();
