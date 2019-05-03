@@ -1,6 +1,6 @@
 import plotly.graph_objs as go
 from plotly import tools
-import plotly.plotly as py
+import plotly as py
 import requests
 import numpy as np
 
@@ -69,7 +69,7 @@ fig.append_trace(trace2, 2, 1)
 fig.append_trace(trace3, 2, 2)
 
 fig['layout'].update(height=800, width=800, title='Subplots of Params')
-py.plot(fig, filename='Plots of Random Data')
+py.offline.plot(fig, filename='Plots of Random Data.html')
 # data2 = [trace0, trace1, trace2]
 
 # py.plot(data2, filename='line-mode')

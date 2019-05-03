@@ -3,7 +3,7 @@ import numpy as np
 import random
 import plotly.graph_objs as go
 from plotly import tools
-import plotly.plotly as py
+import plotly as py
 import csv
 import pandas as pd
 
@@ -102,4 +102,4 @@ layout = go.Layout(
 )
 
 fig = go.Figure(data=data, layout=layout)
-py.plot(fig, filename='Light Map')
+py.offline.plot(fig, filename='Light Map.html')
