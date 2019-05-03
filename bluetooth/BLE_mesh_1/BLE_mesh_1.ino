@@ -71,7 +71,7 @@ static BLEAdvertisedDevice* myDevice;
 #define SERVICE_UUID        "df8f99f2-7c85-422a-91f6-73abc1fb40bd"
 #define CHARACTERISTIC_UUID "c7098593-62e0-4368-9e26-ad68242cda59" //UUID for ESP 2->3
 static BLEUUID serviceUUID("336de7fe-34a3-4e9b-a527-d143bacd4579");
-static BLEUUID    charUUID("f9f89149-d81e-434b-8cb7-6b296a68b545"); //UUID for ESP 1->2
+static BLEUUID    charUUID("c7098593-62e0-4368-9e26-ad68242cda59"); //UUID for ESP 1->2
 
 
 //----------POSTING----------//
@@ -84,8 +84,8 @@ const uint16_t OUT_BUFFER_SIZE = 1000; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
-char network[] = "6s08";  //SSID for 6.08 Lab
-char password[] = "iesc6s08"; //Password for 6.08 Lab
+char network[] = "MIT GUEST";  //SSID for 6.08 Lab
+char password[] = ""; //Password for 6.08 Lab
 //char network[] = "iPhone (2)";  //SSID for 6.08 Lab
 //char password[] = "hello123"; //Password for 6.08 Lab
 
@@ -103,7 +103,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
     };
 
     void onDisconnect(BLEServer* pServer) {
-      deviceConnected = false;
+      deviceConnected = true;
     }
 };
 
@@ -141,8 +141,14 @@ class MyClientCallback : public BLEClientCallbacks {
   void onDisconnect(BLEClient* pclient) {
     connected = false;
     Serial.println("onDisconnect");
+    induceStacksmash();
   }
 };
+
+void induceStacksmash(){
+  char smashThisStack[2] = {'a', 'a'};
+  smashThisStack[3] = {'a'};
+}
 
 //----------CLIENT HELPER FUNCTIONS----------//
 
