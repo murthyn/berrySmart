@@ -6,7 +6,7 @@ const char* password = "123456789";
  * This is the IP address of your PC
  * [Wins: use ipconfig command, Linux: use ifconfig command]
 */
-const char* host = "192.168.1.106"; // need to find out what is each host id
+const char* host = "192.168.4.1"; // need to find out what is each host id
 const int port = 80;
 
 void setup()
