@@ -7,7 +7,7 @@
 #include <WiFi.h>
 
 // Replace with your network credentials
-const char* ssid     = "ESP32-Access-Point";
+const char* ssid     = "Berry Secure";
 const char* password = "123456789";
 
 // Set web server port number to 80

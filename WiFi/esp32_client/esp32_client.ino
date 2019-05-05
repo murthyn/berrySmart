@@ -1,13 +1,14 @@
 #include <WiFi.h>
 /* change ssid and password according to yours WiFi*/
-const char* ssid     = "MIT Guest";
-const char* password = "";
+const char* ssid     = "Berry Secure";
+const char* password = "123456789";
 /*
  * This is the IP address of your PC
  * [Wins: use ipconfig command, Linux: use ifconfig command]
 */
 const char* host = "192.168.1.106"; // need to find out what is each host id
-const int port = 8088;
+const int port = 80;
+
 void setup()
 {
     Serial.begin(115200);
