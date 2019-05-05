@@ -42,7 +42,9 @@ void loop()
     Serial.println("new client");
     /* check client is connected */
     while (client.connected()) {
+//      Serial.println("connected");
       if (client.available()) {
+        Serial.println("available");
         int len = client.read(data, 30);
         if (len < 30) {
           data[len] = '\0';
