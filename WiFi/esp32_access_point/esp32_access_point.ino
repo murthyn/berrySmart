@@ -1,6 +1,6 @@
 /*********
   Rui Santos
-  Complete project details at https://randomnerdtutorials.com
+  Complete project details at https://randomnerdtutorials.com  
 *********/
 
 // Load Wi-Fi library
@@ -29,18 +29,14 @@ void setup() {
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(IP);
-
+  
   server.begin();
 }
 
-void loop() {
-  float temp = (rand() % 100);
-  float humid = (rand() % 100);
-  float light = (rand() % 1000) / 1000.0;
-  float moist = (rand() % 1000);
+void loop(){
 
   WiFiClient client = server.available();   // Listen for incoming clients
-
+  
   if (client) {                             // If a new client connects,
     Serial.println("New Client.");          // print a message out in the serial port
     String currentLine = "";                // make a String to hold incoming data from the client
@@ -50,8 +46,8 @@ void loop() {
         Serial.write(c);                    // print it out the serial monitor
       }
       else {
-        char message[200];
-        sprintf(message, "lat=%f&lon=%f&temp=%f&humid=%f&light=%f&moist=%f", 100.0, -45.89, temp, humid, light, moist); //generate body, posting to User, 1 step
+        char message[100];
+        sprintf(message, "test: %d", counter);
         client.println(message);
         counter++;
         delay(100);
@@ -59,11 +55,11 @@ void loop() {
         break;
       }
     }
-
+    
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");
     Serial.println("");
-
+    
   }
 }
