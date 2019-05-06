@@ -27,7 +27,7 @@ void setup()
 }
 void loop()
 {
-  delay(5000);
+  delay(1000);
   Serial.print("connecting to ");
   Serial.println(host);
   /* Use WiFiClient class to create TCP connections */
