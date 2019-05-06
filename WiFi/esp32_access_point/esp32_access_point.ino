@@ -43,29 +43,17 @@ void loop(){
       if (client.available()) {             // if there's bytes to read from the client,
         char c = client.read();             // read a byte, then
         Serial.write(c);                    // print it out the serial monitor
-        header += c;
-        if (c == '\n') {                    // if the byte is a newline character
-          // if the current line is blank, you got two newline characters in a row.
-          // so send a response:
-          if (currentLine.length() == 0) {
-            char message[100];
-            sprintf(message, "test: %d", counter);
-            client.println(message);
-            
-            // The HTTP response ends with another blank line
-            client.println();
-            // Break out of the while loop
-            break;
-          } else { // if you got a newline, then clear currentLine
-            currentLine = "";
-          }
-        } else if (c != '\r') {  // if you got anything else but a carriage return character,
-          currentLine += c;      // add it to the end of the currentLine
-        }
+      }
+      else {
+        char message[100];
+        sprintf(message, "test: %d", counter);
+        client.println(message);
+        client.println();
+        // Break out of the while loop
+        break;
       }
     }
-    // Clear the header variable
-    header = "";
+    
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");
