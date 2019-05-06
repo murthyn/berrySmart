@@ -48,7 +48,6 @@ void loop(){
         char message[100];
         sprintf(message, "test: %d", counter);
         client.println(message);
-        client.println();
         // Break out of the while loop
         break;
       }
