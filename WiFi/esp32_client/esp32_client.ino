@@ -27,15 +27,16 @@ const uint16_t OUT_BUFFER_SIZE = 1000; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
-//char network[] = "MIT GUEST";  //SSID for 6.08 Lab
-//char pswd[] = ""; //Password for 6.08 Lab
-char network[] = "iPhone (2)";  //SSID for 6.08 Lab
-char pswd[] = "hello123"; //Password for 6.08 Lab
+char network[] = "MIT GUEST";  //SSID for 6.08 Lab
+char pswd[] = ""; //Password for 6.08 Lab
+//char network[] = "iPhone (2)";  //SSID for 6.08 Lab
+//char pswd[] = "hello123"; //Password for 6.08 Lab
 
 void setup()
 {
   Serial.begin(115200);
-  clientSetup();
+//  clientSetup();
+  wifiSetup();
 }
 
 void loop()
@@ -45,6 +46,7 @@ void loop()
   Serial.println(host);
   /* Use WiFiClient class to create TCP connections */
   WiFiClient client;
+  WiFiClient clientOut;
 
   if (!client.connect(host, port)) {
     Serial.println("connection failed");
@@ -75,10 +77,13 @@ void loop()
       }
 
       if (endBuffer > 10) {
-        client.stop();
-        wifiSetup();
+//        client.stop();
+        Serial.println("Wifi setting up");
+//        wifiSetup();
+        Serial.println("Posting");
         post();
-        client.stop();
+        Serial.println("Client stopping");
+//        client.stop();
         clientSetup();
       }
     }
@@ -113,7 +118,7 @@ void wifiSetup() {
   uint8_t count = 0; //count used for Wifi check times
   Serial.print("Attempting to connect to ");
   Serial.println(network);
-  while (WiFi.status() != WL_CONNECTED && count < 6) {
+  while (WiFi.status() != WL_CONNECTED && count < 6) { //number of wifi connect attempts is 6
     delay(500);
     Serial.print(".");
     count++;
@@ -167,14 +172,14 @@ uint8_t char_append(char* buff, char c, uint16_t buff_size) {
 }
 
 void do_http_request(char* host, char* request, char* response, uint16_t response_size, uint16_t response_timeout, uint8_t serial) {
-  WiFiClient client; //instantiate a client object
-  if (client.connect(host, 80)) { //try to connect to host on port 80
+  WiFiClient clientPost; //instantiate a client object
+  if (clientPost.connect(host, 80)) { //try to connect to host on port 80
     if (serial) Serial.print(request);//Can do one-line if statements in C without curly braces
-    client.print(request);
+    clientPost.print(request);
     memset(response, 0, response_size); //Null out (0 is the value of the null terminator '\0') entire buffer
     uint32_t count = millis();
-    while (client.connected()) { //while we remain connected read out data coming back
-      client.readBytesUntil('\n', response, response_size);
+    while (clientPost.connected()) { //while we remain connected read out data coming back
+      clientPost.readBytesUntil('\n', response, response_size);
       if (serial) Serial.println(response);
       if (strcmp(response, "\r") == 0) { //found a blank line!
         break;
@@ -184,15 +189,15 @@ void do_http_request(char* host, char* request, char* response, uint16_t respons
     }
     memset(response, 0, response_size);
     count = millis();
-    while (client.available()) { //read out remaining text (body of response)
-      char_append(response, client.read(), OUT_BUFFER_SIZE);
+    while (clientPost.available()) { //read out remaining text (body of response)
+      char_append(response, clientPost.read(), OUT_BUFFER_SIZE);
     }
     if (serial) Serial.println(response);
-    client.stop();
+    clientPost.stop();
     if (serial) Serial.println("-----------");
   } else {
     if (serial) Serial.println("connection failed :/");
     if (serial) Serial.println("wait 0.5 sec...");
-    client.stop();
+    clientPost.stop();
   }
 }
