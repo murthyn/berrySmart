@@ -4,7 +4,7 @@ import string
 import datetime
 
     
-strawberrydb = '__HOME__/blueberry.db'
+strawberrydb = '__HOME__/strawberry.db'
 
 
 def request_handler(request):
@@ -18,9 +18,7 @@ def request_handler(request):
         things = []
 
         if len(allthings) >= 1:
-            for data in allthings:
-                things.append(data[0])
-            return things
+            return allthings
 
         else:
             return ''' Not enough values are there in the database'''
