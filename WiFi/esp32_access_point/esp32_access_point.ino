@@ -48,6 +48,8 @@ void loop(){
         char message[100];
         sprintf(message, "test: %d", counter);
         client.println(message);
+        counter++;
+        delay(100);
         // Break out of the while loop
         break;
       }
@@ -57,6 +59,6 @@ void loop(){
     client.stop();
     Serial.println("Client disconnected.");
     Serial.println("");
-    counter++;
+    
   }
 }
