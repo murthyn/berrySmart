@@ -3,8 +3,8 @@
 //----------WIFI----------//
 
 /* change ssid and password according to yours WiFi*/
-const char* ssid     = "Berry Secure";
-const char* password = "123456789";
+const char* client_ssid     = "Berry Secure";
+const char* client_password = "123456789";
 /*
    This is the IP address of your PC
    [Wins: use ipconfig command, Linux: use ifconfig command]
@@ -27,114 +27,18 @@ const uint16_t OUT_BUFFER_SIZE = 1000; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
-char network[] = "MIT GUEST";  //SSID for 6.08 Lab
-char pswd[] = ""; //Password for 6.08 Lab
-//char network[] = "iPhone (2)";  //SSID for 6.08 Lab
-//char pswd[] = "hello123"; //Password for 6.08 Lab
+const char* server_ssid = "MIT";  //SSID for 6.08 Lab
+const char* server_password = ""; //Password for 6.08 Lab
+
 
 void setup()
 {
   Serial.begin(115200);
 //  clientSetup();
-  wifiSetup();
+//  wifiSetup();
 }
-
-void loop()
-{
-  delay(1000);
-  Serial.print("connecting to ");
-  Serial.println(host);
-  /* Use WiFiClient class to create TCP connections */
-  WiFiClient client;
-  WiFiClient clientOut;
-
-  if (!client.connect(host, port)) {
-    Serial.println("connection failed");
-    return;
-  }
-  uint8_t data[30];
-  if (client) {
-    Serial.println("new client");
-    /* check client is connected */
-    while (client.connected()) {
-//      Serial.println("connected");
-      if (client.available()) {
-        Serial.println("available");
-        int len = client.read(data, 30);
-        if (len < 5) {
-          continue; //get rid of near empty messages
-        }
-        else if (len < 30) {
-          data[len] = '\0';
-        } else {
-          data[30] = '\0';
-        }
-        Serial.print("client sent: ");
-        Serial.println((char *)data);
-
-        strcpy(dataBuffer[endBuffer], (char *)data);
-        endBuffer++;
-      }
-
-      if (endBuffer > 10) {
-//        client.stop();
-        Serial.println("Wifi setting up");
-//        wifiSetup();
-        Serial.println("Posting");
-        post();
-        Serial.println("Client stopping");
-//        client.stop();
-        clientSetup();
-      }
-    }
-  }
-}
-
-
-
-
-
 
 // HELPER FUNCTIONS
-
-void clientSetup() {
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-  /* connect to your WiFi */
-  WiFi.begin(ssid, password);
-  /* wait until ESP32 connect to WiFi*/
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print("Connecting to WiFi..");
-  }
-  Serial.println("");
-  Serial.println("WiFi connected with IP address: ");
-  Serial.println(WiFi.localIP());
-}
-
-void wifiSetup() {
-  // WIFI
-  WiFi.begin(network, password); //attempt to connect to wifi
-  uint8_t count = 0; //count used for Wifi check times
-  Serial.print("Attempting to connect to ");
-  Serial.println(network);
-  while (WiFi.status() != WL_CONNECTED && count < 6) { //number of wifi connect attempts is 6
-    delay(500);
-    Serial.print(".");
-    count++;
-  }
-  delay(2000);
-  if (WiFi.isConnected()) { //if we connected then print our IP, Mac, and SSID we're on
-    Serial.println("CONNECTED!");
-    Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
-    delay(500);
-  } else { //if we failed to connect just Try again.
-    Serial.println("Failed to Connect :/  Going to restart");
-    Serial.println(WiFi.status());
-    ESP.restart(); // restart the ESP (proper way)
-  }
-}
-
 void post() {
   for (int i = 0; i < endBuffer; i++) {
     Serial.println("Posting!");
@@ -143,7 +47,7 @@ void post() {
     
     int body_len = strlen(body); //calculate body length (for header reporting)
     Serial.println(body);
-    sprintf(request_buffer, "POST http://608dev.net/sandbox/sc/garciag/StrawberryHandler.py HTTP/1.1\r\n");
+    sprintf(request_buffer, "POST http://608dev.net/sandbox/sc/garciag/strawberryHandler.py HTTP/1.1\r\n");
     strcat(request_buffer, "Host: 608dev.net\r\n");
     strcat(request_buffer, "Content-Type: application/x-www-form-urlencoded\r\n");
     sprintf(request_buffer + strlen(request_buffer), "Content-Length: %d\r\n", body_len); //append string formatted to end of request buffer
@@ -200,4 +104,76 @@ void do_http_request(char* host, char* request, char* response, uint16_t respons
     if (serial) Serial.println("wait 0.5 sec...");
     clientPost.stop();
   }
+}  
+
+
+void addToBuffer(){
+  WiFiClient client;
+  char temp_buffer[30];
+  Serial.println("connecting to client now");
+  if (!client.connect(host, port)) {
+    Serial.println("connection failed");
+    delay(5000);
+    return;
+  }
+  Serial.println("connected to client now, waiting for data");
+  while(endBuffer == 0){
+    char ch;
+    uint8_t bufptr = 0;
+    while(client.available()){
+      ch = client.read();
+      temp_buffer[bufptr++] = ch;
+    }
+    if (bufptr != 0){
+      temp_buffer[bufptr] = '\0';
+      strcpy(dataBuffer[endBuffer++], temp_buffer);
+    }
+  }
 }
+
+uint8_t state = 0; // 0 = connecting to client
+//1 is connecting to mit guest
+
+void loop(){
+  if (state == 0){
+    WiFi.begin(client_ssid, client_password);
+    Serial.println("Connecting to Client");
+    while (WiFi.status() != WL_CONNECTED){
+      delay(500);
+      Serial.print(".");
+    }
+    delay(2000);
+    if (WiFi.isConnected()) { //if we connected then print our IP, Mac, and SSID we're on
+      Serial.println("CONNECTED TO CLIENT!");
+      Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
+      delay(500);
+      addToBuffer();
+      // Connected ot Berry Secure, now get data and store in buffer
+      // client.get(dataBuffer....)
+      // validate dataBuffer
+      // state = 1; only if data validates
+      Serial.print("posting number of packets of data: ");
+      Serial.println(endBuffer);
+      state = 1;
+    }
+  } else if (state == 1) {
+    WiFi.begin(server_ssid, server_password);
+    Serial.println("Connecting to Server");
+    while (WiFi.status() != WL_CONNECTED){
+      delay(500);
+      Serial.print(".");
+    }
+    delay(2000);
+    if (WiFi.isConnected()) { //if we connected then print our IP, Mac, and SSID we're on
+      Serial.println("CONNECTED TO SERVER!");
+      Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
+      delay(500);
+      // state = 0; only if data successfully send
+      post();
+      Serial.println("posted");
+      state = 0;
+    }
+  }
+}
+
+
