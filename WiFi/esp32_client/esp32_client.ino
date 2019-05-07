@@ -3,7 +3,7 @@
 //----------WIFI----------//
 
 /* change ssid and password according to yours WiFi*/
-const char* client_ssid     = "Berry Secure";
+const char* client_ssid     = "Berry Secure 2";
 const char* client_password = "123456789";
 /*
    This is the IP address of your PC
@@ -148,10 +148,7 @@ void loop(){
       Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
       delay(500);
       addToBuffer();
-      // Connected ot Berry Secure, now get data and store in buffer
-      // client.get(dataBuffer....)
-      // validate dataBuffer
-      // state = 1; only if data validates
+      // Connected to Berry Secure, now get data and store in buffer
       Serial.print("posting number of packets of data: ");
       Serial.println(endBuffer);
       state = 1;
