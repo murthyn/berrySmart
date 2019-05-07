@@ -61,7 +61,7 @@ def request_handler(r):
     )
 
 
-    fig = tools.make_subplots(rows=2, cols=2, subplot_titles=('Temperature vs Time', 'Humidity vs Time',
+    fig = tools.make_subplots(rows=2, cols=2, print_grid=False, subplot_titles=('Temperature vs Time', 'Humidity vs Time',
                                                           'Light vs Time', 'Soil Moisture vs Time'))
 
     fig.append_trace(trace0, 1, 1)
@@ -70,7 +70,9 @@ def request_handler(r):
     fig.append_trace(trace3, 2, 2)
 
     fig['layout'].update(height=800, width=800, title='Subplots of Params')
-    py.offline.plot(fig, filename='Plots of Random Data.html')
+    plot_div = py.offline.plot(fig, output_type = 'div')
+    return plot_div
+
     # data2 = [trace0, trace1, trace2]
 
     # py.plot(data2, filename='line-mode')
