@@ -3,7 +3,7 @@
 //----------WIFI----------//
 
 /* change ssid and password according to yours WiFi*/
-const char* client_ssid     = "Berry Secure";
+const char* client_ssid     = "Berry Secure 2";
 const char* client_password = "123456789";
 /*
    This is the IP address of your PC
