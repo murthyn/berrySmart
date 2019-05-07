@@ -168,6 +168,7 @@ void loop(){
       // state = 0; only if data successfully send
       post();
       Serial.println("posted");
+      ESP.restart();
       state = 0;
     }
   }

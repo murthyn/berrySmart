@@ -135,22 +135,27 @@ void loop(){
       state = 1;
     }
   } else if (state == 1) {
-    WiFi.begin(server_ssid, server_password);
-    Serial.println("Connecting to Server");
-    while (WiFi.status() != WL_CONNECTED){
-      delay(500);
-      Serial.print(".");
-    }
-    delay(2000);
-    if (WiFi.isConnected()) { //if we connected then print our IP, Mac, and SSID we're on
-      Serial.println("CONNECTED TO SERVER!");
-      Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
-      delay(500);
-      // state = 0; only if data successfully send
-      sendingSetup();
-      sendingBuffer();
-      Serial.println("posted");
-      state = 0;
-    }
+    sendingSetup();
+    sendingBuffer();
+    state = 0;
+    Serial.println("posted");
+    ESP.restart();
+//    WiFi.begin(server_ssid, server_password);
+//    Serial.println("Connecting to Server");
+//    while (WiFi.status() != WL_CONNECTED){
+//      delay(500);
+//      Serial.print(".");
+//    }
+//    delay(2000);
+//    if (WiFi.isConnected()) { //if we connected then print our IP, Mac, and SSID we're on
+//      Serial.println("CONNECTED TO SERVER!");
+//      Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
+//      delay(500);
+//      // state = 0; only if data successfully send
+//      sendingSetup();
+//      sendingBuffer();
+//      Serial.println("posted");
+//      state = 0;
+//    }
   }
 }
