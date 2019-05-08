@@ -60,6 +60,6 @@ void loop(){
     client.stop();
     Serial.println("Client disconnected.");
     Serial.println("");
-    
+    delay(2000);
   }
 }
