@@ -34,7 +34,7 @@ data = [dict(
 	type = 'scatter',
     x = random_x,
     y = temp,
-    name = 'Light',
+    name = 'Light',py.offline.plot
     fill = 'tozeroy',
     fillcolor = '#B8F7D4',
     line = dict(
@@ -78,5 +78,6 @@ frames=[dict(data=[dict(x= columns['x{}'.format(k + 1)],
 ]) for k in range(N-1)]
 
 fig=dict(data=data, layout=layout, frames=frames)
-py.offline.plot(fig, 'Light Data.html')
+plot_div = py.offline.plot(fig, output_type = 'div')
+return plot_div
 
