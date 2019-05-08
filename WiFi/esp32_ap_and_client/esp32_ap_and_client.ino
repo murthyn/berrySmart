@@ -80,6 +80,7 @@ void sendingBuffer(){
     Serial.println("");
     endBuffer = 0;
     emptyBuffer();
+    ESP.restart();
   }
 }
 void emptyBuffer() {
@@ -139,7 +140,6 @@ void loop(){
     sendingBuffer();
     state = 0;
     Serial.println("posted");
-    ESP.restart();
 //    WiFi.begin(server_ssid, server_password);
 //    Serial.println("Connecting to Server");
 //    while (WiFi.status() != WL_CONNECTED){

@@ -117,7 +117,8 @@ void addToBuffer(){
     return;
   }
   Serial.println("connected to client now, waiting for data");
-  while(endBuffer == 0){
+  float stuckHereTimer = millis();
+  while(endBuffer == 0 and millis() - stuckHereTimer < 5000){
     char ch;
     uint8_t bufptr = 0;
     while(client.available()){
