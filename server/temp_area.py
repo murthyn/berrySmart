@@ -78,6 +78,6 @@ frames=[dict(data=[dict(x= columns['x{}'.format(k + 1)],
 ]) for k in range(N-1)]
 
 fig=dict(data=data, layout=layout, frames=frames)
-plot_div = py.offline.plot(fig, 'div')
+plot_div = py.offline.plot(fig, output_type = 'div')
 return plot_div
 
