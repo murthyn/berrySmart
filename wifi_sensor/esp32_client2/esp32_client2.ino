@@ -14,7 +14,7 @@ const int port = 80;
 
 //----------DATA----------//
 
-char dataBuffer [30][30]; // [Number of Strings][Max Size of Strings]
+char dataBuffer [30][200]; // [Number of Strings][Max Size of Strings]
 int endBuffer = 0;
 
 //----------POSTING----------//
@@ -22,8 +22,8 @@ int endBuffer = 0;
 const int RESPONSE_TIMEOUT = 6000; //ms to wait for response from host
 const int GETTING_PERIOD = 5000; //periodicity of getting a number fact.
 
-const uint16_t IN_BUFFER_SIZE = 1000; //size of buffer to hold HTTP request
-const uint16_t OUT_BUFFER_SIZE = 1000; //size of buffer to hold HTTP response
+const uint16_t IN_BUFFER_SIZE = 1200; //size of buffer to hold HTTP request
+const uint16_t OUT_BUFFER_SIZE = 1200; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
@@ -109,7 +109,7 @@ void do_http_request(char* host, char* request, char* response, uint16_t respons
 
 void addToBuffer(){
   WiFiClient client;
-  char temp_buffer[30];
+  char temp_buffer[200];
   Serial.println("connecting to client now");
   if (!client.connect(host, port)) {
     Serial.println("connection failed");

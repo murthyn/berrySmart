@@ -122,7 +122,7 @@ void setup() {
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(IP);
-  
+  counter = millis();
   server.begin();
 }
 
@@ -140,13 +140,13 @@ void loop(){
       }
       else {
         if (millis() - counter > 5000){
-          char message[100];
+          char message[200];
           float light = 1 - analogRead(A7) / 4096.0;
           float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
           int chk = DHT.read11(DHT11_PIN);
           float temp = DHT.temperature;
           float humid = DHT.humidity;
-          sprintf(message, "hello"); //"%2.4f,%2.4f,%2.4f,%2.4f", light, soil_moisture, temp, humid);
+          sprintf(message, "%2.4f&%2.4f&%2.4f&%2.4f", light, soil_moisture, temp, humid);
           client.println(message);
           Serial.println(message);
           counter = millis();

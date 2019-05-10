@@ -14,7 +14,7 @@ const int port = 80;
 
 //----------DATA----------//
 
-char dataBuffer [30][30]; // [Number of Strings][Max Size of Strings]
+char dataBuffer [30][200]; // [Number of Strings][Max Size of Strings]
 int endBuffer = 0;
 
 //----------POSTING----------//
@@ -65,7 +65,7 @@ void sendingBuffer(){
         Serial.write(c);                    // print it out the serial monitor
       }
       else {
-        char message[100];
+        char message[200];
         sprintf(message, "%s", dataBuffer[0]);
         client.println(message);
         delay(100);
@@ -91,7 +91,7 @@ void emptyBuffer() {
 
 void addToBuffer(){
   WiFiClient client;
-  char temp_buffer[30];
+  char temp_buffer[200];
   Serial.println("connecting to client now");
   if (!client.connect(host, port)) {
     Serial.println("connection failed");
@@ -102,8 +102,10 @@ void addToBuffer(){
   while(endBuffer == 0){
     char ch;
     uint8_t bufptr = 0;
-    while(client.available()){
+    if (client.available()){
       ch = client.read();
+      Serial.println("here");
+      Serial.println(ch);
       temp_buffer[bufptr++] = ch;
     }
     if (bufptr != 0){
