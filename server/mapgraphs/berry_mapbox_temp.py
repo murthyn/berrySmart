@@ -31,14 +31,17 @@ def request_handler(r):
 	for dt in data:
 		if i>3:
 			i = 0
-		latitude.append(coords[i][0])
-		longitude.append(coords[i][1])
-		temp.append(dt[2])
-		humid.append(dt[3])
-		light.append(dt[4])
-		moist.append(dt[5]/1000)
-		i +=1
-		j+=1
+		if dt[2]<-100:
+			continue
+		else:
+			latitude.append(coords[i][0])
+			longitude.append(coords[i][1])
+			temp.append(dt[2])
+			humid.append(dt[3])
+			light.append(dt[4])
+			moist.append(dt[5]/1000)
+			i +=1
+			j+=1
 
 	#writing a csv file
 	with open('berry_data.csv', 'w') as csvfile:

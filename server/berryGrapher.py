@@ -16,12 +16,15 @@ def request_handler(r):
     moist = []
 
     for dt in data:
-        latitude.append(dt[0])
-        longitude.append(dt[1])
-        temp.append(dt[2])
-        humid.append(dt[3])
-        light.append(dt[4])
-        moist.append(dt[5])
+        if dt[2]<-100:
+            continue
+        else:
+            latitude.append(dt[0])
+            longitude.append(dt[1])
+            temp.append(dt[2])
+            humid.append(dt[3])
+            light.append(dt[4])
+            moist.append(dt[5])
 
     N = len(data)
     random_x = np.linspace(0, 1, N)
