@@ -31,7 +31,7 @@ def request_handler(request):
 	median_light = 0
 	media_moist = 0
 
-	for dt in data[100:]:
+	for dt in data[60:]:
 		if dt[2]<-100:
 			continue
 		else:
@@ -55,7 +55,7 @@ def request_handler(request):
 	median_temp = statistics.median(temp)
 	median_humid = statistics.median(humid)
 	median_light = statistics.median(light)
-	median_moist = statistics.median(moist)
+	median_moist = -1*statistics.median(moist)
 
 	send = [[avg_temp,std_temp,median_temp], [avg_humid,std_humid,median_humid], [avg_light,std_light,median_light], [avg_moist,std_moist,median_moist]]
 	print(send)
