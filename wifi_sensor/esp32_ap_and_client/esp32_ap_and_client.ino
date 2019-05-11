@@ -1,4 +1,7 @@
+#include <SPI.h>
+#include <TinyGPS++.h>
 #include <WiFi.h>
+#include <dht.h>
 
 //----------WIFI----------//
 
@@ -16,14 +19,27 @@ const int port = 80;
 
 char dataBuffer [30][200]; // [Number of Strings][Max Size of Strings]
 int endBuffer = 0;
+float lastTimeDataCollect; // timer for when was last data collection at this node
+const float SENSOR_READ_INTERVAL = 60000; // in ms
 
+//-------SENSORS--------//
+const int espID = 2;
+
+dht DHT;
+HardwareSerial gps_serial(2);
+TinyGPSPlus gps;
+
+#define DHT11_PIN 19
+
+const float moisture_lower = 0.4;
+const float moisture_upper = 0.87;
 //----------POSTING----------//
  
 const int RESPONSE_TIMEOUT = 6000; //ms to wait for response from host
 const int GETTING_PERIOD = 5000; //periodicity of getting a number fact.
 
-const uint16_t IN_BUFFER_SIZE = 1000; //size of buffer to hold HTTP request
-const uint16_t OUT_BUFFER_SIZE = 1000; //size of buffer to hold HTTP response
+const uint16_t IN_BUFFER_SIZE = 1200; //size of buffer to hold HTTP request
+const uint16_t OUT_BUFFER_SIZE = 1200; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
@@ -32,9 +48,18 @@ const char* server_password = "123456789"; //Password for 6.08 Lab
 
 WiFiServer server(80);
 
+//-----------SLEEPING-------------//
+
+const float SLEEP_TIME = 6; // in seconds
+const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
+
+//-------------------------------//
+
+
 void setup()
 {
   Serial.begin(115200);
+  lastTimeDataCollect = millis();
 }
 
 // HELPER FUNCTIONS
@@ -55,9 +80,6 @@ void sendingSetup(){
 
 void sendingBuffer(){
   WiFiClient client = server.available();   // Listen for incoming clients
-
-  Serial.println("CLIENT");
-  Serial.println(client);
   
   if (client) {                             // If a new client connects,
     Serial.println("New Client.");          // print a message out in the serial port
@@ -71,18 +93,36 @@ void sendingBuffer(){
         char message[200];
         sprintf(message, "%s", dataBuffer[0]);
         client.println(message);
+        Serial.println("message");
+        Serial.println(message);
         delay(100);
+        
         // Break out of the while loop
         break;
       }
     }
     
+    endBuffer = 0;
+    emptyBuffer();
+//    if (millis() - lastTimeDataCollect > SENSOR_READ_INTERVAL){
+//        char message[200];
+//        float light = 1 - analogRead(A7) / 4096.0;
+//        float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
+//        int chk = DHT.read11(DHT11_PIN);
+//        float temp = DHT.temperature;
+//        float humid = DHT.humidity;
+//        sprintf(message, "{'espID': %2.4f, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, soil_moisture, temp, humid, light);
+//        client.println(message);
+//        Serial.println(message);
+//        delay(500);
+//        lastTimeDataCollect = millis();
+//        endBuffer = 0;
+//        emptyBuffer();
+//    }
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");
     Serial.println("");
-    endBuffer = 0;
-    emptyBuffer();
     ESP.restart();
   }
 }
@@ -103,13 +143,10 @@ void addToBuffer(){
   }
   Serial.println("connected to client now, waiting for data");
   while(endBuffer == 0){
-    Serial.println("while endBuffer == 0");
     char ch;
     uint8_t bufptr = 0;
-    if (client.available()){
-      ch = client.read();
-      Serial.println("here");
-      Serial.println(ch);
+    while (client.available()){
+      ch = client.read(); // ch iterates over each character as it reads from client
       temp_buffer[bufptr++] = ch;
     }
     if (bufptr != 0){
@@ -118,6 +155,7 @@ void addToBuffer(){
     }
   }
 }
+
 
 uint8_t state = 0; // 0 = connecting to client
 //1 is connecting to mit guest
@@ -145,24 +183,10 @@ void loop(){
     sendingSetup();
     sendingBuffer();
     state = 0;
-
     Serial.println("posted");
-//    WiFi.begin(server_ssid, server_password);
-//    Serial.println("Connecting to Server");
-//    while (WiFi.status() != WL_CONNECTED){
-//      delay(500);
-//      Serial.print(".");
-//    }
-//    delay(2000);
-//    if (WiFi.isConnected()) { //if we connected then print our IP, Mac, and SSID we're on
-//      Serial.println("CONNECTED TO SERVER!");
-//      Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
-//      delay(500);
-//      // state = 0; only if data successfully send
-//      sendingSetup();
-//      sendingBuffer();
-//      Serial.println("posted");
-//      state = 0;
-//    }
+//    Serial.println("Now sleeping");
+//    delay(1000);
+//    esp_sleep_enable_timer_wakeup(SLEEP_TIME * MICRO_S_TO_S);
+//    esp_deep_sleep_start();
   }
 }
