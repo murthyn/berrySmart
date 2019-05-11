@@ -55,6 +55,9 @@ void sendingSetup(){
 
 void sendingBuffer(){
   WiFiClient client = server.available();   // Listen for incoming clients
+
+  Serial.println("CLIENT");
+  Serial.println(client);
   
   if (client) {                             // If a new client connects,
     Serial.println("New Client.");          // print a message out in the serial port
@@ -100,6 +103,7 @@ void addToBuffer(){
   }
   Serial.println("connected to client now, waiting for data");
   while(endBuffer == 0){
+    Serial.println("while endBuffer == 0");
     char ch;
     uint8_t bufptr = 0;
     if (client.available()){
@@ -141,6 +145,7 @@ void loop(){
     sendingSetup();
     sendingBuffer();
     state = 0;
+
     Serial.println("posted");
 //    WiFi.begin(server_ssid, server_password);
 //    Serial.println("Connecting to Server");

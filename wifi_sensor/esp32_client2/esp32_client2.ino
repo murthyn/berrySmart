@@ -26,9 +26,12 @@ const uint16_t IN_BUFFER_SIZE = 1200; //size of buffer to hold HTTP request
 const uint16_t OUT_BUFFER_SIZE = 1200; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
+//
+//const char* server_ssid = "6s08";  //SSID for 6.08 Lab
+//const char* server_password = "iesc6s08"; //Password for 6.08 Lab
 
-const char* server_ssid = "6s08";  //SSID for 6.08 Lab
-const char* server_password = "iesc6s08"; //Password for 6.08 Lab
+const char* server_ssid = "MIT";  //SSID for 6.08 Lab
+const char* server_password = ""; //Password for 6.08 Lab
 
 
 void setup()
@@ -174,5 +177,3 @@ void loop(){
     }
   }
 }
-
-
