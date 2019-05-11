@@ -34,8 +34,6 @@ const char* server_password = ""; //Password for 6.08 Lab
 void setup()
 {
   Serial.begin(115200);
-//  clientSetup();
-//  wifiSetup();
 }
 
 // HELPER FUNCTIONS
@@ -62,7 +60,7 @@ void post() {
 }
 
 void emptyBuffer() {
-  for(int i = 0; i < 30; i++){
+  for (int i = 0; i < 30; i++){
       strcpy(dataBuffer[i], "");
   }
 }
