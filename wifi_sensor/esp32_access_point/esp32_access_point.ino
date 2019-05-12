@@ -19,6 +19,7 @@ WiFiServer server(80);
 // Variable to store the HTTP request
 String header;
 const int espID = 1;
+RTC_DATA_ATTR int packetNumber = 1;
 
 // --------------SENSORS------------
 
@@ -74,7 +75,8 @@ void loop(){ // this loop has sleeping and it does not work
         int chk = DHT.read11(DHT11_PIN);
         float temp = DHT.temperature;
         float humid = DHT.humidity;
-        sprintf(message, "{'espID': %d, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, soil_moisture, temp, humid, light);
+        sprintf(message, "{'espID': %d, 'packet_number': %d, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, packetNumber, soil_moisture, temp, humid, light);
+        packetNumber += 1;
         client.println(message);
         Serial.println(message);
         counter = millis();

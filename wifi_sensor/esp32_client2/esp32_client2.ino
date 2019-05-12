@@ -17,6 +17,11 @@ const int port = 80;
 char dataBuffer [30][200]; // [Number of Strings][Max Size of Strings]
 int endBuffer = 0;
 
+//--------SLEEPING---------//
+
+const float SLEEP_TIME = 60; // in seconds
+const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
+
 //----------POSTING----------//
  
 const int RESPONSE_TIMEOUT = 6000; //ms to wait for response from host
@@ -145,7 +150,7 @@ void loop(){
     if (WiFi.isConnected()) { //if we connected then print our IP, Mac, and SSID we're on
       Serial.println("CONNECTED TO CLIENT!");
       Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
-      delay(500);
+//      delay(500);
       addToBuffer();
       // Connected to Berry Secure, now get data and store in buffer
       Serial.print("posting number of packets of data: ");
@@ -167,7 +172,11 @@ void loop(){
       // state = 0; only if data successfully send
       post();
       Serial.println("posted");
-      ESP.restart();
+//      ESP.restart();
+      Serial.println("Now sleeping");
+      delay(1000);
+      esp_sleep_enable_timer_wakeup(SLEEP_TIME * MICRO_S_TO_S);
+      esp_deep_sleep_start();
       state = 0;
     }
   }

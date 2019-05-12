@@ -91,11 +91,20 @@ void sendingBuffer(){
       }
       else {
         char message[200];
+//        char message2[200];
         sprintf(message, "%s", dataBuffer[0]);
+//        float light = 1 - analogRead(A7) / 4096.0;
+//        float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
+//        int chk = DHT.read11(DHT11_PIN);
+//        float temp = DHT.temperature;
+//        float humid = DHT.humidity;
+//        sprintf(message2, "${'espID': %2.4f, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, soil_moisture, temp, humid, light);
+//        strcat(message, message2);
         client.println(message);
         Serial.println("message");
         Serial.println(message);
-        delay(100);
+        delay(5000);
+        Serial.println("posted");
         
         // Break out of the while loop
         break;
@@ -124,6 +133,10 @@ void sendingBuffer(){
     Serial.println("Client disconnected.");
     Serial.println("");
     ESP.restart();
+  } else{
+    delay(5000);
+    Serial.println("Sending not successful. Resending...");
+    sendingBuffer();
   }
 }
 void emptyBuffer() {
@@ -177,13 +190,13 @@ void loop(){
       // Connected to Berry Secure, now get data and store in buffer
       Serial.print("posting number of packets of data: ");
       Serial.println(endBuffer);
+      Serial.println(dataBuffer[endBuffer]);
       state = 1;
     }
   } else if (state == 1) {
     sendingSetup();
     sendingBuffer();
     state = 0;
-    Serial.println("posted");
     Serial.println("Now sleeping");
     delay(1000);
     esp_sleep_enable_timer_wakeup(SLEEP_TIME * MICRO_S_TO_S);
