@@ -50,7 +50,7 @@ WiFiServer server(80);
 
 //-----------SLEEPING-------------//
 
-const float SLEEP_TIME = 6; // in seconds
+const float SLEEP_TIME = 60; // in seconds
 const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
 
 //-------------------------------//

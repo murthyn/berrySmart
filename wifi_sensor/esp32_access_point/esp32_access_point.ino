@@ -34,10 +34,10 @@ const float moisture_upper = 0.87;
 
 // https://github.com/RobTillaart/Arduino/tree/master/libraries/DHTstable
 
-const float SLEEP_TIME = 6; // in seconds
+const float SLEEP_TIME = 60; // in seconds
 const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
 
-const float SENSOR_READ_INTERVAL = 60000; // in ms
+const float SENSOR_READ_INTERVAL = 6000; // in ms
 // --------------------------------
 
 void setup() {
@@ -60,7 +60,7 @@ void setup() {
   server.begin();
 }
 
-void loop2(){ // this loop has sleeping and it does not work
+void loop(){ // this loop has sleeping and it does not work
 
   WiFiClient client = server.available();   // Listen for incoming clients
   
@@ -74,7 +74,7 @@ void loop2(){ // this loop has sleeping and it does not work
         int chk = DHT.read11(DHT11_PIN);
         float temp = DHT.temperature;
         float humid = DHT.humidity;
-        sprintf(message, "{'espID': %2.4f, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, soil_moisture, temp, humid, light);
+        sprintf(message, "{'espID': %d, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, soil_moisture, temp, humid, light);
         client.println(message);
         Serial.println(message);
         counter = millis();
@@ -92,7 +92,7 @@ void loop2(){ // this loop has sleeping and it does not work
   }
 }
 
-void loop(){ // this loop has no sleep and it works
+void loop2(){ // this loop has no sleep and it works
 
   WiFiClient client = server.available();   // Listen for incoming clients
   
