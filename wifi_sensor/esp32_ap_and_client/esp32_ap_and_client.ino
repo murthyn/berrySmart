@@ -184,9 +184,9 @@ void loop(){
     sendingBuffer();
     state = 0;
     Serial.println("posted");
-//    Serial.println("Now sleeping");
-//    delay(1000);
-//    esp_sleep_enable_timer_wakeup(SLEEP_TIME * MICRO_S_TO_S);
-//    esp_deep_sleep_start();
+    Serial.println("Now sleeping");
+    delay(1000);
+    esp_sleep_enable_timer_wakeup(SLEEP_TIME * MICRO_S_TO_S);
+    esp_deep_sleep_start();
   }
 }
