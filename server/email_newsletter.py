@@ -14,20 +14,25 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase 
 from email import encoders 
 
-# URL = "http://608dev.net/sandbox/sc/garciag/mean_std.py"
-# r = requests.get(url=URL)
-# t = r.text.strip().split("\n")[0]
-# data = eval(t)
+URL1 = "http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=1"
+r = requests.get(url=URL1)
+text = r.text
+avg_temp = eval(text)
 
-# avg_temp = data[0][0]
-# avg_humid = data[1][0]
-# avg_light = data[2][0]
-# avg_moist = data[3][0]
+URL2 = "http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=2"
+r = requests.get(url=URL2)
+text = r.text
+avg_humid = eval(text)
 
-avg_temp = 24.8
-avg_humid = 0.95
-avg_light = 0.87
-avg_moist = 0.3
+URL3 = "http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=3"
+r = requests.get(url=URL3)
+text = r.text
+avg_light= eval(text)
+
+URL4 = "http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=4"
+r = requests.get(url=URL4)
+text = r.text
+avg_moist= eval(text)
  
 # create Image object with the input image
  
