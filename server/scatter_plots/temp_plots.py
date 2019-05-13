@@ -5,6 +5,7 @@ import requests
 import numpy as np
 
 def request_handler(r):
+
     URL = "http://608dev.net/sandbox/sc/garciag/all_dataHandler.py"
     r = requests.get(url=URL)
     data = eval(r.text)
@@ -40,5 +41,4 @@ def request_handler(r):
     layout = dict(title = 'Temperature',xaxis = dict(title = 'Time'), yaxis = dict(title = 'Degrees Celsius'))
     fig = go.Figure(data = data, layout = layout)
     plot_div = py.offline.plot(fig, output_type = 'div')
-
     return plot_div
