@@ -23,8 +23,6 @@ RTC_DATA_ATTR int packetNumber = 1;
 // --------------SENSORS------------
 
 dht DHT;
-HardwareSerial gps_serial(2);
-TinyGPSPlus gps;
 
 #define DHT11_PIN 19
 
@@ -34,7 +32,7 @@ const float moisture_upper = 0.87;
 
 // https://github.com/RobTillaart/Arduino/tree/master/libraries/DHTstable
 
-const float SLEEP_TIME = 60; // in seconds
+const float SLEEP_TIME = 600; // in seconds
 const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
 
 const float SENSOR_READ_INTERVAL = 6000; // in ms
@@ -42,11 +40,6 @@ const float SENSOR_READ_INTERVAL = 6000; // in ms
 
 void setup() {
   Serial.begin(115200);
-
-
-  // GPS  
-  gps_serial.begin(9600, SERIAL_8N1, 32, 33);
-  delay(100); //wait a bit (100 ms)
   
   // Connect to Wi-Fi network with SSID and password
   Serial.print("Setting AP (Access Point)…");
@@ -70,7 +63,7 @@ void loop(){ // this loop has sleeping and it does work
     while (client.connected()) {            // loop while the client's connected
         char message[500];
         float light = 1 - analogRead(A7) / 4096.0;
-        float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
+        float soil_moisture = analogRead(A14) / 4096.0; //moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
         int chk = DHT.read11(DHT11_PIN);
         float temp = DHT.temperature;
         float humid = DHT.humidity;

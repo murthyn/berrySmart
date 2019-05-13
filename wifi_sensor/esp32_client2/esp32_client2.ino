@@ -20,7 +20,7 @@ int endBuffer = 0;
 
 //--------SLEEPING---------//
 
-const float SLEEP_TIME = 60; // in seconds
+const float SLEEP_TIME = 600; // in seconds
 const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
 RTC_DATA_ATTR int packetNumber = 1;
 
@@ -62,7 +62,7 @@ void post() {
     char message[200];
     
     float light = 1 - analogRead(A7) / 4096.0;
-    float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
+    float soil_moisture = analogRead(A14) / 4096.0; //moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
     int chk = DHT.read11(DHT11_PIN);
     float temp = DHT.temperature;
     float humid = DHT.humidity;
