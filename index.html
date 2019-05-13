@@ -40,15 +40,7 @@ a:hover {
   color:  #b8e1ff;
 }
 
-td {
-   border-width: medium;
-   padding-left:20px;
-   margin:0;
-}
-table.grxd {
-   width:100%;
-   height:100%;
-}
+
  #weather-table{
     width: 100%;
     border-radius: 15px;
@@ -63,19 +55,33 @@ table.grxd {
   text-align: center;
 }
 
+#leaf-table td:hover {background-color:#b8e1ff;}
+
+#leaf-table{
+    width: 100%;
+    color: rgb(109, 114, 138);
+ }
+ #leaf-table td{
+ background-color: white;   
+  border: 20px solid #b8e1ff;
+  padding: 8px;
+  height:100px;
+  width: 50%;
+text-align: center;
+}
+
 #weather-table td:hover {background-color:#B9B9B9;}
-
-
  
   #section1 {color: #fff; background-color: white;}
-  #section2 {color: white ; background-color:  #B9B9B9;}
+  #section2 {color: white; background-color:  #B9B9B9;}
   #section3 {color:white; background-color: #A288A6;}
   #section4 {color: #fff; background-color: #b8e1ff;}
-  #section5 {color: #fff; background-color: #5a2d53;}
-  #section6 {color: #fff; background-color: #959595;}
+  #section5 {color: #fff; background-color: #B9B9B9;}
+  #section6 {color: #fff; background-color: #5a2d53;}
+  #section7 {color: #fff; background-color: #959595;}
   
   @media screen and (max-width: 810px) {
-    #section1, #section2, #section3, #section4, #section5, #section6  {
+    #section1, #section2, #section3, #section4, #section5, #section6,#section7  {
       margin-left: 150px;
     }
   }
@@ -84,7 +90,7 @@ table.grxd {
 <body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
 
   <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+  <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -140,8 +146,9 @@ table.grxd {
             <li><a href="#section2" style="text-align: left">Today's Weather</a></li>
             <li><a href="#section3" style="text-align: left">Statistics</a></li>
             <li><a href="#section4" style="text-align: left">Recommendations</a></li>
-            <li><a href="#section5" style="text-align: left">About us</a></li>
-            <li><a href="#section6" style="text-align: left">Contact us</a></li>
+            <li><a href="#section5" style="text-align: left">Alerts</a></li>
+            <li><a href="#section6" style="text-align: left">About us</a></li>
+            <li><a href="#section7" style="text-align: left">Contact us</a></li>
           </ul>
         </nav>
         <div class="col-sm-10">
@@ -165,7 +172,7 @@ table.grxd {
                 <div class="col-sm-5"></div>
                 <div class = "container-fluid" id="drawTable" > </div>
                 <br>
-                <div id = "legend-parent" style="font-size:15px; text-align: center" > </div>
+                
             </div>
 
             <br><br><br>
@@ -202,28 +209,73 @@ table.grxd {
                 </div>
                 <br><br> 
                 <div>
-                    <a href="https://plot.ly/~garciag/6/?share_key=1rX36f5NwlJOuOWX923QD2" target="_blank" title="Plots of Random Data" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/6.png?share_key=1rX36f5NwlJOuOWX923QD2" alt="Plots of Random Data" style="max-width: 100%;width: 800px;"  width="800" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-                    <script data-plotly="garciag:6" sharekey-plotly="1rX36f5NwlJOuOWX923QD2" src="https://plot.ly/embed.js" async></script>
+                    <div class="row">
+                    <div class="col-sm-2"  style="padding: 10px"></div>
+                    <div class="col-sm-8" id="dynamic-graph" style="padding: 10px"></div>
+                    <div class="col-sm-2"  style="padding: 10px"></div>
+                    </div>
                 </div>
                 <br><br>
             </div>
             <br><br><br>
             <div id="section4"  style="border-radius: 15px; padding-left: 10px; padding-right: 10px;">         
-                <div class="row">    
+                <div class="row"> 
+                    <div class="container">   
                     <h1 style="text-align: center">Recommendations</h1>
                     <br><br>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-5">
-                        Average Soil Moisture <br>
-                        Average Temperature <br>
-                        Average Brightness <br>
-                        Average Humidity <br>
-                        <br><br>
-                    </div>
+                    <table id="leaf-table" >
+                        <tr>
+                            <td> <div><i class="glyphicon glyphicon-leaf">&nbsp;</i>Average temperature </div><div id="avg-temp"></div></td>
+                            <td > <div><i class="glyphicon glyphicon-leaf">&nbsp;</i>Standard deviation of temperature</div><div id="std-temp"></div></td>
+                        </tr>
+                        <tr>    
+                            <td> <div><i class="glyphicon glyphicon-grain">&nbsp;</i>Average humidity </div><div id="avg-humid"></div></td>
+                            <td > <div><i class="glyphicon glyphicon-grain">&nbsp;</i>Standard deviation of humidity</div><div id="std-humid"></div></td>
+                        </tr>
+                        <tr>
+                           <td> <div><i class="glyphicon glyphicon-tree-deciduous">&nbsp;</i>Average light </div><div id="avg-light"></div></td>
+                            <td > <div><i class="glyphicon glyphicon-tree-deciduous">&nbsp;</i>Standard deviation of light</div><div id="std-light"></div></td>
+                        </tr>
+                        <tr>
+                             <td> <div><i class="glyphicon glyphicon-apple">&nbsp;</i>Average soil moisture </div><div id="avg-moist"></div></td>
+                            <td > <div><i class="glyphicon glyphicon-apple">&nbsp;</i>Standard deviation of soil moisture</div><div id="std-moist"></div></td>
+                        </tr>
+                    </table>
                 </div> 
+                </div>
+                <br><br>
             </div>  
+            <br><br><br>
+            <div id="section5"  style="border-radius: 15px; padding: 35px;"> 
+                <div class="row" style="font-size:20px">    
+                    <h1 style="text-align: center">Alerts</h1>
+                    <br>
+                    <div class="container" id="alert-default">This section shows alerts if some parameter is above or below a recommended threshold. Right now it shows all posiible alerts </div>
+                    <br>
+                    <div class="alert alert-info" id="low-temp">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="fas fa-snowflake">&nbsp;</i><strong>Low temperature</strong> in area(s) <span id="low-temp"></span>
+                    </div>
+                    <br>
+                    <div class="alert alert-danger" id="high-temp">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="fas fa-temperature-high">&nbsp;</i><strong>High temperature</strong> in area(s) <span id="high-temp"></span>
+                    </div>
+                    <br>
+                    <div class="alert alert-warning" id="low-humid">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="fas fa-cloud">&nbsp;</i><strong>Low humidity</strong> in area(s) <span id="low-humid"></span>
+                    </div>
+                    <br>
+                    <div class="alert alert-info" id="high-humid">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="fas fa-cloud-rain"></i>&nbsp;<strong>High humidity</strong> in area(s) <span id="high-humid"></span>
+                    </div>
+
+                </div> 
+            </div>    
             <br><br><br>    
-            <div id="section5"  style="border-radius: 15px; padding: 35px;">         
+            <div id="section6"  style="border-radius: 15px; padding: 35px;">         
                 <div class="row" style="font-size:20px">    
                     <h1 style="text-align: center">About Us</h1>
                     <br>
@@ -231,7 +283,7 @@ table.grxd {
                 </div>   
             </div>
             <br><br><br>
-            <div id="section6"  style="border-radius: 15px; padding: 40px; ">         
+            <div id="section7"  style="border-radius: 15px; padding: 40px; ">         
                 <div class="row" style="font-size:20px" >    
                     <h1 style="text-align: center">Contact Us</h1>
                     <br><br>
@@ -318,6 +370,7 @@ table.grxd {
       </div>
     </div>
 </body> 
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script data-plotly="garciag:12" sharekey-plotly="77S29tuYXt5n5Htng2TX5O" src="https://plot.ly/embed.js" async></script>
 <script data-plotly="garciag:14" sharekey-plotly="Abx85SFf1eFNKFNcRj5xnT" src="https://plot.ly/embed.js" async></script>
 <script data-plotly="garciag:16" sharekey-plotly="JLz6f4hCA6WzRTnhAELwWi" src="https://plot.ly/embed.js" async></script>
@@ -328,6 +381,7 @@ table.grxd {
 $(document).ready(function () {
 $('#myModal').modal('show');
 });
+
 
 function loginHandler(){
     let form = document.getElementById('modal-form');
@@ -340,11 +394,11 @@ function loginHandler(){
     Http.send();
     Http.onreadystatechange=(e)=>{
      console.log(Http.responseText)
-     if (Http.responseText=='success'){
+     if ((Http.responseText=='success')&& (user!='') && (password!='')){
         document.getElementById('nameholder').innerText = user.charAt(0).toUpperCase() +user.slice(1)+"'s" ;
         $('#myModal').modal('hide');
      }
-     else if (Http.responseText=='fail'){
+     else{
         document.getElementById('loginfail').style.display = 'block';
         document.getElementById('registerfail').style.display = 'none';
      }
@@ -362,11 +416,11 @@ function loginHandler(){
     Http.send();
     Http.onreadystatechange=(e)=>{
      console.log(Http.responseText)
-     if (Http.responseText=='success'){
+     if ((Http.responseText=='success') && (user!='') && (password!='')){
         document.getElementById('nameholder').innerText = user.charAt(0).toUpperCase() +user.slice(1)+"'s" ;
         $('#myModal').modal('hide');
      }
-     else if (Http.responseText=='fail'){
+     else {
         document.getElementById('registerfail').style.display = 'block';
         document.getElementById('loginfail').style.display = 'none';
      }
@@ -386,6 +440,68 @@ $(document).ready(function(){
     });
    });
 
+   $(document).ready(function(){   
+    $.get("http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=1", function(data, status){
+    
+        $("#avg-temp").append(data);
+        $("#avg-temp").append('&#176; F');
+    });
+   });
+
+   $(document).ready(function(){
+    $.get("http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=2", function(data, status){
+   
+        $("#avg-humid").append(data);
+        $("#avg-humid").append('%');
+    });
+   });
+   $(document).ready(function(){
+    $.get("http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=3", function(data, status){
+  
+        $("#avg-light").append(data);
+    });
+   });
+   $(document).ready(function(){
+    $.get("http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=4", function(data, status){
+       
+        $("#avg-moist").append(data);  
+    });
+   });
+   $(document).ready(function(){   
+    $.get("http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=5", function(data, status){
+    
+        $("#std-temp").append(data);
+        $("#std-temp").append('&#176; F');
+    });
+   });
+
+   $(document).ready(function(){
+    $.get("http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=6", function(data, status){
+   
+        $("#std-humid").append(data);
+        $("#std-humid").append('%');
+    });
+   });
+   $(document).ready(function(){
+    $.get("http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=7", function(data, status){
+  
+        $("#std-light").append(data);
+    });
+   });
+   $(document).ready(function(){
+    $.get("http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=8", function(data, status){
+       
+        $("#std-moist").append(data);  
+    });
+   });
+
+
+
+   $(document).ready(function(){
+    $.get("http://608dev.net/sandbox/sc/garciag/berryGrapher.py", function(data, status){
+        $("#dynamic-graph").append(data);
+    });
+   });
 
     $(document).ready(function(){
     $.get("http://608dev.net/sandbox/sc/irin/weatherhandler.py", function(data, status){
@@ -405,7 +521,7 @@ $(document).ready(function(){
     $.get("http://608dev.net/sandbox/sc/irin/temperaturehandler.py", function(data, status){
         $("#predict-temp").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
         $("#predict-temp").append(data);
-        $("#predict-temp").append( '&#176; C');
+        $("#predict-temp").append( '&#176; F');
     });
    }); 
 
@@ -442,19 +558,31 @@ $(document).ready(function(){
     function createStat(){
         let el = document.getElementById('drawTable');
         el.innerHTML = '';
-    if(document.getElementById('sel1').value=='1'){
-        el.innerHTML = ' <a href="https://plot.ly/~garciag/16/?share_key=JLz6f4hCA6WzRTnhAELwWi" target="_blank" title="Click to view details" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/16.png?share_key=JLz6f4hCA6WzRTnhAELwWi" alt="Click to view details" style="width: 1000px; height:700px"   onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
+        url = '';
+
+        if (document.getElementById('sel1').value=='1'){ 
+          url = "http://608dev.net/sandbox/sc/garciag/berry_mapbox_temp.py";
         }
-    else if(document.getElementById('sel1').value=='2'){
-        el.innerHTML = '<a href="https://plot.ly/~garciag/18/?share_key=Ednw7UiM4aScS9eFaKBraG" target="_blank" title="Click to view details" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/18.png?share_key=Ednw7UiM4aScS9eFaKBraG" alt="Click to view details" style="width: 1000px; height:700px"  onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
-        }  
-    else if(document.getElementById('sel1').value=='3'){
-        el.innerHTML = '<a href="https://plot.ly/~garciag/14/?share_key=Abx85SFf1eFNKFNcRj5xnT" target="_blank" title="Click to view details" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/14.png?share_key=Abx85SFf1eFNKFNcRj5xnT" alt="Click to view details" style="width: 1000px; height:700px"  onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
+        else if (document.getElementById('sel1').value=='2'){
+         url = "http://608dev.net/sandbox/sc/garciag/berry_mapbox_humid.py";
         } 
-    else if(document.getElementById('sel1').value=='4'){
-        el.innerHTML = '<a href="https://plot.ly/~garciag/12/?share_key=77S29tuYXt5n5Htng2TX5O" target="_blank" title="Click to view details" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/12.png?share_key=77S29tuYXt5n5Htng2TX5O" alt="Soil Moisture" style="width: 1000px; height:700px"  onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
-        }       
+        else if (document.getElementById('sel1').value=='3'){
+         url = "http://608dev.net/sandbox/sc/garciag/berry_mapbox_light.py";
+        }
+        else if (document.getElementById('sel1').value=='4'){
+         url = "http://608dev.net/sandbox/sc/garciag/berry_mapbox_moist.py";
+        }
+        console.log(url);
+        $("sel1").change(function(){
+        $.get(url, function(data, status){
+            alert("Data: " + data + "\nStatus: " + status);
+            el.innerHTML = data;
+        });
+        });
+        
     }
+
+    
             
 </script>       
 
