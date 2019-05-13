@@ -4,8 +4,7 @@
 *********/
 
 // Load Wi-Fi library
-#include <SPI.h>
-#include <TinyGPS++.h>
+//#include <SPI.h>
 #include <WiFi.h>
 #include <dht.h>
 
