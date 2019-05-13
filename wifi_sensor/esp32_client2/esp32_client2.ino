@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <dht.h>
 
 //----------WIFI----------//
 
@@ -14,8 +15,24 @@ const int port = 80;
 
 //----------DATA----------//
 
-char dataBuffer [30][200]; // [Number of Strings][Max Size of Strings]
+char dataBuffer [10][1500]; // [Number of Strings][Max Size of Strings]
 int endBuffer = 0;
+
+//--------SLEEPING---------//
+
+const float SLEEP_TIME = 600; // in seconds
+const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
+RTC_DATA_ATTR int packetNumber = 1;
+
+//-------SENSORS--------//
+const int espID = 3;
+
+dht DHT;
+
+#define DHT11_PIN 19
+
+const float moisture_lower = 0.4;
+const float moisture_upper = 0.87;
 
 //----------POSTING----------//
  
@@ -27,7 +44,7 @@ const uint16_t OUT_BUFFER_SIZE = 1200; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
-const char* server_ssid = "MIT";  //SSID for 6.08 Lab
+const char* server_ssid = "MIT GUEST";  //SSID for 6.08 Lab
 const char* server_password = ""; //Password for 6.08 Lab
 
 
@@ -40,9 +57,19 @@ void setup()
 void post() {
   for (int i = 0; i < endBuffer; i++) {
     Serial.println("Posting!");
-    char body[200]; //for body;
+    char body[750]; //for body;
     sprintf(body, "text=%s", dataBuffer[i]);
+    char message[200];
     
+    float light = 1 - analogRead(A7) / 4096.0;
+    float soil_moisture = analogRead(A14) / 4096.0; //moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
+    int chk = DHT.read11(DHT11_PIN);
+    float temp = DHT.temperature;
+    float humid = DHT.humidity;
+    sprintf(message, "#{'espID': %d, 'packet_number': %d, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, packetNumber, soil_moisture, temp, humid, light);
+    strcat(body, message);
+    packetNumber += 1;
+        
     int body_len = strlen(body); //calculate body length (for header reporting)
     Serial.println(body);
     sprintf(request_buffer, "POST http://608dev.net/sandbox/sc/garciag/strawberryHandler.py HTTP/1.1\r\n");
@@ -60,7 +87,7 @@ void post() {
 }
 
 void emptyBuffer() {
-  for (int i = 0; i < 30; i++){
+  for (int i = 0; i < 10; i++){
       strcpy(dataBuffer[i], "");
   }
 }
@@ -107,7 +134,7 @@ void do_http_request(char* host, char* request, char* response, uint16_t respons
 
 void addToBuffer(){
   WiFiClient client;
-  char temp_buffer[200];
+  char temp_buffer[500];
   Serial.println("connecting to client now");
   if (!client.connect(host, port)) {
     Serial.println("connection failed");
@@ -145,7 +172,7 @@ void loop(){
     if (WiFi.isConnected()) { //if we connected then print our IP, Mac, and SSID we're on
       Serial.println("CONNECTED TO CLIENT!");
       Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
-      delay(500);
+//      delay(500);
       addToBuffer();
       // Connected to Berry Secure, now get data and store in buffer
       Serial.print("posting number of packets of data: ");
@@ -167,7 +194,11 @@ void loop(){
       // state = 0; only if data successfully send
       post();
       Serial.println("posted");
-      ESP.restart();
+//      ESP.restart();
+      Serial.println("Now sleeping");
+      delay(1000);
+      esp_sleep_enable_timer_wakeup(SLEEP_TIME * MICRO_S_TO_S);
+      esp_deep_sleep_start();
       state = 0;
     }
   }

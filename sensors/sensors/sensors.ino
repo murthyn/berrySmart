@@ -21,8 +21,8 @@ int state;
 bool shouldPrint = true;
 const int espID = 2;
 
-char network[] = "6s08";  //SSID for 6.08 Lab
-char password[] = "iesc6s08"; //Password for 6.08 Lab
+char network[] = "MIT";  //SSID for 6.08 Lab
+char password[] = ""; //Password for 6.08 Lab
 //char network[] = "iPhone (2)";  //SSID for 6.08 Lab
 //char password[] = "hello123"; //Password for 6.08 Lab
 
@@ -92,7 +92,7 @@ void loop() {
       gps.encode(gps_serial.read());      // Check GPS
   }
 
-  if (millis() - counter > 3000) {
+  if (millis() - counter > 5000) {
     Serial.println("State: collecting sensor data");
     // BRIGHTNESS
     tft.setCursor(0, 0, 1); //set cursor, font size 1

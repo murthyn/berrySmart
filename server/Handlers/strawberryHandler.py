@@ -21,7 +21,7 @@ def request_handler(request):
             return allthings
 
         else:
-            return ''' Not enough values are there in the database'''
+            return ''' Not enough values are in the database'''
             
 
     # POST:
