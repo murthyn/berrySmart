@@ -17,7 +17,7 @@ const int port = 80;
 
 //----------DATA----------//
 
-char dataBuffer [30][200]; // [Number of Strings][Max Size of Strings]
+char dataBuffer [10][1000]; // [Number of Strings][Max Size of Strings]
 int endBuffer = 0;
 float lastTimeDataCollect; // timer for when was last data collection at this node
 const float SENSOR_READ_INTERVAL = 60000; // in ms
@@ -52,7 +52,7 @@ WiFiServer server(80);
 
 const float SLEEP_TIME = 60; // in seconds
 const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
-
+RTC_DATA_ATTR int packetNumber = 1;
 //-------------------------------//
 
 
@@ -90,16 +90,17 @@ void sendingBuffer(){
         Serial.write(c);                    // print it out the serial monitor
       }
       else {
-        char message[200];
-//        char message2[200];
+        char message[500];
+        char message2[500];
         sprintf(message, "%s", dataBuffer[0]);
-//        float light = 1 - analogRead(A7) / 4096.0;
-//        float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
-//        int chk = DHT.read11(DHT11_PIN);
-//        float temp = DHT.temperature;
-//        float humid = DHT.humidity;
-//        sprintf(message2, "${'espID': %2.4f, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, soil_moisture, temp, humid, light);
-//        strcat(message, message2);
+        float light = 1 - analogRead(A7) / 4096.0;
+        float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
+        int chk = DHT.read11(DHT11_PIN);
+        float temp = DHT.temperature;
+        float humid = DHT.humidity;
+        sprintf(message2, "#{'espID': %d, 'packet_number': %d, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, packetNumber, soil_moisture, temp, humid, light);
+        strcat(message, message2);
+        packetNumber += 1;
         client.println(message);
         Serial.println("message");
         Serial.println(message);
@@ -132,7 +133,7 @@ void sendingBuffer(){
     client.stop();
     Serial.println("Client disconnected.");
     Serial.println("");
-    ESP.restart();
+//    ESP.restart();
   } else{
     delay(5000);
     Serial.println("Sending not successful. Resending...");

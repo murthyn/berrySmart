@@ -61,7 +61,7 @@ void setup() {
   server.begin();
 }
 
-void loop(){ // this loop has sleeping and it does not work
+void loop(){ // this loop has sleeping and it does work
 
   WiFiClient client = server.available();   // Listen for incoming clients
   
@@ -69,7 +69,7 @@ void loop(){ // this loop has sleeping and it does not work
     Serial.println("New Client.");          // print a message out in the serial port
     String currentLine = "";                // make a String to hold incoming data from the client
     while (client.connected()) {            // loop while the client's connected
-        char message[200];
+        char message[500];
         float light = 1 - analogRead(A7) / 4096.0;
         float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
         int chk = DHT.read11(DHT11_PIN);
@@ -91,37 +91,5 @@ void loop(){ // this loop has sleeping and it does not work
     Serial.println("Sleeping now.");
     esp_sleep_enable_timer_wakeup(SLEEP_TIME * MICRO_S_TO_S);
     esp_deep_sleep_start();
-  }
-}
-
-void loop2(){ // this loop has no sleep and it works
-
-  WiFiClient client = server.available();   // Listen for incoming clients
-  
-  if (client) {                             // If a new client connects,
-    Serial.println("New Client.");          // print a message out in the serial port
-    Serial.println("Waiting before taking sensor reading.");
-    String currentLine = "";                // make a String to hold incoming data from the client
-    while (client.connected()) {            // loop while the client's connected
-      
-      if (millis() - counter > SENSOR_READ_INTERVAL){
-        char message[200];
-        float light = 1 - analogRead(A7) / 4096.0;
-        float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
-        int chk = DHT.read11(DHT11_PIN);
-        float temp = DHT.temperature;
-        float humid = DHT.humidity;
-        sprintf(message, "{'espID': %d, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, soil_moisture, temp, humid, light);
-        client.println(message);
-        Serial.println(message);
-        counter = millis();
-        // Break out of the while loop
-        break;
-      }
-    }
-    // Close the connection
-    client.stop();
-    Serial.println("Client disconnected.");
-    Serial.println("");
   }
 }
