@@ -36,3 +36,11 @@ def request_handler(request):
   elif k==8:
     return round(np.std(np.asarray([aggregate[i][0]['soil_moisture'] for i in range(len(aggregate))]))/len(data),2)
 
+#k1 = temp mean
+#k2 = humid mean
+#k3 = light mean
+#k4 = soil moisture mean
+#k5 = temp std
+#k7 = humid std
+#k8 = light std
+#k9 = soil moisture std
