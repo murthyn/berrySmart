@@ -1,0 +1,156 @@
+                <meta charset="utf-8" emacsmode="-*- markdown -*-">
+                            **berrySmart: Final Report**
+                            **Nikhil Murthy, Gabriella Garcia, Sunny Tran and Irin Ghosh**
+
+Farming accounts for 70% of the world’s water consumption, with many over watering their crops, while one-fifth of the world's population lacks safe drinking water. This issue primarily stems from a lack of understanding of what individual plants require in terms of water, fertilizer, sunlight and pesticides. 
+
+The berrySmart device gives farmers a way to better understand their farm. A variety of sensors are strategically placed across the farm, the values of which are POSTed to a central database. We then create a dashboard for farmers that highlight these sensor values along with recommendations based off of them.
+
+This project uses various sensors (soil moisture, temperature, light, humidity) placed in three high priority areas in the farm. Working as nodes in a WiFi overlayed mesh network, each node communicates the location’s data to a central database. The central databases’ data is then analyzed on a dashboard accessible to farmers.
+
+
+Market
+===============================================================================
+
+Our target market is small-scale family or community owned farms. We focus on a variety of berry crops as they are one of the largest agricultural exports for the Northeastern area. The berrySmart device fulfills the need for agricultural efficiency and data analysis for middle-income, low technology farms.  
+
+Berry farming has a variety environmental requirements. Blueberries require acidic soil (4.8 to 5.2) that must be monitored. Berries are high water and high sunlight crops, requiring an abundant supply of high-quality water delivered at the right rate, time and location. Strawberries are particularly sensitive to overcrowding of soil beds and demand consistent pruning and weeding. The use of extensive data collection and analysis in the berrySmart device will enable farmers to better understand and grow their crops.
+
+System Overview
+===============================================================================
+
+Our berrySmart system consists of subsystems including sensor nodes (Section 2.1), an edge node (Section 2.2), database (Section 2.3), dashboard (Section 2.4) and the farmer's laptop, which is  used to view the dashboard. An overview of our system is below:
+
+![Figure [system]: The berrySmart system, which includes sensors that communicate through an overlay mesh network over WiFi, a central database and a dashboard that is presented to the farmer.
+](./images/system.png width="600px" border="0")
+
+We will now discuss the various components of berrySmart.
+
+Sensor Nodes
+-------------------------------------------------------------------------------
+
+Sensor nodes are made up of an ESP, battery and sensors that measure soil moisture, temperature, humidity and ambient light. They are placed throughout the farm (in our case, three positions), and collect sensor values.
+
+Each sensor node is not connected to the Internet directly; rather, it communicates with other sensor nodes in a mesh network. An edge node (Section 2.2) communicates all information to the central server and database (Section 2.3).
+
+Sensor nodes collect information once a minute, and otherwise sleep to conserve power. The sensor nodes are designed to last long periods of times without being connected to a power source, as fully described in Section 4: Power Management. 
+
+Edge Node
+-------------------------------------------------------------------------------
+
+The edge node is one sensor node in the mesh network that has the additional functionality of connecting to a WiFi network, such as a hotspot in the farmer's home. This allows our mesh network to communicate with the outside world, specifically sending information to our database (Section 2.3).
+
+Database
+-------------------------------------------------------------------------------
+
+berrySmart utilizes many databases to keep track of sensor information, analytics, recommendations and website info. These include: PUT DATABASES HERE.
+
+Dashboard
+-------------------------------------------------------------------------------
+
+The berrySmart dashboard summarizes sensor data and recommendations visually:
+
+INSERT PICTURE OF DASHBOARD HERE
+
+We provide maps of the farm with sensor information overlayed, which allow farmers to easily understand the state of their crops. We include current weather conditions paired with recommendations based off of sensor information, such as whether plants should be watered (depending on the type of crop, weather and soil moisture sensor data).  
+
+System: Implementation
+===============================================================================
+
+We will now discuss how we implemented berrySmart's system (as outlined in Section 2). 
+
+Parts List
+-------------------------------------------------------------------------------
+
+We used external parts, namely sensors, in addition to the provided parts to create berrySmart:
+
+| Part                            | Item Number            | Description                                             | Amount |
+|---------------------------------|------------------------|---------------------------------------------------------|--------|
+| Soil Moisture Sensor            | Amazon ASIN:B07H3P1NRM | Monitor the amount of moisture in the soil of the plant | 3      |
+| Temperature and Humidity Sensor | Amazon ASIN:B01DKC2GQ0 | Sensors for humidity and temperature                    | 3      |
+| Photoresistor                   | N/A (from lab)         | Monitor amount of light received by the plant           | 3      |
+
+Sensor Implementation
+-------------------------------------------------------------------------------
+
+We collect sensor information once per minute.
+
+### Soil Moisture
+
+The soil moisture sensors uses Analog to communicate. We connected the sensor to Analog port 14.
+
+We developed a calibration procedure to accurately determine the soil moisture at any given point using the following formula:
+
+$$soil\_moisture = \frac{moisture\_upper}{moisture\_upper - moisture\_lower} - \frac{analogRead(A14)/4096.0}{moisture\_upper - moisture\_lower}$$
+
+where $soil\_moisture$ is the soil moisture, $moisture\_upper$ is the upper limit of the soil moisture, $moisture\_lower$ is the lower limit of the soil moisture and $analogread(A14)$ is the analog voltage reading of the sensor. $moisture\_upper$ and $moisture\_lower$ are determined through our calibration process, where we first measure the sensor in air (when it is dry), and set that to $moisture\_upper$, and then place the sensor in a cup of water, and set that value to $moisture\_lower$.
+
+This calibration process allows $soil\_moisture$ to be 1 when the voltage (analogRead(A14)/4096.0) is at the lower limit ($moisture\_lower$), and 0 when the voltage is equal to $moisture\_upper$. 
+
+### Temperature and Humidity
+
+To measure temperature and humidity, we utilized the DHT library (Resource 1), and connected the sensor to port 19 on the ESP. We create a DHT object, as defined in the DHT library, and use its temperature and humidity fields to update our readings. 
+
+### Photoresistor
+
+We use a photoresistor to measure ambient light. The sensor is connected to Analog port 7, and we subtract its voltage from 1 to get its measured brightness:
+
+$$brightness = 1 - \frac{analogRead(A7)}{4096.0}$$
+
+### State Machine: Sensor Node
+
+Sleep -> Connecting to Client -> Receiving data from client -> Collecting data -> Connecting to next sensor node -> Sending -> Sleep
+
+### State Machine: Edge Node
+
+Sleep -> Connecting to client -> Receiving data from client -> Collecting data -> Connecting to server -> Sending to server -> Sleep
+
+### WiFi Protocol
+
+
+### Dashboard: Graphs
+
+
+### Dashboard: HTML
+
+
+### Daily Digest
+
+
+### Code: Functions and Classes
+
+
+
+- state machines (for sensor node, edge node)
+- WiFi
+- Sleeping
+- website: graphs/maps
+- website: html
+- daily digest
+- code (functions/class/file and website code)
+- change sensor collection frequency from once per minute to once per twenty minutes
+
+Design Challenges
+===============================================================================
+
+- bluetooth (go into detail)
+
+Power Management
+===============================================================================
+
+
+Conclusion
+===============================================================================
+
+berrySmart utilizes a WiFi overlayed mesh network to communicate sensor values specific to agriculture to a central server, which then presents the information visually in the form of a dashboard.
+
+Contact Us
+===============================================================================
+We would love to talk! Email us at: berry-smart@mit.edu. 
+
+Resources
+===============================================================================
+1. DHT library: https://github.com/RobTillaart/Arduino/tree/master/libraries/DHTstable
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
