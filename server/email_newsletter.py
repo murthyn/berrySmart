@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 # import required classes
- 
+
 from PIL import Image, ImageDraw, ImageFont
 import requests
 import numpy as np
@@ -14,22 +15,22 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase 
 from email import encoders 
 
-URL1 = "http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=1"
+URL1 = "http://608dev.net/sandbox/sc/garciag/all_mean.py?k=1"
 r = requests.get(url=URL1)
 text = r.text
 avg_temp = eval(text)
 
-URL2 = "http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=2"
+URL2 = "http://608dev.net/sandbox/sc/garciag/all_mean.py?k=2"
 r = requests.get(url=URL2)
 text = r.text
 avg_humid = eval(text)
 
-URL3 = "http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=3"
+URL3 = "http://608dev.net/sandbox/sc/garciag/all_mean.py?k=3"
 r = requests.get(url=URL3)
 text = r.text
 avg_light= eval(text)
 
-URL4 = "http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=4"
+URL4 = "http://608dev.net/sandbox/sc/garciag/all_mean.py?k=4"
 r = requests.get(url=URL4)
 text = r.text
 avg_moist= eval(text)
@@ -48,22 +49,22 @@ font = ImageFont.truetype('Roboto-Bold.ttf', size=34)
 # starting position of the message
  
 (x, y) = (200, 540)
-message = "Average Temperature is : "+str(avg_temp)
+message = "Average Temperature is : "+str(avg_temp)+" °F"
 color = 'rgb(255, 255,255)' # white
 draw.text((x, y), message, fill=color, font=font)
 
 (x, y) = (200, 700)
-name = 'Average Humidity is : '+str(avg_humid)
+name = 'Average Humidity is : '+str(avg_humid) + " %"
 color = 'rgb(255, 255, 255)' # white color
 draw.text((x, y), name, fill=color, font=font)
 
 (x, y) = (200, 850)
-name = 'Average Light is : '+str(avg_light)
+name = 'Average Light is : '+str(avg_light) + " %"
 color = 'rgb(255, 255, 255)' # white color
 draw.text((x, y), name, fill=color, font=font)
 
 (x, y) = (200, 1000)
-name = 'Average Soil Moisture is : '+str(avg_moist)
+name = 'Average Soil Moisture is : '+str(avg_moist) + " %"
 color = 'rgb(255, 255, 255)' # white color
 draw.text((x, y), name, fill=color, font=font)
  
