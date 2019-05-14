@@ -24,7 +24,12 @@ Our berrySmart system consists of subsystems including sensor nodes (Section 2.1
 ![Figure [system]: The berrySmart system, which includes sensors that communicate through an overlay mesh network over WiFi, a central database and a dashboard that is presented to the farmer.
 ](./images/system.png width="600px" border="0")
 
+CHANGE TO NON-WIFI INSTEAD OF WIRED
+
 We will now discuss the various components of berrySmart.
+
+Leaf Nodes
+-------------------------------------------------------------------------------
 
 Sensor Nodes
 -------------------------------------------------------------------------------
@@ -70,6 +75,8 @@ We used external parts, namely sensors, in addition to the provided parts to cre
 | Temperature and Humidity Sensor | Amazon ASIN:B01DKC2GQ0 | Sensors for humidity and temperature                    | 3      |
 | Photoresistor                   | N/A (from lab)         | Monitor amount of light received by the plant           | 3      |
 
+In addition, MORE HERE (ESP, BREADBOARD)
+
 Sensor Implementation
 -------------------------------------------------------------------------------
 
@@ -106,6 +113,8 @@ Sleep -> Connecting to Client -> Receiving data from client -> Collecting data -
 Sleep -> Connecting to client -> Receiving data from client -> Collecting data -> Connecting to server -> Sending to server -> Sleep
 
 ## WiFi Protocol
+
+Range is approximately $63$ feet
 
 
 ## Dashboard: Graphs
