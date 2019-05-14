@@ -73,8 +73,8 @@ draw.text((x, y), name, fill=color, font=font)
 image.save('newsletter.png', optimize = True, quality = 20)
 
 #Emailing Code:
-fromaddr = secrets.fromaddr
-toaddr = secrets.toaddr
+fromaddr = "berry.smart.digest@gmail.com"
+toaddr = 'berry-smart@mit.edu'
    
 # instance of MIMEMultipart 
 msg = MIMEMultipart() 
@@ -119,7 +119,7 @@ s = smtplib.SMTP('smtp.gmail.com', 587)
 s.starttls() 
   
 # Authentication 
-s.login(fromaddr, secrets.password) 
+s.login(fromaddr, "berrysmart123") 
   
 # Converts the Multipart msg into a string 
 text = msg.as_string() 
