@@ -11,43 +11,42 @@ def request_handler(r):
 	mapbox_access_token = 'pk.eyJ1IjoiZ2FyY2lhZzIiLCJhIjoiY2p2MnUwaW92Mjk0aDQzc2syZWZ5bzIzZCJ9.MBF-GscHHLd5BZEsxnl_rA'
 
 	#getting the data from database
-	URL = "http://608dev.net/sandbox/sc/garciag/berryHandler_v2.py"
+	URL = "http://608dev.net/sandbox/sc/garciag/all_dataHandler.py"
 	r = requests.get(url=URL)
 	data = eval(r.text)
+
+	light1 = data[6]
+	light2 = data[7]
+	light3 = data[8]
+
 	latitude = []
 	longitude = []
-	temp = []
-	humid = []
+
 	light = []
-	moist = []
+	light.extend(light1)
+	light.extend(light2)
+	light.extend(light3)
 
 	#list of test coordinates
-	coords = [(52.271949,4.520558),(52.270885,4.520226), (52.271200,4.517059), (52.272349,4.516951)]
+	coords = [(52.271949,4.520558),(52.270885,4.520226), (52.272349,4.516951)]
 
 	#generating lists organised by paramter in database
 	i = 0
 	j = 0
 	for dt in data:
-		if i>3:
+		if i>2:
 			i = 0
-		if dt[2]<-100:
-			continue
 		else:
 			latitude.append(coords[i][0])
 			longitude.append(coords[i][1])
-			temp.append(dt[2])
-			humid.append(dt[3])
-			light.append(dt[4])
-			moist.append(dt[5]/1000)
 			i +=1
-			j+=1
 			
 	#writing a csv file
 	with open('berry_data.csv', 'w') as csvfile:
 	    filewriter = csv.writer(csvfile, delimiter=',',quotechar='|')
-	    filewriter.writerow(['Lat','Lon','Temp','Humid','Light','Moist'])
-	    for i in range(4): #to get latest 4 values
-	    	filewriter.writerow([latitude[i], longitude[i], temp[i], humid[i], light[i], moist[i]])
+	    filewriter.writerow(['Lat','Lon','Light'])
+	    for i in range(3): #to get latest 4 values
+	    	filewriter.writerow([latitude[i], longitude[i], light[i]])
 
 	df = pd.read_csv('berry_data.csv')
 
@@ -80,7 +79,7 @@ def request_handler(r):
 					ticks = "outside",
 					ticklen = 3,
 					showticksuffix = "last",
-					ticksuffix = "unit??",
+					ticksuffix = "Amperes",
 					dtick = 0.1,
 					title="Light Levels"
 			),
@@ -91,7 +90,7 @@ def request_handler(r):
 	layout = go.Layout(
 		autosize=True,
 		hovermode='closest',
-		title = "Light Mapped!",
+		title = "Light Mapped",
 		mapbox=go.layout.Mapbox(
 			accesstoken=mapbox_access_token,
 			bearing=0,
