@@ -157,7 +157,8 @@ void addToBuffer(){
   }
 }
 
-uint8_t state = 0; // 0 = connecting to client
+uint8_t state = 0; 
+// 0 = connecting to client
 //1 is connecting to mit guest
 
 void loop(){
