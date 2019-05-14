@@ -33,16 +33,13 @@ def request_handler(request):
 			esp3 = ast.literal_eval(data[i][0].split('#')[2])
 
 			temp1.append(esp1['temp'])
-			# temp2.append(esp2['temp'])
-			# temp3.append(esp3['temp'])
-			temp2.append(esp1['temp']+0.2)
-			temp3.append(esp1['temp']-0.2)
+			temp2.append(esp2['temp'])
+			temp3.append(esp3['temp'])
+
 
 			humid1.append(esp1['humid'])
-			# humid2.append(esp2['humid'])
-			# humid3.append(esp3['humid'])
-			humid2.append(esp2['humid']+0.2)
-			humid3.append(esp3['humid']-0.2)
+			humid2.append(esp2['humid'])
+			humid3.append(esp3['humid'])
 
 			light1.append(esp1['light'])
 			light2.append(esp2['light'])
