@@ -11,6 +11,9 @@ data = eval(r.text)
 humid1 = data[3]
 humid2 = data[4]
 humid3 = data[5]
+# print(humid1)
+# print(humid2)
+# print(humid3)
 
 N = len(data)
 random_x = np.linspace(0, N*10, N)
