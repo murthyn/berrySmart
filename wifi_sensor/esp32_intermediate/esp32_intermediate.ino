@@ -18,7 +18,7 @@ const int port = 80;
 
 char dataBuffer [10][1000]; // [Number of Strings][Max Size of Strings]
 int endBuffer = 0;
-float lastTimeDataCollect; // timer for when was last data collection at this node
+// float lastTimeDataCollect; // timer for when was last data collection at this node
 const float SENSOR_READ_INTERVAL = 60000; // in ms
 
 //-------SENSORS--------//
@@ -56,7 +56,7 @@ RTC_DATA_ATTR int packetNumber = 1;
 void setup()
 {
   Serial.begin(115200);
-  lastTimeDataCollect = millis();
+//  lastTimeDataCollect = millis();
 }
 
 // HELPER FUNCTIONS
@@ -111,21 +111,6 @@ void sendingBuffer(){
     
     endBuffer = 0;
     emptyBuffer();
-//    if (millis() - lastTimeDataCollect > SENSOR_READ_INTERVAL){
-//        char message[200];
-//        float light = 1 - analogRead(A7) / 4096.0;
-//        float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
-//        int chk = DHT.read11(DHT11_PIN);
-//        float temp = DHT.temperature;
-//        float humid = DHT.humidity;
-//        sprintf(message, "{'espID': %2.4f, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, soil_moisture, temp, humid, light);
-//        client.println(message);
-//        Serial.println(message);
-//        delay(500);
-//        lastTimeDataCollect = millis();
-//        endBuffer = 0;
-//        emptyBuffer();
-//    }
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");

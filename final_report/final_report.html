@@ -166,7 +166,7 @@ Low / High Temperature: "Your area does not have the appropriate temperature for
 
 Our working mesh network implementation utilizes the code in the wifi_sensor folder.
 
-#### esp32_root
+#### esp32_edge
 
 setup(): 
 
@@ -176,7 +176,7 @@ loop():
 
 - Transitions between being in the state of being a client and a server
 
-- loop() calls on helper functions addToBuffer(), post() and esp_deep_sleep_start()
+- loop() calls on helper functions addToBuffer() and post()
 
 - After sending the packet, the ESP then goes to sleep via a process as outlined in Section 3.6
 
@@ -184,7 +184,9 @@ addToBuffer():
 
 - This function instantiates a temporary buffer which stores the incoming data
 
-- The temporary buffer is then added to the buffer which we huse to store all data packets.
+- The temporary buffer is then added to the buffer which we use to store all data packets
+
+- This buffer is a character array which stores incoming data packets
 
 post():
 
@@ -192,11 +194,15 @@ post():
 
 - It is in this function that the ESP calculates its own sensor readings, appends it to the outgoing data packet and sends it
 
+emptyBuffer():
+
+- This function empties the buffer after every post request
+
 #### esp32_leaf
 
 setup():
 
-- Instantiates serial monitor and begins the WiFi soft AP
+- Begins the WiFi soft AP
 
 loop():
 
@@ -206,7 +212,29 @@ loop():
 
 #### esp32_intermediate
 
+setup():
 
+- Instantiates serial monitor 
+
+loop():
+
+- Similar to the edge node, the loop function transitions between receiving and sending data
+
+- When it is in the state of receiving data packets, it looks for a WiFi with a client_ssid and client_password which we hard code into the ESP
+
+- Once a connection is established, the ESP runs addToBuffer(), which appends the incoming data packet to a buffer in the ESP
+
+- During the process of sending data packets from this intermediate node, this node instantiates a WiFi access point connection, which is done in sendingSetup()
+
+- After setting up the AP, loop() calls sendingBuffer(), then it sleeps
+
+sendingBuffer():
+
+- This ESP looks for a connection to pass the packet to, where the connection it is looking for has been hard coded
+
+- Once a connection is established, this function concatenates the incoming packet with a hashtag (#) and its own sensor reading values
+
+- After concatenation, it sends the data packet with its own sensor values and clears the buffer
 
 ### Server
 
