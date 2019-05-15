@@ -54,15 +54,23 @@ Various Handlers were created such as all_dataHandler.py for reformatting the da
 Dashboard
 -------------------------------------------------------------------------------
 
-The berrySmart dashboard summarizes sensor data and recommendations visually:
+The berrySmart dashboard summarizes sensor data and recommendations visually. We provide maps of the farm with sensor information overlayed, which allow farmers to easily understand the state of their crops. We include current weather conditions paired with recommendations based off of sensor information, such as whether plants should be watered (depending on the type of crop, weather and soil moisture sensor data). :
 
-(./images/temp.png width="600px" border="0")
-(./images/weather.png width="600px" border="0")
-(./images/humid.png width="600px" border="0")
-(./images/reccommend.png width="600px" border="0")
-(./images/alerts.png width="600px" border="0")
+![Figure [temp]: The berrySmart mapped graph visualisations are the first page the farmer views. Data is overlayed over satellite imagery of the farm.
+](./images/temp.png width="600px" border="0")
 
-We provide maps of the farm with sensor information overlayed, which allow farmers to easily understand the state of their crops. We include current weather conditions paired with recommendations based off of sensor information, such as whether plants should be watered (depending on the type of crop, weather and soil moisture sensor data).  
+![Figure [weather]: Current weather conditions are displayed according to pre-set GPS coordinates. This enables farmers to rapidly compare weather to the plot health statistics.
+](./images/weather.png width="600px" border="0")
+
+![Figure [humid]: Next, the farmer can view the specific graphed sensor readings on dynamic, interactive scatter plots that display the data for each sensor node. Below each plot are the average values of each sensor node. Specifically this image show our humidity plots.
+](./images/humid.png width="600px" border="0")
+
+![Figure [reccommend]: The Recommendations tab includes the pre-set optimal parameters for strawberry crops. In addition, it displays the average and standard deviation over all sensor nodes for each tested parameter.
+](./images/reccommend.png width="600px" border="0")
+
+![Figure [alerts]: berrySmart creates alerts mixed with suggestions to help farmers make smart decisions based on the most recent data.
+](./images/alerts.png width="600px" border="0")
+ 
 
 System: Implementation
 ===============================================================================
@@ -146,7 +154,7 @@ IRIN
 As an additional feature, we created a Daily Digest for the farmer. In case the user does not check their dashboard on a daily basis, Berry Smart sends an automatic email containing a "Today's Scoop" newsletter displaying the averaged plot health statistics for each parameter. This email pulls the average over all the sensor nodes from our database using a GET request, ensuring that the data is up to date. The email is created by overlaying text and data on a base image created using Canva. This email is then sent automatically using a Python script to all members of the berry-smart@mit.edu mailing list.
 
 ## Analytics
-For the dashboard's Statistics, Recommendations and Alerts sections, we implemented analytics to provide data-based suggestions for the farmer. We calculated the mean and standard deviation for each of the sensor nodes as well as the mean and standard deviation for all of the sensor nodes together using imported numpy and statistics. In this iteration of the product, we pre-set recommended values for each of the parameters based on the optimal conditions for strawberry farming. So the optimal temperature is between 60 degrees and 80 degrees Fahrenheit with direct sunlight as an optimal state. In the future, we intend to allow the farmer to designate which crops they are growing in each plot and then pull the optimal conditions for each crop from our database. Based on these recommended values, the Alerts section displays low/high level alerts based on each sensor node's averaged readings. If the light level in sensor node 2 is on average about 0.1, the alerts section will display "Low light levels in area(s) 2".
+For the dashboard's Statistics, Recommendations and Alerts sections, we implemented analytics to provide data-based suggestions for the farmer. We calculated the mean and standard deviation for each of the sensor nodes as well as the mean and standard deviation for all of the sensor nodes together using imported numpy and statistics. In this iteration of the product, we pre-set recommended values for each of the parameters based on the optimal conditions for strawberry farming. So the optimal temperature is between 60 degrees and 80 degrees Fahrenheit with direct sunlight as an optimal state. In the future, we intend to allow the farmer to designate which crops they are growing in each plot and then pull the optimal conditions for each crop from our database. Based on these recommended values, the Alerts section displays low/high level alerts based on each sensor node's averaged readings. These are specifically the averaged readings of the past couple of hours. If the light level in sensor node 2 is on average about 0.1, the alerts section will display "Low light levels in area(s) 2".
 
 Based on the appearance of alerts, suggestions are displayed for the user. In a future iteration, these recommendations will be crop specific. Currently the possible suggestions include:
 
@@ -177,22 +185,16 @@ ALLLLLLLL
 Demo
 ===============================================================================
 
-Put video link here, along with pictures
+https://www.youtube.com/watch?v=hSDUlNCB3sc&feature=youtu.be
 
 Design Challenges
 ===============================================================================
 
-- bluetooth (go into detail) NIKHIL/SUNNY
 One challenge we encountered early on involved finding the proper documentation about bluetooth. The BLE module of the ESP had very little documentation online, which was one of the main reasons for why we were not able to get the mesh working over bluetooth. We noticed that bluetooth was very unreliable, dropping upwards of $75%$ of our data packets. After realizing that bluetooth was not designed for effective mesh networks, we decided to move to WiFi for our mesh implementation. 
 
-<!--
-Lack of documentation is a HUGE factor into why we were not able to do it; led to slow progress.
-What even are they keys that we needed for the bluetooth?
-That is all I remember. -Sunny
--->
+Graphics and visualisations proved to be a little tricky. While Plotly does have very basic instructionals, their documentation is dense and different to traverse. Creating the mapped graphs was the most complicated visualisation due the use of an external mapbox api and lack of clear instructions for even the most basic plots. The conversion to satellite imagery to appear more realistic and overlaying of actual numbers on the plotted circles miraculously worked in the end. Extensive trial and error enabled us to find features and parameters for visualisation that do not appear in Plotly's documentation.
 
-
-- graphing (maps, dynamic graphs) GABY
+In the beginning, we embedded graphs using html tags given when using Plotly's online server system. Yet, there was a 100 plot generation limit that was rapidly depleted due to debugging, formatting and the large number of plots. Each time the website was refreshed, 8 plots were re-generated. To combat the issue, we were able to download plotly and use its offline plot generation to create figures through divs. These were wrapped in a request handler to be passed into the html. While this worked for a week, as the dashboard became more complex the plots were not generated fast enough and would return failures, crashing the webpage. To resolve this, for the demo we returned to online plots directly embedding the html tags on a separate plotly account. The slow loading speed of the website is still an issue. 
 
 Power Management
 ===============================================================================
