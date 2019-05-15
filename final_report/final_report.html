@@ -128,7 +128,9 @@ In addition, the WiFi range of the ESP is approximately $63$ feet.
 
 ## Sleeping
 
-For our sleeping implementation, we decided to put the ESP into Deep Sleep. We chose this over Hibernation, because Deep Sleep allowed for us to utilize the RTC memory storage to retain information over time. We used an RTC_DATA_ATTR object to store the packet number of each data packet in order to determine if our mesh network dropped any packets over time. Our current implementation has the ESP sleeping for 10 minutes after sending a data packet. Lengthening the sleeping time will improve battery performance.
+For our sleeping implementation, we decided to put the ESP into Deep Sleep. We chose this over Hibernation, because Deep Sleep allowed for us to utilize the RTC memory storage to retain information over time. We make the ESP go to sleeo by first enabling the sleep timer with esp_sleep_enable_timer_wakeup($time in microseconds$) and then putting it to deep sleep with esp_deep_sleep_start(). Both of these functions are already defined within the ESP core.
+
+We used an RTC_DATA_ATTR object to store the packet number of each data packet in order to determine if our mesh network dropped any packets over time. Our current implementation has the ESP sleeping for 10 minutes after sending a data packet. Lengthening the sleeping time will improve battery performance.
 
 ## Dashboard: Graphs
 There are two types of dynamic graphs on the dashboard: mapped graphs and scatter plots. Plotly is used as a platform to create the graphics due to its clean, minimalist aesthetics and potential to add dynamic features. The data is pulled through a GET Request from our central database and then stripped into the appropriate parameters and formats. Our goal is to have a clean, easy to read visualisation of the data to help farmers see the performance and data of each of their sensor nodes/plots.
@@ -159,7 +161,54 @@ Low / High Humidity: “Your area does not have the appropriate humidity for you
 Low / High Temperature: "Your area does not have the appropriate temperature for your plots, consider changing your heating system in area(s) xxx."
 
 ## Code: Functions and Classes
-ALLLLLLLL
+
+### Mesh Network
+
+Our working mesh network implementation utilizes the code in the wifi_sensor folder.
+
+#### esp32_root
+
+setup(): 
+
+- Instantiates serial monitor
+
+loop():
+
+- Transitions between being in the state of being a client and a server
+
+- loop() calls on helper functions addToBuffer(), post() and esp_deep_sleep_start()
+
+- After sending the packet, the ESP then goes to sleep via a process as outlined in Section 3.6
+
+addToBuffer():
+
+- This function instantiates a temporary buffer which stores the incoming data
+
+- The temporary buffer is then added to the buffer which we huse to store all data packets.
+
+post():
+
+- post() appends the first element of the data buffer to the body of the https post request and then sends the data via the internet
+
+- It is in this function that the ESP calculates its own sensor readings, appends it to the outgoing data packet and sends it
+
+#### esp32_leaf
+
+setup():
+
+- Instantiates serial monitor and begins the WiFi soft AP
+
+loop():
+
+- If the ESP has found a client, the ESP calculates its sensor readings and passes that data packet to the connecting node.
+
+- After delaying for $500ms$, we stop the connection and put the ESP to sleep
+
+#### esp32_intermediate
+
+
+
+### Server
 
 
 <!--
