@@ -11,6 +11,7 @@ def request_handler(request):
   data= eval(text)
 
   k = int(request['values']['k'])
+  a = int(request['values']['a'])
           
   temp1 = []
   temp2 = []
@@ -67,20 +68,22 @@ def request_handler(request):
     except:
       pass
   aggregate = []
-  for i in range(len(temp1)):
-    aggregate.append(({'temp':temp1[i], 'humid':humid1[i], 'light':light1[i], 'soil_moisture':moist1[i]} ,time1[i]))
-  for i in range(len(temp2)):
-    aggregate.append(({'temp':temp2[i], 'humid':humid2[i], 'light':light2[i], 'soil_moisture':moist2[i]} ,time2[i]))
-  for i in range(len(temp3)):
-    aggregate.append(({'temp':temp3[i], 'humid':humid3[i], 'light':light3[i], 'soil_moisture':moist3[i]} ,time3[i]))
-   
+  if a==1:
+    for i in range(len(temp1)):
+      aggregate.append(({'temp':temp1[i], 'humid':humid1[i], 'light':light1[i], 'soil_moisture':moist1[i]} ,time1[i]))
+  elif a==2:
+    for i in range(len(temp2)):
+      aggregate.append(({'temp':temp2[i], 'humid':humid2[i], 'light':light2[i], 'soil_moisture':moist2[i]} ,time2[i]))
+  elif a==3:
+    for i in range(len(temp3)):
+      aggregate.append(({'temp':temp3[i], 'humid':humid3[i], 'light':light3[i], 'soil_moisture':moist3[i]} ,time3[i]))
+                       
                      
-                     
-  if len(aggregate) >= 60:
+  if len(aggregate) >= 20:
     aggregate.sort(key = lambda x: x[1], reverse=True)
-    aggregate = aggregate[: 60]
+    aggregate = aggregate[: 20]
     
-  a, b= None, None  
+     
   if k==1:
     return round((np.mean(np.asarray([aggregate[i][0]['temp']*1.8+32 for i in range(len(aggregate))]))),2)
   elif k==5:
