@@ -26,7 +26,7 @@ dht DHT;
 
 #define DHT11_PIN 19
 
-uint32_t counter; //used for timing
+//uint32_t counter; //used for timing
 const float moisture_lower = 0.4;
 const float moisture_upper = 0.87;
 
@@ -49,7 +49,7 @@ void setup() {
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(IP);
-  counter = millis();
+//  counter = millis();
   server.begin();
 }
 
@@ -71,7 +71,7 @@ void loop(){ // this loop has sleeping and it does work
         packetNumber += 1;
         client.println(message);
         Serial.println(message);
-        counter = millis();
+//        counter = millis();
         delay(500);
         // Break out of the while loop
         break;
