@@ -47,7 +47,7 @@ The edge node is one sensor node in the mesh network that has the additional fun
 
 Database
 -------------------------------------------------------------------------------
-
+GABY
 berrySmart utilizes many databases to keep track of sensor information, analytics, recommendations and website info. These include: PUT DATABASES HERE.
 
 Dashboard
@@ -55,6 +55,7 @@ Dashboard
 
 The berrySmart dashboard summarizes sensor data and recommendations visually:
 
+GABY
 INSERT PICTURE OF DASHBOARD HERE
 
 We provide maps of the farm with sensor information overlayed, which allow farmers to easily understand the state of their crops. We include current weather conditions paired with recommendations based off of sensor information, such as whether plants should be watered (depending on the type of crop, weather and soil moisture sensor data).  
@@ -80,11 +81,11 @@ In addition, MORE HERE (ESP, BREADBOARD)
 Sensor Implementation
 -------------------------------------------------------------------------------
 
-We collect sensor information once per minute.
+We collect sensor information once every 10 minutes.
 
 ### Soil Moisture
 
-The soil moisture sensors uses Analog to communicate. We connected the sensor to Analog port 14.
+The soil moisture sensors uses Analog to communicate. We connected the sensor to analog port 14.
 
 We developed a calibration procedure to accurately determine the soil moisture at any given point using the following formula:
 
@@ -105,34 +106,42 @@ We use a photoresistor to measure ambient light. The sensor is connected to Anal
 $$brightness = 1 - \frac{analogRead(A7)}{4096.0}$$
 
 ## State Machine: Sensor Node
-
+Add in graphics
 Sleep -> Connecting to Client -> Receiving data from client -> Collecting data -> Connecting to next sensor node -> Sending -> Sleep
 
 ## State Machine: Edge Node
-
+Add in graphics
 Sleep -> Connecting to client -> Receiving data from client -> Collecting data -> Connecting to server -> Sending to server -> Sleep
 
 ## WiFi Protocol
 
-Range is approximately $63$ feet
+In order to achieve the mesh network overlayed with WiFi, we instantiate WiFi signals which connect between adjacent nodes. These WiFi connections are instantiated every time the device wakes up and is ready to receive data, and it is deinitialized once the device has received the data packet. We store the data in a character array, where subsequent data packets from different ESP devices are separated in the character array by a hashtag (#). 
 
+Leaf nodes do not receive data packets, while sensor nodes and edge nodes do, and they relay the data to the next ESP device. Currently, the connections between nodes are hard-coded. However, future iterations could utilize the GPS location of each ESP to determine an optimal path for the packet to traverse to reach the edge node. The edge node is the sole connection in our mesh which is connected to the internet. All packets will be required to go through the edge node in order to be received by the database. Again, future iterations of this mesh could utilize multiple edge nodes to optimally deliver packets of data.
+
+In addition, the WiFi range of the ESP is approximately $63$ feet.
+
+## Sleeping
+
+For our sleeping implementation, we decided to put the ESP into Deep Sleep. We chose this over Hibernation, because Deep Sleep allowed for us to utilize the RTC memory storage to retain information over time. We used an RTC_DATA_ATTR object to store the packet number of each data packet in order to determine if our mesh network dropped any packets over time. Our current implementation has the ESP sleeping for 10 minutes after sending a data packet. Lengthening the sleeping time will improve battery performance.
 
 ## Dashboard: Graphs
-
+GABY
 
 ## Dashboard: HTML
-
+IRIN
 
 ## Daily Digest
+GABY
 
 ## Analytics
-
+GABY
 
 ## Code: Functions and Classes
+ALLLLLLLL
 
 
-
-
+<!--
 - state machines (for sensor node, edge node)
 - WiFi
 - Sleeping
@@ -140,7 +149,8 @@ Range is approximately $63$ feet
 - website: html
 - daily digest
 - code (functions/class/file and website code)
-- change sensor collection frequency from once per minute to once per twenty minutes
+- change sensor collection frequency from once per minute to once per twenty minutes>
+-->
 
 Demo
 ===============================================================================
@@ -150,11 +160,29 @@ Put video link here, along with pictures
 Design Challenges
 ===============================================================================
 
-- bluetooth (go into detail)
-- graphing (maps, dynamic graphs)
+- bluetooth (go into detail) NIKHIL/SUNNY
+One challenge we encountered early on involved finding the proper documentation about bluetooth. The BLE module of the ESP had very little documentation online, which was one of the main reasons for why we were not able to get the mesh working over bluetooth. We noticed that bluetooth was very unreliable, dropping upwards of $75%$ of our data packets. After realizing that bluetooth was not designed for effective mesh networks, we decided to move to WiFi for our mesh implementation. 
+
+<!--
+Lack of documentation is a HUGE factor into why we were not able to do it; led to slow progress.
+What even are they keys that we needed for the bluetooth?
+That is all I remember. -Sunny
+-->
+
+
+- graphing (maps, dynamic graphs) GABY
 
 Power Management
 ===============================================================================
+
+From the ESP32 datasheet, we found that the ESP32 uses:
+
+- 120mA in Active Mode
+- 10μA in Deep Sleep Mode
+
+Our current implementation keeps the ESP32 in Active Mode for each packet of data to be received and relayed to the next node, which takes approximately 10 seconds. Afterwards, the ESP32 is put into a Deep Sleep Mode for 10 minutes before waking again to take sensor readings.
+
+We approximate that the ESP32 will consume 1.977 mA on average, by being in Active Mode for 10 seconds and Deep Sleep mode for 10 minutes (600 seconds). With a battery size of 1500 mAh, this device has a projected lifespan of 758.73 hours, or 31.61 days. We can extend the lifespan by decreasing the sampling rate of the device.
 
 
 Conclusion
@@ -169,6 +197,6 @@ We would love to talk! Email us at: berry-smart@mit.edu.
 Resources
 ===============================================================================
 1. DHT library: https://github.com/RobTillaart/Arduino/tree/master/libraries/DHTstable
-
+2. ESP32 datasheet: https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

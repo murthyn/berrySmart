@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Berry Smart | Homepage</title>
+  <title>berry<strong>Smart</strong> | Homepage</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -70,13 +70,52 @@ a:hover {
 text-align: center;
 }
 
+
+
+#alert-table{
+    width: 100%;
+    color: rgb(109, 114, 138);
+ }
+ #alert-table td{
+ background-color: white;   
+  border: 5px solid#b8e1ff;;
+  padding: 8px;
+  height:50px;
+  width: 50%;
+text-align: center;
+}
+#special-tr{
+  background-color: grey;   
+  border: 5px solid#B9B9B9;
+  padding: 8px;
+  height:50px;
+  width: 50%;
+  text-align: center;
+}
+
+#temp-table td:hover {background-color:#A288A6;}
+
+#temp-table{
+    width: 100%;
+    color: rgb(17, 18, 24);
+    font-size: 18px;
+ }
+ #temp-table td{
+ background-color: white;   
+  border: 20px solid #A288A6;
+  padding: 8px;
+  height:100px;
+  width: 33.3%;
+text-align: center;
+}
+
 #weather-table td:hover {background-color:#B9B9B9;}
  
   #section1 {color: #fff; background-color: white;}
   #section2 {color: white; background-color:  #B9B9B9;}
   #section3 {color:white; background-color: #A288A6;}
   #section4 {color: #fff; background-color: #b8e1ff;}
-  #section5 {color: #fff; background-color: #B9B9B9;}
+  #section5 {color: #fff; background-color: #a8b4a5;}
   #section6 {color: #fff; background-color: #5a2d53;}
   #section7 {color: #fff; background-color: #959595;}
   
@@ -96,7 +135,7 @@ text-align: center;
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header" style="text-align:center">
-          <h4 class="modal-title">Login to Berry Smart </h4>
+          <h4 class="modal-title">Login to berry<strong>Smart</strong> </h4>
         </div>
         <div class="modal-body">
           
@@ -137,7 +176,7 @@ text-align: center;
       <div class="row row-eq-height">
         <nav class="col-sm-2" id="myScrollspy" style="text-align:center; background-color: grey;">
           <ul class="nav nav-pills nav-stacked" style="font-size:18px;">
-            <li> <h3> Berry Smart</h3> <br><div id ="section0" style="text-align: center"><img src="https://i.ibb.co/2N9YCZx/logo-v2.png" alt="logo-v2"></div></li>
+            <li> <h3> berry<strong>Smart</strong></h3> <br><div id ="section0" style="text-align: center"><img src="https://i.ibb.co/2N9YCZx/logo-v2.png" alt="logo-v2"></div></li>
             <br><br>
             <li><span id="nameholder"></span> Dashboard</a></li>
             <br><br>
@@ -211,7 +250,60 @@ text-align: center;
                 <div>
                     <div class="row">
                     <div class="col-sm-2"  style="padding: 10px"></div>
-                    <div class="col-sm-8" id="dynamic-graph" style="padding: 10px"></div>
+                    <div class="col-sm-8"  style="padding: 10px">
+                        <div>
+                            <a href="https://plot.ly/~garciag/30/?share_key=UgykNKhseN3Q1mWs717eB4" target="_blank" title="plot from API (4)" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/30.png?share_key=UgykNKhseN3Q1mWs717eB4" alt="plot from API (4)" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+                            <script data-plotly="garciag:30" sharekey-plotly="UgykNKhseN3Q1mWs717eB4" src="https://plot.ly/embed.js" async></script>
+                        </div>
+                        <br>
+                        <table id="temp-table">
+                            <tr>
+                                <td>Area 1 : <span id = "area1-temp-avg"></span>&#177;<span id = "area1-temp-std"></span> &#176; F</td>
+                                <td>Area 2 : <span id = "area2-temp-avg"></span>&#177;<span id = "area2-temp-std"></span> &#176; F</td>
+                                <td>Area 3 :  <span id = "area3-temp-avg"></span>&#177;<span id = "area3-temp-std"></span>&#176; F</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <div>
+                            <a href="https://plot.ly/~garciag/24/?share_key=qeLsL7QPHl4XCJgY26R0bu" target="_blank" title="plot from API (1)" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/24.png?share_key=qeLsL7QPHl4XCJgY26R0bu" alt="plot from API (1)" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+                            <script data-plotly="garciag:24" sharekey-plotly="qeLsL7QPHl4XCJgY26R0bu" src="https://plot.ly/embed.js" async></script>
+                        </div>
+                        <br>
+                        <table id="temp-table">
+                            <tr>
+                                <td>Area 1 : <span id = "area1-humid-avg"></span>&#177;<span id = "area1-humid-std"></span> %</td>
+                                <td>Area 2 : <span id = "area2-humid-avg"></span>&#177;<span id = "area2-humid-std"></span> %</td>
+                                <td>Area 3 :  <span id = "area3-humid-avg"></span>&#177;<span id = "area3-humid-std"></span> %</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <div>
+                            <a href="https://plot.ly/~garciag/28/?share_key=jyQqerYCSQ5Faulj29YQfP" target="_blank" title="plot from API (3)" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/28.png?share_key=jyQqerYCSQ5Faulj29YQfP" alt="plot from API (3)" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+                            <script data-plotly="garciag:28" sharekey-plotly="jyQqerYCSQ5Faulj29YQfP" src="https://plot.ly/embed.js" async></script>
+                        </div>
+                        <br>
+                        <table id="temp-table">
+                            <tr>
+                                <td>Area 1 : <span id = "area1-light-avg"></span>&#177;<span id = "area1-light-std"></span></td>
+                                <td>Area 2 : <span id = "area2-light-avg"></span>&#177;<span id = "area2-light-std"></span></td>
+                                <td>Area 3 :  <span id = "area3-light-avg"></span>&#177;<span id = "area3-light-std"></span></td>
+                            </tr>
+                        </table>
+                        <br>
+                        <div>
+                            <a href="https://plot.ly/~garciag/26/?share_key=bPq1Rgg4KL4s2JJxWTyCaL" target="_blank" title="plot from API (2)" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/26.png?share_key=bPq1Rgg4KL4s2JJxWTyCaL" alt="plot from API (2)" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+                            <script data-plotly="garciag:26" sharekey-plotly="bPq1Rgg4KL4s2JJxWTyCaL" src="https://plot.ly/embed.js" async></script>
+                        </div>
+                        <br>
+                        <table id="temp-table">
+                            <tr>
+                                <td>Area 1 : <span id = "area1-moist-avg"></span>&#177;<span id = "area1-moist-std"></span></td>
+                                <td>Area 2 : <span id = "area2-moist-avg"></span>&#177;<span id = "area2-moist-std"></span></td>
+                                <td>Area 3 :  <span id = "area3-moist-avg"></span>&#177;<span id = "area3-moist-std"></span></td>
+                            </tr>
+                        </table>
+                        
+                    </div>
                     <div class="col-sm-2"  style="padding: 10px"></div>
                     </div>
                 </div>
@@ -222,6 +314,37 @@ text-align: center;
                 <div class="row"> 
                     <div class="container">   
                     <h1 style="text-align: center">Recommendations</h1>
+                    <br><br>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                    <table id="alert-table" >
+                        <tr id="special-tr" >
+                            <td style="background-color:grey; color: white">Parameter</td>
+                            <td style="background-color:grey; color: white">Recommended values</td>
+                        </tr>
+                        <tr>
+                            <td>Temperature</td>
+                            <td> 60&#176;F &#8804; &nbsp; x &nbsp; &#8804; 80&#176;F </td>
+                        </tr>
+                        <tr>
+                            <td>Humidity</td>
+                            <td> 65% &#8804; &nbsp; x &nbsp; &#8804; 75%  </td>
+                        </tr>
+                        <tr>
+                            <td>Light</td>
+                            <td> 0.2 &#8804; &nbsp; x &nbsp; </td>
+                        </tr>
+                        <tr>
+                            <td>Soil Mositure</td>
+                            <td> 0.2  &#8804; &nbsp; x &nbsp; </td>
+                        </tr>
+                    </table>
+                    <br><br>
+                    
+    
+                    <h2 style="text-align: center"> Parameters in your farm </h2>
+                    </div>
+                    <div class="col-sm-2"></div>
                     <br><br>
                     <table id="leaf-table" >
                         <tr>
@@ -247,31 +370,53 @@ text-align: center;
             </div>  
             <br><br><br>
             <div id="section5"  style="border-radius: 15px; padding: 35px;"> 
-                <div class="row" style="font-size:20px">    
+                <div class="row" style="font-size:20px; ">    
                     <h1 style="text-align: center">Alerts</h1>
                     <br>
-                    <div class="container" id="alert-default">This section shows alerts if some parameter is above or below a recommended threshold. Right now it shows all posiible alerts </div>
+                
+                    <div class="container" id="alert-default">This section shows alerts if some parameter is above or below a recommended threshold.If this section is empty it means that all the parameters are within recommended range</div>
                     <br>
-                    <div class="alert alert-info" id="low-temp">
+                    <div class="alert alert-info" id="low-temp" style="display:none">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <i class="fas fa-snowflake">&nbsp;</i><strong>Low temperature</strong> in area(s) <span id="low-temp"></span>
+                        <i class="fas fa-snowflake">&nbsp;</i><strong>Low temperature</strong> in area(s) <span id="low-temp-warn"></span>
+                    </div>
+                    <div class="alert alert-danger" id="high-temp" style="display:none">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="fas fa-temperature-high">&nbsp;</i><strong>High temperature</strong> in area(s) <span id="high-temp-warn"></span>
+                    </div>
+                    <div class="alert alert-warning" id="low-humid" style="display:none">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="fas fa-cloud">&nbsp;</i><strong>Low humidity</strong> in area(s) <span id="low-humid-warn"></span>
+                    </div>
+                    <div class="alert alert-info" id="high-humid" style="display:none">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="fas fa-cloud-rain"></i>&nbsp;<strong>High humidity</strong> in area(s) <span id="high-humid-warn"></span>
+                    </div>
+                    <div class="alert alert-success" id="low-light" style="display:none">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="far fa-sun"></i>&nbsp;<strong>Low light levels</strong> in area(s) <span id="low-light-warn"></span>
+                    </div>
+                    <div class="alert alert-warning" id="low-moist" style="display:none">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="fa fa-tint"></i>&nbsp;<strong>Low soil moisture</strong> in area(s) <span id="low-moist-warn"></span>
+                    </div>
+                    <br><br>
+                    <div class="row" >
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10" style="background-color: white; color: grey; ">
+                        <h2 style="text-align: center"> Suggestions for <span id="nsg"></span></h2>
+                        <br>
+                    <div id="low-temp-div" style="display:none"> <ul><li>The temperature is too low for the berries in area(s) <span id="low-temp-span"></span>. Consider changing your heating system.</li></ul></div>
+                    <div id="high-temp-div" style="display:none"> <ul><li>The temperature is too high for the berries in area(s) <span id="high-temp-span"></span>. Consider changing your heating system.</li></ul></div> 
+                    <div id="low-humid-div" style="display:none;" ><ul><li> The humidity is not sufficient for the berries in area(s) <span id="low-humid-span"></span>. Please slow down ventilation rates and adjust watering to accomodate humidity.</li></ul></div>
+                    <div id="high-humid-div" style="display:none"><ul><li> The humidity is more than recommended for the berries in area(s) <span id="low-humid-span"></span>. Please slow down ventilation rates and adjust watering to accomodate humidity.</li></ul></div>
+                    <div id="low-light-div" style="display:none"><ul><li> The light is not enough for the berries in area(s) <span id="low-light-span"></span>.Please remove items that are causing shade or install additional light sources such as lamps.</li></ul></div>
+                    <div id="low-moist-div" style="display:none"><ul><li> The berries aren't getting enough water in area(s) <span id="low-moist-span"></span>.Please water plants there.</li></ul>
                     </div>
                     <br>
-                    <div class="alert alert-danger" id="high-temp">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <i class="fas fa-temperature-high">&nbsp;</i><strong>High temperature</strong> in area(s) <span id="high-temp"></span>
                     </div>
-                    <br>
-                    <div class="alert alert-warning" id="low-humid">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <i class="fas fa-cloud">&nbsp;</i><strong>Low humidity</strong> in area(s) <span id="low-humid"></span>
+                    <div class="col-sm-1"></div>
                     </div>
-                    <br>
-                    <div class="alert alert-info" id="high-humid">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <i class="fas fa-cloud-rain"></i>&nbsp;<strong>High humidity</strong> in area(s) <span id="high-humid"></span>
-                    </div>
-
                 </div> 
             </div>    
             <br><br><br>    
@@ -279,8 +424,14 @@ text-align: center;
                 <div class="row" style="font-size:20px">    
                     <h1 style="text-align: center">About Us</h1>
                     <br>
-                    This is what berry smart is about and this is what inspires us. This section will be filled later with content. This is just for testing purpose
-                </div>   
+                    <p>
+                    Farming accounts for 70% of the world’s water consumption, with many over watering their crops, while one-fifth of the world's population lacks safe drinking water. This issue primarily stems from a lack of understanding of what individual plants require in terms of water, fertilizer, sunlight and pesticides.</p>
+<p>
+The berry<strong>Smart</strong> device gives farmers a way to better understand their farm. A variety of sensors are strategically placed across the farm, the values of which are POSTed to a central database. We then create a dashboard for farmers that highlight these sensor values along with recommendations based off of them.</p>
+<p>
+This project uses various sensors (soil moisture, temperature, light, humidity) placed in three high priority areas in the farm. Working as nodes in a WiFi overlayed mesh network, each node communicates the location’s data to a central database. The central databases’ data is then analyzed on a dashboard accessible to farmers.</p>
+                </div> 
+                <br><br>  
             </div>
             <br><br><br>
             <div id="section7"  style="border-radius: 15px; padding: 40px; ">         
@@ -375,6 +526,10 @@ text-align: center;
 <script data-plotly="garciag:14" sharekey-plotly="Abx85SFf1eFNKFNcRj5xnT" src="https://plot.ly/embed.js" async></script>
 <script data-plotly="garciag:16" sharekey-plotly="JLz6f4hCA6WzRTnhAELwWi" src="https://plot.ly/embed.js" async></script>
 <script data-plotly="garciag:18" sharekey-plotly="Ednw7UiM4aScS9eFaKBraG" src="https://plot.ly/embed.js" async></script>
+<script data-plotly="garciag:38" sharekey-plotly="7H9zyudTBOhfioQx0Fo8JM" src="https://plot.ly/embed.js" async></script>
+<script data-plotly="garciag:36" sharekey-plotly="pCcfu3YcWdyWNWHuJ53kry" src="https://plot.ly/embed.js" async></script>
+<script data-plotly="garciag:34" sharekey-plotly="KIQFEVb4KyNnTwTr2OIEra" src="https://plot.ly/embed.js" async></script>
+<script data-plotly="garciag:32" sharekey-plotly="NEbpegEe0YDii7POD9OIPq" src="https://plot.ly/embed.js" async></script>
 
 <script>
 
@@ -397,6 +552,8 @@ function loginHandler(){
      if ((Http.responseText=='success')&& (user!='') && (password!='')){
         document.getElementById('nameholder').innerText = user.charAt(0).toUpperCase() +user.slice(1)+"'s" ;
         $('#myModal').modal('hide');
+        document.getElementById('nsg').innerText='';
+        document.getElementById('nsg').append(user.charAt(0).toUpperCase() +user.slice(1));
      }
      else{
         document.getElementById('loginfail').style.display = 'block';
@@ -419,6 +576,8 @@ function loginHandler(){
      if ((Http.responseText=='success') && (user!='') && (password!='')){
         document.getElementById('nameholder').innerText = user.charAt(0).toUpperCase() +user.slice(1)+"'s" ;
         $('#myModal').modal('hide');
+        document.getElementById('nsg').innerText='';
+        document.getElementById('nsg').append(user.charAt(0).toUpperCase() +user.slice(1));
      }
      else {
         document.getElementById('registerfail').style.display = 'block';
@@ -439,6 +598,139 @@ $(document).ready(function(){
         img.src =  "http://openweathermap.org/img/w/"+data+".png";
     });
    });
+   
+   $(document).ready(function(){   
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=1&a=1", function(data, status){
+        $("#area1-temp-avg").append(data);
+    });
+  
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=1&a=2", function(data, status){
+        $("#area2-temp-avg").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=1&a=3", function(data, status){
+        $("#area3-temp-avg").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=5&a=1", function(data, status){
+        $("#area1-temp-std").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=5&a=2", function(data, status){
+        $("#area2-temp-std").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=5&a=3", function(data, status){
+        $("#area3-temp-std").append(data);
+    });
+
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=2&a=1", function(data, status){
+        $("#area1-humid-avg").append(data);
+    });
+  
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=2&a=2", function(data, status){
+        $("#area2-humid-avg").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=2&a=3", function(data, status){
+        $("#area3-humid-avg").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=6&a=1", function(data, status){
+        $("#area1-humid-std").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=6&a=2", function(data, status){
+        $("#area2-humid-std").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=6&a=3", function(data, status){
+        $("#area3-humid-std").append(data);
+    });
+
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=3&a=1", function(data, status){
+        $("#area1-light-avg").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=3&a=2", function(data, status){
+        $("#area2-light-avg").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=3&a=3", function(data, status){
+        $("#area3-light-avg").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=7&a=1", function(data, status){
+        $("#area1-light-std").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=7&a=2", function(data, status){
+        $("#area2-light-std").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=7&a=3", function(data, status){
+        $("#area3-light-std").append(data);
+    });
+
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=4&a=1", function(data, status){
+        $("#area1-moist-avg").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=4&a=2", function(data, status){
+        $("#area2-moist-avg").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=4&a=3", function(data, status){
+        $("#area3-moist-avg").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=8&a=1", function(data, status){
+        $("#area1-moist-std").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=8&a=2", function(data, status){
+        $("#area2-moist-std").append(data);
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinStrawBerryHandler.py?k=8&a=3", function(data, status){
+        $("#area3-moist-std").append(data);
+    });
+    
+    $.get("http://608dev.net/sandbox/sc/irin/irinBlueberryhandler.py?k=1&hl=0", function(data, status){
+        if (data!=''){
+        document.getElementById('low-temp').style.display = 'block'; 
+        document.getElementById('low-temp-div').style.display = 'block'; 
+        document.getElementById('low-temp-warn').append(data); 
+        document.getElementById('low-temp-span').append(data); 
+        document.getElementById('alert-default').innerHTML='';};
+    
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinBlueberryhandler.py?k=1&hl=1", function(data, status){
+        if (data!=''){
+        document.getElementById('high-temp').style.display = 'block';
+        document.getElementById('high-temp-div').style.display = 'block';
+        document.getElementById('high-temp-warn').append(data); 
+        document.getElementById('high-temp-span').append(data); 
+        document.getElementById('alert-default').innerHTML='';};
+        
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinBlueberryhandler.py?k=2&hl=0", function(data, status){
+        if (data!=''){
+        document.getElementById('low-humid').style.display = 'block';
+        document.getElementById('low-humid-div').style.display = 'block';
+        document.getElementById('low-humid-warn').append(data); 
+        document.getElementById('low-humid-span').append(data); 
+        document.getElementById('alert-default').innerHTML='';};
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinBlueberryhandler.py?k=2&hl=1", function(data, status){
+        if (data!=''){
+        document.getElementById('high-humid').style.display = 'block';
+        document.getElementById('high-humid-div').style.display = 'block';
+        document.getElementById('high-humid-warn').append(data); 
+        document.getElementById('high-humid-span').append(data); 
+        document.getElementById('alert-default').innerHTML='';};
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinBlueberryhandler.py?k=3&hl=0", function(data, status){
+        if (data!=''){
+        document.getElementById('low-light').style.display = 'block';
+        document.getElementById('low-light-div').style.display = 'block';
+        document.getElementById('low-light-warn').append(data);
+        document.getElementById('low-light-span').append(data);
+        document.getElementById('alert-default').innerHTML='';};
+    });
+    $.get("http://608dev.net/sandbox/sc/irin/irinBlueberryhandler.py?k=3&hl=0", function(data, status){
+        if (data!=''){
+        document.getElementById('low-moist').style.display = 'block';
+        document.getElementById('low-moist-div').style.display = 'block';
+        document.getElementById('low-moist-warn').append(data); 
+        document.getElementById('low-moist-span').append(data); 
+        document.getElementById('alert-default').innerHTML='';};
+    });
+   });
+
+
 
    $(document).ready(function(){   
     $.get("http://608dev.net/sandbox/sc/irin/irinBerryHandler.py?k=1", function(data, status){
@@ -496,13 +788,6 @@ $(document).ready(function(){
    });
 
 
-
-   $(document).ready(function(){
-    $.get("http://608dev.net/sandbox/sc/garciag/berryGrapher.py", function(data, status){
-        $("#dynamic-graph").append(data);
-    });
-   });
-
     $(document).ready(function(){
     $.get("http://608dev.net/sandbox/sc/irin/weatherhandler.py", function(data, status){
         $("#description").append(data);
@@ -554,23 +839,23 @@ $(document).ready(function(){
         $("#predict-sunset").append(data);
     });
    });
+   
     
     function createStat(){
         let el = document.getElementById('drawTable');
         el.innerHTML = '';
-        url = '';
-
+    
         if (document.getElementById('sel1').value=='1'){ 
-          url = "http://608dev.net/sandbox/sc/garciag/berry_mapbox_temp.py";
+         el.innerHTML = '<a href="https://plot.ly/~garciag/38/?share_key=7H9zyudTBOhfioQx0Fo8JM" target="_blank" title="plot from API (8)" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/38.png?share_key=7H9zyudTBOhfioQx0Fo8JM" alt="plot from API (8)" style="max-width: 100%;width: 1200px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
         }
         else if (document.getElementById('sel1').value=='2'){
-         url = "http://608dev.net/sandbox/sc/garciag/berry_mapbox_humid.py";
+         el.innerHTML='<a href="https://plot.ly/~garciag/32/?share_key=NEbpegEe0YDii7POD9OIPq" target="_blank" title="plot from API (5)" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/32.png?share_key=NEbpegEe0YDii7POD9OIPq" alt="plot from API (5)" style="max-width: 100%;width: 1200px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';
         } 
         else if (document.getElementById('sel1').value=='3'){
-         url = "http://608dev.net/sandbox/sc/garciag/berry_mapbox_light.py";
+         el.innerHTML=' <a href="https://plot.ly/~garciag/34/?share_key=KIQFEVb4KyNnTwTr2OIEra" target="_blank" title="plot from API (6)" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/34.png?share_key=KIQFEVb4KyNnTwTr2OIEra" alt="plot from API (6)" style="max-width: 100%;width: 1200px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';  
         }
         else if (document.getElementById('sel1').value=='4'){
-         url = "http://608dev.net/sandbox/sc/garciag/berry_mapbox_moist.py";
+         el.innerHTML = ' <a href="https://plot.ly/~garciag/36/?share_key=pCcfu3YcWdyWNWHuJ53kry" target="_blank" title="plot from API (7)" style="display: block; text-align: center;"><img src="https://plot.ly/~garciag/36.png?share_key=pCcfu3YcWdyWNWHuJ53kry" alt="plot from API (7)" style="max-width: 100%;width: 1200px;"  width="600" onerror="this.onerror=null;this.src="https://plot.ly/404.png";" /></a>';  
         }
         console.log(url);
         $("sel1").change(function(){
@@ -581,8 +866,6 @@ $(document).ready(function(){
         });
         
     }
-
-    
             
 </script>       
 
