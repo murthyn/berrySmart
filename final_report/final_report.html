@@ -55,10 +55,13 @@ Dashboard
 
 The berrySmart dashboard summarizes sensor data and recommendations visually:
 
-GABY
-INSERT PICTURE OF DASHBOARD HERE
+(./images/temp.png width="600px" border="0")
+(./images/weather.png width="600px" border="0")
+(./images/humid.png width="600px" border="0")
+(./images/reccommend.png width="600px" border="0")
+(./images/alerts.png width="600px" border="0")
 
-We provide maps of the farm with sensor information overlayed, which allow farmers to easily understand the state of their crops. We include current weather conditions paired with recommendations based off of sensor information, such as whether plants should be watered (depending on the type of crop, weather and soil moisture sensor data).  
+We provide maps of the farm with sensor information overlayed, which allow farmers to easily understand the state of their crops. We include current weather conditions paired with recommendations based off of sensor information, such as whether plants should be watered (depending on the type of crop, weather and soil moisture sensor data). 
 
 System: Implementation
 ===============================================================================
@@ -126,16 +129,32 @@ In addition, the WiFi range of the ESP is approximately $63$ feet.
 For our sleeping implementation, we decided to put the ESP into Deep Sleep. We chose this over Hibernation, because Deep Sleep allowed for us to utilize the RTC memory storage to retain information over time. We used an RTC_DATA_ATTR object to store the packet number of each data packet in order to determine if our mesh network dropped any packets over time. Our current implementation has the ESP sleeping for 10 minutes after sending a data packet. Lengthening the sleeping time will improve battery performance.
 
 ## Dashboard: Graphs
-GABY
+There are two types of dynamic graphs on the dashboard: mapped graphs and scatter plots. Plotly is used as a platform to create the graphics due to its clean, minimalist aesthetics and potential to add dynamic features. The data is pulled through a GET Request from our central database and then stripped into the appropriate parameters and formats. Our goal is to have a clean, easy to read visualisation of the data to help farmers see the performance and data of each of their sensor nodes/plots.
+
+Scatter Plots display classic data visualisation to farmers. Each graph contains overlayed subplots of each of the sensor node's readings over time (minutes since reading). The graphs are dynamic, enabling the user to scroll over the plots, zoom in and click on points. Beneath each scatter plot are the averages for each sensor node. We have four scatter plots per parameter tested: temperature, humidity, soil moisture and light.
+
+Mapped Graphs overlay the most recent data points on a Mapbox API generated satellite image of the farmer's farm. The GPS coordinates are generated from the individual coordinates of each sensor node, enabling the farmer to see the exact network formation of the system on real time satellite imagery. The data is visualised as large circles over each sensor node, colored by an autoscaled preset colorscale that will range the colors based on previus readings. For example, if the average temperature is approximately 24 degrees Celsius, 24.1 degrees will be colored white while a temperature of 24.9 degrees will be colored red due to the stark contrast between the values based on the average. In addition, the plotted circles display the actual readings as centered text. We have four mapped graphs per parameter tested: temperature, humidity, soil moisture and light.
+
+A third form of dynamic graph was made: a Filled-Area Animation Scatter plot. These enabled the farmer to press play and watch an animation of the scatter plots over time. Unfortunately, the plots took too long to generate when embedded into the html dashboard and would therefore not load and crash the website. There were four animated scatter plots per parameter tested: temperature, humidity, soil moisture and light.
 
 ## Dashboard: HTML
 IRIN
 
 ## Daily Digest
-GABY
+As an additional feature, we created a Daily Digest for the farmer. In case the user does not check their dashboard on a daily basis, Berry Smart sends an automatic email containing a "Today's Scoop" newsletter displaying the averaged plot health statistics for each parameter. This email pulls the average over all the sensor nodes from our database using a GET request, ensuring that the data is up to date. The email is created by overlaying text and data on a base image created using Canva. This email is then sent automatically using a Python script to all members of the berry-smart@mit.edu mailing list.
 
 ## Analytics
-GABY
+For the dashboard's Statistics, Recommendations and Alerts sections, we implemented analytics to provide data-based suggestions for the farmer. We calculated the mean and standard deviation for each of the sensor nodes as well as the mean and standard deviation for all of the sensor nodes together using imported numpy and statistics. In this iteration of the product, we pre-set recommended values for each of the parameters based on the optimal conditions for strawberry farming. So the optimal temperature is between 60 degrees and 80 degrees Fahrenheit with direct sunlight as an optimal state. In the future, we intend to allow the farmer to designate which crops they are growing in each plot and then pull the optimal conditions for each crop from our database. Based on these recommended values, the Alerts section displays low/high level alerts based on each sensor node's averaged readings. If the light level in sensor node 2 is on average about 0.1, the alerts section will display "Low light levels in area(s) 2".
+
+Based on the appearance of alerts, suggestions are displayed for the user. In a future iteration, these recommendations will be crop specific. Currently the possible suggestions include:
+
+Low Soil Moisture: "Your plots aren't getting enough water, please water plants in area(s) xxx."
+
+Low Light : "Your plots aren't getting enough light, please remove items that are causing shade or install additional light sources such as lamps in area(s) xxx."
+
+Low / High Humidity: “Your area does not have the appropriate humidity for your plots,  slow down ventilation rates and adjust watering to accommodate humidity in area(s) xxx."
+
+Low / High Temperature: "Your area does not have the appropriate temperature for your plots, consider changing your heating system in area(s) xxx."
 
 ## Code: Functions and Classes
 ALLLLLLLL
