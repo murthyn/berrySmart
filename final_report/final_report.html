@@ -47,8 +47,10 @@ The edge node is one sensor node in the mesh network that has the additional fun
 
 Database
 -------------------------------------------------------------------------------
-GABY
-berrySmart utilizes many databases to keep track of sensor information, analytics, recommendations and website info. These include: PUT DATABASES HERE.
+
+berrySmart utilizes two databases and many Handlers to keep track of sensor information, analytics, recommendations and website info. strawberry.db is the central database for sensor readings. login.db is the database that stores the logins and passwords of each dashboard user, ensuring that the dashboard is personalised for each farmer. 
+
+Various Handlers were created such as all_dataHandler.py for reformatting the data into the appropriate formats, berryHandler_v2 for testing the Wifi mesh network, strawberryHandler.py for performing get and pull requests to the strawberry.db database and loginhandler.py for registering an account and logging in users using the login.db database. Additional handlers were implemented for GET requests for the two types of mean and standard deviation: individual mean per sensor node and overall mean for the whole farm system. The dashboard current weather section implemented handlers that directly contacted the openweathermap api to generate the cloud, humidity, sunrise, sunset, temperature, weather, weather icon and wind data.
 
 Dashboard
 -------------------------------------------------------------------------------
