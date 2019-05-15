@@ -28,9 +28,6 @@ CHANGE TO NON-WIFI INSTEAD OF WIRED
 
 We will now discuss the various components of berrySmart.
 
-Leaf Nodes
--------------------------------------------------------------------------------
-
 Sensor Nodes
 -------------------------------------------------------------------------------
 
@@ -38,7 +35,12 @@ Sensor nodes are made up of an ESP, battery and sensors that measure soil moistu
 
 Each sensor node is not connected to the Internet directly; rather, it communicates with other sensor nodes in a mesh network. An edge node (Section 2.2) communicates all information to the central server and database (Section 2.3).
 
-Sensor nodes collect information once every 10 minutes, and otherwise put in deep sleep to conserve power. The sensor nodes are designed to last long periods of times without being connected to a power source, as fully described in Section 4: Power Management. 
+Sensor nodes collect information once every 10 minutes, and otherwise put in deep sleep to conserve power. The sensor nodes are designed to last long periods of times without being connected to a power source, as fully described in Section 6: Power Management. 
+
+Leaf Nodes
+-------------------------------------------------------------------------------
+
+The leaf nodde is a sensor node in the mesh network that does not recieve data from another nodes; in other words, leaf nodes only send data. Leaf nodes still sleep, collect data and send its own collected data to other nodes in the network.
 
 Edge Node
 -------------------------------------------------------------------------------
