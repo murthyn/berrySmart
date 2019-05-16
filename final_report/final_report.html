@@ -24,12 +24,7 @@ Our berrySmart system consists of subsystems including sensor nodes (Section 2.1
 ![Figure [system]: The berrySmart system, which includes sensors that communicate through an overlay mesh network over WiFi, a central database and a dashboard that is presented to the farmer.
 ](./images/system.png width="600px" border="0")
 
-CHANGE TO NON-WIFI INSTEAD OF WIRED
-
 We will now discuss the various components of berrySmart.
-
-Leaf Nodes
--------------------------------------------------------------------------------
 
 Sensor Nodes
 -------------------------------------------------------------------------------
@@ -38,7 +33,12 @@ Sensor nodes are made up of an ESP, battery and sensors that measure soil moistu
 
 Each sensor node is not connected to the Internet directly; rather, it communicates with other sensor nodes in a mesh network. An edge node (Section 2.2) communicates all information to the central server and database (Section 2.3).
 
-Sensor nodes collect information once every 10 minutes, and otherwise put in deep sleep to conserve power. The sensor nodes are designed to last long periods of times without being connected to a power source, as fully described in Section 4: Power Management. 
+Sensor nodes collect information once every 10 minutes, and otherwise put in deep sleep to conserve power. The sensor nodes are designed to last long periods of times without being connected to a power source, as fully described in Section 6: Power Management. 
+
+Leaf Nodes
+-------------------------------------------------------------------------------
+
+The leaf node is a sensor node in the mesh network that does not recieve data from another nodes; in other words, leaf nodes only send data. Leaf nodes still sleep, collect data and send its own collected data to other nodes in the network.
 
 Edge Node
 -------------------------------------------------------------------------------
@@ -55,15 +55,26 @@ Various Handlers were created such as all_dataHandler.py for reformatting the da
 Dashboard
 -------------------------------------------------------------------------------
 
-The berrySmart dashboard summarizes sensor data and recommendations visually:
+The berrySmart dashboard summarizes sensor data and recommendations visually. We provide maps of the farm with sensor information overlayed, which allow farmers to easily understand the state of their crops. We include current weather conditions paired with recommendations based off of sensor information, such as whether plants should be watered (depending on the type of crop, weather and soil moisture sensor data). :
 
-(./images/temp.png width="600px" border="0")
-(./images/weather.png width="600px" border="0")
-(./images/humid.png width="600px" border="0")
-(./images/reccommend.png width="600px" border="0")
-(./images/alerts.png width="600px" border="0")
+![Figure [temp]: The berrySmart mapped graph visualisations are the first page the farmer views. Data is overlayed over satellite imagery of the farm.
+](./images/temp.png width="600px" border="0")
+
+![Figure [weather]: Current weather conditions are displayed according to pre-set GPS coordinates. This enables farmers to rapidly compare weather to the plot health statistics.
+](./images/weather.png width="600px" border="0")
+
+![Figure [humid]: Next, the farmer can view the specific graphed sensor readings on dynamic, interactive scatter plots that display the data for each sensor node. Below each plot are the average values of each sensor node. Specifically this image show our humidity plots.
+](./images/humid.png width="600px" border="0")
+
+![Figure [reccommend]: The Recommendations tab includes the pre-set optimal parameters for strawberry crops. In addition, it displays the average and standard deviation over all sensor nodes for each tested parameter.
+](./images/reccommend.png width="600px" border="0")
+
+![Figure [alerts]: berrySmart creates alerts mixed with suggestions to help farmers make smart decisions based on the most recent data.
+](./images/alerts.png width="600px" border="0")
+ 
 
 We provide maps of the farm with sensor information overlayed, which allow farmers to easily understand the state of their crops. We include current weather conditions paired with recommendations based off of sensor information, such as whether plants should be watered (depending on the type of crop, weather and soil moisture sensor data). 
+
 
 System: Implementation
 ===============================================================================
@@ -142,13 +153,13 @@ Mapped Graphs overlay the most recent data points on a Mapbox API generated sate
 A third form of dynamic graph was made: a Filled-Area Animation Scatter plot. These enabled the farmer to press play and watch an animation of the scatter plots over time. Unfortunately, the plots took too long to generate when embedded into the html dashboard and would therefore not load and crash the website. There were four animated scatter plots per parameter tested: temperature, humidity, soil moisture and light.
 
 ## Dashboard: HTML
-IRIN
+IRIN!!!!!!!!!!!!!!
 
 ## Daily Digest
 As an additional feature, we created a Daily Digest for the farmer. In case the user does not check their dashboard on a daily basis, Berry Smart sends an automatic email containing a "Today's Scoop" newsletter displaying the averaged plot health statistics for each parameter. This email pulls the average over all the sensor nodes from our database using a GET request, ensuring that the data is up to date. The email is created by overlaying text and data on a base image created using Canva. This email is then sent automatically using a Python script to all members of the berry-smart@mit.edu mailing list.
 
 ## Analytics
-For the dashboard's Statistics, Recommendations and Alerts sections, we implemented analytics to provide data-based suggestions for the farmer. We calculated the mean and standard deviation for each of the sensor nodes as well as the mean and standard deviation for all of the sensor nodes together using imported numpy and statistics. In this iteration of the product, we pre-set recommended values for each of the parameters based on the optimal conditions for strawberry farming. So the optimal temperature is between 60 degrees and 80 degrees Fahrenheit with direct sunlight as an optimal state. In the future, we intend to allow the farmer to designate which crops they are growing in each plot and then pull the optimal conditions for each crop from our database. Based on these recommended values, the Alerts section displays low/high level alerts based on each sensor node's averaged readings. If the light level in sensor node 2 is on average about 0.1, the alerts section will display "Low light levels in area(s) 2".
+For the dashboard's Statistics, Recommendations and Alerts sections, we implemented analytics to provide data-based suggestions for the farmer. We calculated the mean and standard deviation for each of the sensor nodes as well as the mean and standard deviation for all of the sensor nodes together using imported numpy and statistics. In this iteration of the product, we pre-set recommended values for each of the parameters based on the optimal conditions for strawberry farming. So the optimal temperature is between 60 degrees and 80 degrees Fahrenheit with direct sunlight as an optimal state. In the future, we intend to allow the farmer to designate which crops they are growing in each plot and then pull the optimal conditions for each crop from our database. Based on these recommended values, the Alerts section displays low/high level alerts based on each sensor node's averaged readings. These are specifically the averaged readings of the past couple of hours. If the light level in sensor node 2 is on average about 0.1, the alerts section will display "Low light levels in area(s) 2".
 
 Based on the appearance of alerts, suggestions are displayed for the user. In a future iteration, these recommendations will be crop specific. Currently the possible suggestions include:
 
@@ -238,37 +249,94 @@ sendingBuffer():
 
 ### Server
 
+The server folder deals with all parsing of data, analytics and visualisations
 
-<!--
-- state machines (for sensor node, edge node)
-- WiFi
-- Sleeping
-- website: graphs/maps
-- website: html
-- daily digest
-- code (functions/class/file and website code)
-- change sensor collection frequency from once per minute to once per twenty minutes>
--->
+#### Handlers
 
-Demo
+##### strawberryHandler.py
+
+This file sets up the SQL strawberry.db database with text and timestamp as fields. Performs GET and POST requests based on the 'method' of the request. During GET requests, selects items by descending order of the timestamp, if there are less than 1 item in the database, returns "Not enough values are in the database".
+
+##### all_dataHandler.py
+
+This file parses the text format of the strawberryHandler using a get request. Uses a for loop, conversion of string to dictionary and list additions organise the data based on sensor node/esp number. Returns a list containing : temp1, temp2, temp3, humid1, humid2, humid3, light1, light2, light3, moist1, moist2, moist3. Where temp1 is the set of temperature values at esp 1. 
+
+##### berryHandler.py
+
+Our initial database and request handler that sets up the SQL berry.db database with latitude, longitude, temperature, humidity, light and timing fields. Performs GET and POST requests with a table visualisation of the fake data in Week1. (not used in final demo)
+
+##### berryHandler_v2.py
+
+Identical to berryHandler.py but with soil moisture as a field and without table representation of the database. (not used in final demo)
+
+##### blueberry_Handler.py
+
+This file sets up the SQL blueberry.db database with text and timestamp as fields. Performs same function as strawberryHandler.py but was used in initial bluetooth testing when sending "blueberries" between two esps. (not used in final demo)
+
+#### mapgraphs
+
+##### berry_mapbox_humid.py & berry_mapbox_temp.py & berry_mapbox_light.py & berry_mapbox_moist.py
+
+These files create the mapped graphics for each of the tested parameters. They incorporate the same functions and structure but pass in their own parameter as data.
+
+First, the parsed data from all_dataHandler.py is pulled using a GET request. This data is then used to create a major list containing the parameter data for each plot. For example the humid list incorporates humid1 (data[3]) , humid2 (data[4]) , and humid3 (data[5]) . A list of fake coordinates was generated from a tulip farm in the Netherlands using Google Maps. These coordinates are then appended to a latitude and longitude list of equal length to the humid list. Therefore, the first, fourth, seventh, etc items in humid would correspond to the first pair of coordinates and so on. These lists are then converted into a csv file to create a table format used in Plotly. Then, a coloscale is generated using shades of red and white (for temperature). 
+
+A data list is then created to pass in all the parameters and features Plotly uses for its graphs. These include specifics on marker sizes, fonts, textpositions, etc. The latitude, longitude and parameter data is then passed in the appropriate fields. A layout list is then generated to format the appearance of the plot using parameters such as title and incorporating the mapbox api to generate satellitle imagery based on the coordinates. The data and layout lists are then used to create a figure and plotted using Plotly's online plotting feature. 
+
+#### scatter_plots
+
+##### humid_plots.py, light_plots.py., moist_plots.py, temp_plots.py.
+
+These files create the scatter plots for each of the tested parameters. They incorporate the same functions and structure but pass in their own parameter as data.
+
+First, the parsed data from all_dataHandler.py is pulled using a GET request. Next, three lists are created to pass in the parameter data based on each sensor node. For example, humid1:(data[3]) , humid2:(data[4]) , and humid3:(data[5]) are created. Next, a list of time values is created of equal length to the size of the data set using values spaced by 10, as each data point is read and posted every 10 minutes. Three scatter plots are created using the sensor nodes specific sensor readings. These are then added into a subplot so each scatter plot is mapped on the same graph. Finally, a layout list is generated to organise the plot and set the xaxis title, yaxis title, etc. A figure is then generated and plotted using Plotly's online plotting feature. 
+
+#### stats
+
+##### all_mean.py
+
+This file creates the average for each parameter over all the sensor nodes. First, the parsed data from all_dataHandler.py is pulled using a GET request. This data is then used to create a major list containing the parameter data for each plot. For example the humid list incorporates humid1 (data[3]) , humid2 (data[4]) , and humid3 (data[5]). Then using an imported statistics module, based on the passed in integer in the GET function, we return the average of the parameter. For example, if we passed in k=1, we return the rounded to two decimal places average of temperature converted to Fahrenheit.
+
+##### all_std.py
+
+This file is identical to all_mean.py but instead, returns the standard deviation.
+
+##### plot_mean.py
+
+This file creates the average for each parameter for each sensor node. First, the parsed data from all_dataHandler.py is pulled using a GET request. This data is then used to create three lists to pass in the parameter data based on each sensor node. For example, humid1:(data[3]) , humid2:(data[4]) , and humid3:(data[5]) are created. Then using an imported statistics module, based on the passed in integer in the GET function, we return the average of the each sensor node's parameter. For example, if we passed in k=1, we return the rounded to two decimal places average of the temperature in sensor node 1, converted to Fahrenheit.
+
+##### plot_std.py
+
+This file is identical to all_mean.py but instead, returns the standard deviation.
+
+#### email_newsletter.py
+
+This file creates the "Daily Scoop" newsletter sent by email to members of the berry-smart mailing list. First, a base image of the newsletter was designed in Canva. Then, the all_mean.py data was pulled using a GET request. Using an imported imghr module, text was overlayed on top of the image to fill in the data in the empty text fields. Then using an imported variety of email smtplib modules, the image was added to the body of the email and then sent from an external email. 
+
+Code
+===============================================================================
+Github link: https://github.com/murthyn/berrySmart.git
+
+Video
 ===============================================================================
 
-Put video link here, along with pictures
+Video link: https://youtu.be/hSDUlNCB3sc
 
 Design Challenges
 ===============================================================================
 
-- bluetooth (go into detail) NIKHIL
-One challenge we encountered early on involved finding the proper documentation about bluetooth. The BLE module of the ESP had very little documentation online, which was one of the main reasons for why we were not able to get the mesh working over bluetooth. We noticed that bluetooth was very unreliable, dropping upwards of $75%$ of our data packets. After realizing that bluetooth was not designed for effective mesh networks, we decided to move to WiFi for our mesh implementation. 
+## Bluetooth
 
-<!--
-Lack of documentation is a HUGE factor into why we were not able to do it; led to slow progress.
-What even are they keys that we needed for the bluetooth?
-That is all I remember. -Sunny
--->
+Bluetooth was most certainly one of our biggest design challenges. Initially, we envisioned our mesh network to be overlayed on top of BLE (Bluetooth Low Energy). However, BLE on ESP32 does not have thorough documentation and is still being developed, which made setting up the mesh network over Bluetooth very tedious and difficult. There were many roadblocks to including its undocumented service and characteristic UUID system (unique keys identifying services and characteristics) as well as memory issues, as we needed to import both WiFi and BLE libraries. 
+
+We spent 3 weeks, or 75% of the project, working through bugs with Bluetooth before switching to WiFi, which took us only a few days to get working. We also noticed that our initial tests with Bluetooth found it very unrealiable, dropping upwards of $75%$ of our data packets. We achieve a much lower drop rate when using WiFi. 
+
+## Graphing
+
+Graphics and visualisations proved to be a little tricky. While Plotly does have very basic instructionals, their documentation is dense and different to traverse. Creating the mapped graphs was the most complicated visualisation due the use of an external mapbox api and lack of clear instructions for even the most basic plots. The conversion to satellite imagery to appear more realistic and overlaying of actual numbers on the plotted circles miraculously worked in the end. Extensive trial and error enabled us to find features and parameters for visualisation that do not appear in Plotly's documentation.
 
 
-- graphing (maps, dynamic graphs) GABY
+In the beginning, we embedded graphs using html tags given when using Plotly's online server system. Yet, there was a 100 plot generation limit that was rapidly depleted due to debugging, formatting and the large number of plots. Each time the website was refreshed, 8 plots were re-generated. To combat the issue, we were able to download plotly and use its offline plot generation to create figures through divs. These were wrapped in a request handler to be passed into the html. While this worked for a week, as the dashboard became more complex the plots were not generated fast enough and would return failures, crashing the webpage. To resolve this, for the demo we returned to online plots directly embedding the html tags on a separate plotly account. The slow loading speed of the website is still an issue. 
 
 Power Management
 ===============================================================================
