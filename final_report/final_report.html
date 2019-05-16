@@ -251,17 +251,73 @@ sendingBuffer():
 
 ### Server
 
+The server folder deals with all parsing of data, analytics and visualisations
 
-<!--
-- state machines (for sensor node, edge node)
-- WiFi
-- Sleeping
-- website: graphs/maps
-- website: html
-- daily digest
-- code (functions/class/file and website code)
-- change sensor collection frequency from once per minute to once per twenty minutes>
--->
+#### Handlers
+
+##### strawberryHandler.py
+
+This file sets up the SQL strawberry.db database with text and timestamp as fields. Performs GET and POST requests based on the 'method' of the request. During GET requests, selects items by descending order of the timestamp, if there are less than 1 item in the database, returns "Not enough values are in the database".
+
+##### all_dataHandler.py
+
+This file parses the text format of the strawberryHandler using a get request. Uses a for loop, conversion of string to dictionary and list additions organise the data based on sensor node/esp number. Returns a list containing : temp1, temp2, temp3, humid1, humid2, humid3, light1, light2, light3, moist1, moist2, moist3. Where temp1 is the set of temperature values at esp 1. 
+
+##### berryHandler.py
+
+Our initial database and request handler that sets up the SQL berry.db database with latitude, longitude, temperature, humidity, light and timing fields. Performs GET and POST requests with a table visualisation of the fake data in Week1. (not used in final demo)
+
+##### berryHandler_v2.py
+
+Identical to berryHandler.py but with soil moisture as a field and without table representation of the database. (not used in final demo)
+
+##### blueberry_Handler.py
+
+This file sets up the SQL blueberry.db database with text and timestamp as fields. Performs same function as strawberryHandler.py but was used in initial bluetooth testing when sending "blueberries" between two esps. (not used in final demo)
+
+#### mapgraphs
+
+##### berry_mapbox_humid.py & berry_mapbox_temp.py & berry_mapbox_light.py & berry_mapbox_moist.py
+
+These files create the mapped graphics for each of the tested parameters. They incorporate the same functions and structure but pass in their own parameter as data.
+
+First, the parsed data from all_dataHandler.py is pulled using a GET request. This data is then used to create a major list containing the parameter data for each plot. For example the humid list incorporates humid1 (data[3]) , humid2 (data[4]) , and humid3 (data[5]) . A list of fake coordinates was generated from a tulip farm in the Netherlands using Google Maps. These coordinates are then appended to a latitude and longitude list of equal length to the humid list. Therefore, the first, fourth, seventh, etc items in humid would correspond to the first pair of coordinates and so on. These lists are then converted into a csv file to create a table format used in Plotly. Then, a coloscale is generated using shades of red and white (for temperature). 
+
+A data list is then created to pass in all the parameters and features Plotly uses for its graphs. These include specifics on marker sizes, fonts, textpositions, etc. The latitude, longitude and parameter data is then passed in the appropriate fields. A layout list is then generated to format the appearance of the plot using parameters such as title and incorporating the mapbox api to generate satellitle imagery based on the coordinates. The data and layout lists are then used to create a figure and plotted using Plotly's online plotting feature. 
+
+#### scatter_plots
+
+##### humid_plots.py, light_plots.py., moist_plots.py, temp_plots.py.
+
+These files create the scatter plots for each of the tested parameters. They incorporate the same functions and structure but pass in their own parameter as data.
+
+First, the parsed data from all_dataHandler.py is pulled using a GET request. Next, three lists are created to pass in the parameter data based on each sensor node. For example, humid1:(data[3]) , humid2:(data[4]) , and humid3:(data[5]) are created. Next, a list of time values is created of equal length to the size of the data set using values spaced by 10, as each data point is read and posted every 10 minutes. Three scatter plots are created using the sensor nodes specific sensor readings. These are then added into a subplot so each scatter plot is mapped on the same graph. Finally, a layout list is generated to organise the plot and set the xaxis title, yaxis title, etc. A figure is then generated and plotted using Plotly's online plotting feature. 
+
+#### stats
+
+##### all_mean.py
+
+This file creates the average for each parameter over all the sensor nodes. First, the parsed data from all_dataHandler.py is pulled using a GET request. This data is then used to create a major list containing the parameter data for each plot. For example the humid list incorporates humid1 (data[3]) , humid2 (data[4]) , and humid3 (data[5]). Then using an imported statistics module, based on the passed in integer in the GET function, we return the average of the parameter. For example, if we passed in k=1, we return the rounded to two decimal places average of temperature converted to Fahrenheit.
+
+##### all_std.py
+
+This file is identical to all_mean.py but instead, returns the standard deviation.
+
+##### plot_mean.py
+
+This file creates the average for each parameter for each sensor node. First, the parsed data from all_dataHandler.py is pulled using a GET request. This data is then used to create three lists to pass in the parameter data based on each sensor node. For example, humid1:(data[3]) , humid2:(data[4]) , and humid3:(data[5]) are created. Then using an imported statistics module, based on the passed in integer in the GET function, we return the average of the each sensor node's parameter. For example, if we passed in k=1, we return the rounded to two decimal places average of the temperature in sensor node 1, converted to Fahrenheit.
+
+##### plot_std.py
+
+This file is identical to all_mean.py but instead, returns the standard deviation.
+
+#### email_newsletter.py
+
+This file creates the "Daily Scoop" newsletter sent by email to members of the berry-smart mailing list. First, a base image of the newsletter was designed in Canva. Then, the all_mean.py data was pulled using a GET request. Using an imported imghr module, text was overlayed on top of the image to fill in the data in the empty text fields. Then using an imported variety of email smtplib modules, the image was added to the body of the email and then sent from an external email. 
+
+Code
+===============================================================================
+Github link: https://github.com/murthyn/berrySmart.git
 
 Video
 ===============================================================================
