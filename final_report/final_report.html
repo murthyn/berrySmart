@@ -66,7 +66,7 @@ The berrySmart dashboard summarizes sensor data and recommendations visually. We
 ![Figure [humid]: Next, the farmer can view the specific graphed sensor readings on dynamic, interactive scatter plots that display the data for each sensor node. Below each plot are the average values of each sensor node. Specifically this image show our humidity plots.
 ](./images/humid.png width="600px" border="0")
 
-![Figure [reccommend]: The Recommendations tab includes the pre-set optimal parameters for strawberry crops. In addition, it displays the average and standard deviation over all sensor nodes for each tested parameter.
+![Figure [recommend]: The Recommendations tab includes the pre-set optimal parameters for strawberry crops. In addition, it displays the average and standard deviation over all sensor nodes for each tested parameter.
 ](./images/reccommend.png width="600px" border="0")
 
 ![Figure [alerts]: berrySmart creates alerts mixed with suggestions to help farmers make smart decisions based on the most recent data.
@@ -92,7 +92,6 @@ We used external parts, namely sensors, in addition to the provided parts to cre
 | Temperature and Humidity Sensor | Amazon ASIN:B01DKC2GQ0 | Sensors for humidity and temperature                    | 3      |
 | Photoresistor                   | N/A (from lab)         | Monitor amount of light received by the plant           | 3      |
 
-In addition, MORE HERE (ESP, BREADBOARD)
 
 Sensor Implementation
 -------------------------------------------------------------------------------
@@ -122,12 +121,19 @@ We use a photoresistor to measure ambient light. The sensor is connected to Anal
 $$brightness = 1 - \frac{analogRead(A7)}{4096.0}$$
 
 ## State Machine: Sensor Node
-Add in graphics
-Sleep -> Connecting to Client -> Receiving data from client -> Collecting data -> Connecting to next sensor node -> Sending -> Sleep
 
-## State Machine: Edge Node
-Add in graphics
-Sleep -> Connecting to client -> Receiving data from client -> Collecting data -> Connecting to server -> Sending to server -> Sleep
+Our FSM for a sensor node is outlined below. Once the condition for the corresponding arrow is met, the sensor moves to the next state. Otherwise, the node remains at its current state.
+
+![Figure [sensor fsm]: This implementation allows for the sensor to sleep for 10 minutes. This node is capable of receiving, collecting and sending packets of data.
+](./images/fsm_sensor.png width="600px" border="0")
+
+## State Machine: Leaf Node
+
+Our FSM for a leaf node is outlined below. The FSM of a leaf node differs from that of a sensor node in that a leaf node cannot receive data packets. Rather, its sole purpose is to collect data packets and send it to the adjacent sensor node.
+
+![Figure [leaf fsm]: This implementation allows for the sensor to sleep for 10 minutes. This node is capable of collecting and sending packets of data.
+](./images/fsm_leaf.png width="600px" border="0")
+
 
 ## WiFi Protocol
 
@@ -255,7 +261,7 @@ sendingBuffer():
 
 ### Server
 
-The server folder deals with all parsing of data, analytics and visualisations
+The server folder deals with all parsing of data, analytics and visualisations.
 
 #### Handlers
 
@@ -335,7 +341,7 @@ Design Challenges
 
 Bluetooth was most certainly one of our biggest design challenges. Initially, we envisioned our mesh network to be overlayed on top of BLE (Bluetooth Low Energy). However, BLE on ESP32 does not have thorough documentation and is still being developed, which made setting up the mesh network over Bluetooth very tedious and difficult. There were many roadblocks to including its undocumented service and characteristic UUID system (unique keys identifying services and characteristics) as well as memory issues, as we needed to import both WiFi and BLE libraries. 
 
-We spent 3 weeks, or 75% of the project, working through bugs with Bluetooth before switching to WiFi, which took us only a few days to get working. We also noticed that our initial tests with Bluetooth found it very unrealiable, dropping upwards of $75%$ of our data packets. We achieve a much lower drop rate when using WiFi. 
+We spent 3 weeks, or 75% of the project, working through bugs with Bluetooth before switching to WiFi, which took us only a few days to get working. We also noticed that our initial tests with Bluetooth found it very unrealiable, dropping upwards of 75% of our data packets. We achieve a much lower drop rate when using WiFi. 
 
 ## Graphing
 
