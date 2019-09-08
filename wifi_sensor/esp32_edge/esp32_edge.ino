@@ -4,28 +4,28 @@
 //----------WIFI----------//
 
 /* change ssid and password according to yours WiFi*/
-const char* client_ssid     = "Berry Secure 2";
+const char* client_ssid     = "Berry Secure 34";
 const char* client_password = "123456789";
-/*
-   This is the IP address of your PC
-   [Wins: use ipconfig command, Linux: use ifconfig command]
-*/
+
 const char* host = "192.168.4.1"; // need to find out what is each host id
 const int port = 80;
 
 //----------DATA----------//
 
-char dataBuffer [10][1500]; // [Number of Strings][Max Size of Strings]
+const int sizeOfDataBuffer = 5;
+const int sizeOfDataInDataBuffer = 10000;
+
+char dataBuffer [sizeOfDataBuffer][sizeOfDataInDataBuffer]; // [Number of Strings][Max Size of Strings]
 int endBuffer = 0;
 
 //--------SLEEPING---------//
 
-const float SLEEP_TIME = 600; // in seconds
+const float SLEEP_TIME = 60; // in seconds
 const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
 RTC_DATA_ATTR int packetNumber = 1;
 
 //-------SENSORS--------//
-const int espID = 3;
+const int espID = 4;
 
 dht DHT;
 
@@ -39,8 +39,8 @@ const float moisture_upper = 0.87;
 const int RESPONSE_TIMEOUT = 6000; //ms to wait for response from host
 const int GETTING_PERIOD = 5000; //periodicity of getting a number fact.
 
-const uint16_t IN_BUFFER_SIZE = 1200; //size of buffer to hold HTTP request
-const uint16_t OUT_BUFFER_SIZE = 1200; //size of buffer to hold HTTP response
+const uint16_t IN_BUFFER_SIZE = 10000; //size of buffer to hold HTTP request
+const uint16_t OUT_BUFFER_SIZE = 10000; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
@@ -56,10 +56,10 @@ void setup()
 
 // HELPER FUNCTIONS
 void post() {
-  for (int i = 0; i < endBuffer; i++) {
+//  for (int i = 0; i < endBuffer; i++) {
     Serial.println("Posting!");
-    char body[750]; //for body;
-    sprintf(body, "text=%s", dataBuffer[i]);
+    char body[5000]; //for body;
+    sprintf(body, "text=%s", dataBuffer[0]);
     char message[200];
     
     float light = 1 - analogRead(A7) / 4096.0;
@@ -82,13 +82,13 @@ void post() {
     strcat(request_buffer, "\r\n"); //header
     Serial.println(request_buffer);
     do_http_request("608dev.net", request_buffer, response_buffer, OUT_BUFFER_SIZE, RESPONSE_TIMEOUT, true);
-  }
+//  }
   endBuffer = 0;
   emptyBuffer();
 }
 
 void emptyBuffer() {
-  for (int i = 0; i < 10; i++){
+  for (int i = 0; i < sizeOfDataBuffer; i++){
       strcpy(dataBuffer[i], "");
   }
 }
@@ -135,7 +135,7 @@ void do_http_request(char* host, char* request, char* response, uint16_t respons
 
 void addToBuffer(){
   WiFiClient client;
-  char temp_buffer[500];
+  char temp_buffer[5000];
   Serial.println("connecting to client now");
   if (!client.connect(host, port)) {
     Serial.println("connection failed");
@@ -143,13 +143,15 @@ void addToBuffer(){
     return;
   }
   Serial.println("connected to client now, waiting for data");
-  float stuckHereTimer = millis();
-  while(endBuffer == 0 and millis() - stuckHereTimer < 5000){
+//  float stuckHereTimer = millis();
+//  while(endBuffer == 0 and millis() - stuckHereTimer < 5000){
+  while(endBuffer == 0){
     char ch;
-    uint8_t bufptr = 0;
+    int bufptr = 0;
     while(client.available()){
       ch = client.read();
-      temp_buffer[bufptr++] = ch;
+      temp_buffer[bufptr] = ch;
+      bufptr += 1;
     }
     if (bufptr != 0){
       temp_buffer[bufptr] = '\0';
@@ -158,7 +160,8 @@ void addToBuffer(){
   }
 }
 
-uint8_t state = 0; 
+int state = 0; 
+int prev_state = 0;
 // 0 = connecting to client
 //1 is connecting to mit guest
 
@@ -170,20 +173,21 @@ void loop(){
       delay(500);
       Serial.print(".");
     }
-    delay(2000);
+    delay(1000);
     if (WiFi.isConnected()) { //if we connected then print our IP, Mac, and SSID we're on
       Serial.println("CONNECTED TO CLIENT!");
       Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
-//      delay(500);
+      delay(500);
       addToBuffer();
       // Connected to Berry Secure, now get data and store in buffer
-      Serial.print("posting number of packets of data: ");
+      Serial.print("Posting number of packets of data: ");
       Serial.println(endBuffer);
+      prev_state = state;
       state = 1;
     }
   } else if (state == 1) {
     WiFi.begin(server_ssid, server_password);
-    Serial.println("Connecting to Server");
+    Serial.println("Connecting to Internet");
     while (WiFi.status() != WL_CONNECTED){
       delay(500);
       Serial.print(".");
@@ -194,9 +198,10 @@ void loop(){
       Serial.println(WiFi.localIP().toString() + " (" + WiFi.macAddress() + ") (" + WiFi.SSID() + ")");
       delay(500);
       // state = 0; only if data successfully send
+      Serial.println("dataBuffer");
+      Serial.println(dataBuffer[0]);
       post();
-      Serial.println("posted");
-//      ESP.restart();
+      Serial.println("Posted.");
       Serial.println("Now sleeping");
       delay(1000);
       esp_sleep_enable_timer_wakeup(SLEEP_TIME * MICRO_S_TO_S);
