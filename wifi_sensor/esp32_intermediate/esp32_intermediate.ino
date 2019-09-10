@@ -107,7 +107,7 @@ bool sendingBuffer(){
         strcat(message, message2);
         packetNumber += 1;
         client.println(message);
-        Serial.println("message");
+        Serial.println("Message received:");
         Serial.println(message);
         delay(5000);
         Serial.println("Packet sent.");
@@ -157,7 +157,7 @@ void addToBuffer(){
 //      }
     }
     temp_buffer[bufptr] = '\0';
-    Serial.println(temp_buffer);
+//    Serial.println(temp_buffer);
     if (bufptr != 0){
       strcpy(dataBuffer[endBuffer++], temp_buffer);
     }
