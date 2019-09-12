@@ -44,14 +44,17 @@ const uint16_t OUT_BUFFER_SIZE = 10000; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
-const char* server_ssid = "MIT";  //SSID for 6.08 Lab
-const char* server_password = ""; //Password for 6.08 Lab
+const char* server_ssid = "Nikhil's iPhone";  //SSID for 6.08 Lab
+const char* server_password = "nikhilhotspot"; //Password for 6.08 Lab
 // 6s08
 // iesc6s08
 
 void setup()
 {
   Serial.begin(115200);
+  Serial.println("ESP #4");
+//  Serial.println("Initializing for 2 mins.");
+//  delay(120000);
 }
 
 // HELPER FUNCTIONS
@@ -65,7 +68,9 @@ void post() {
     float light = 1 - analogRead(A7) / 4096.0;
     float soil_moisture = analogRead(A14) / 4096.0; //moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
     int chk = DHT.read11(DHT11_PIN);
+    delay(2000);
     float temp = DHT.temperature;
+    delay(2000);
     float humid = DHT.humidity;
     sprintf(message, "#{'espID': %d, 'packet_number': %d, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, packetNumber, soil_moisture, temp, humid, light);
     strcat(body, message);

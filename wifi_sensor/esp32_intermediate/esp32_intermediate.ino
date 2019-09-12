@@ -61,6 +61,9 @@ RTC_DATA_ATTR int packetNumber = 1;
 void setup()
 {
   Serial.begin(115200);
+  Serial.println("ESP #3");
+//  Serial.println("Initializing for 2 mins.");
+//  delay(120000);
 }
 
 // HELPER FUNCTIONS
@@ -101,7 +104,9 @@ bool sendingBuffer(){
         float light = 1 - analogRead(A7) / 4096.0;
         float soil_moisture = analogRead(A14) / 4096.0; //moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
         DHT.read11(DHT11_PIN);
+        delay(2000);
         float temp = DHT.temperature;
+        delay(2000);
         float humid = DHT.humidity;
         sprintf(message2, "#{'espID': %d, 'packet_number': %d, 'soil_moisture': %2.4f, 'temp': %2.4f, 'humid': %2.4f, 'light': %2.4f}", espID, packetNumber, soil_moisture, temp, humid, light);
         strcat(message, message2);

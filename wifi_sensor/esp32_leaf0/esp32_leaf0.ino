@@ -3,16 +3,17 @@
 #include <dht.h> //https://github.com/RobTillaart/Arduino/tree/master/libraries/DHTstable
 
 // Replace with your network credentials
-const char* server_ssid     = "Berry Secure 12";
+const char* server_ssid     = "Berry Secure 02";
 const char* server_password = "123456789";
 
 WiFiServer server(80); // Set web server port number to 80
 
 // Variable to store the HTTP request
-const int espID = 1;
+const int espID = 0;
 RTC_DATA_ATTR int packetNumber = 1;
 
 dht DHT;
+
 #define DHT11_PIN 19
 
 const float SLEEP_TIME = 60; // in seconds
@@ -22,8 +23,8 @@ const float MICRO_S_TO_S = 1000000; // conversion factor
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("ESP #1");
-//  Serial.println("Initializing for 2 mins.");
+  Serial.println("ESP #0");
+//  Serial.println("Inititalizing for 2 mins.");
 //  delay(120000);
   
   // Connect to Wi-Fi network with SSID and password
@@ -52,7 +53,7 @@ void loop(){
         // Get sensor readings
         float light = 1 - analogRead(A7) / 4096.0;
         float soil_moisture = analogRead(A14) / 4096.0;
-        DHT.read11(DHT11_PIN);
+        DHT.read(DHT11_PIN);
         delay(2000);
         float temp = DHT.temperature;
         delay(2000);
