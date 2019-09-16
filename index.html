@@ -40,6 +40,17 @@ a:hover {
   color:  #b8e1ff;
 }
 
+.toggle-button-on {
+  background-color: white;
+  color:  #b1c4d1;
+  border: none;
+}
+
+.toggle-button-off {
+  background-color: #7699b1;
+  color: white;
+  border: none;
+}
 
  #weather-table{
     width: 100%;
@@ -116,11 +127,12 @@ text-align: center;
   #section3 {color:white; background-color: #A288A6;}
   #section4 {color: #fff; background-color: #b8e1ff;}
   #section5 {color: #fff; background-color: #a8b4a5;}
+  #sectionnew {color: #fff; background-color: #b1c4d1;}
   #section6 {color: #fff; background-color: #5a2d53;}
   #section7 {color: #fff; background-color: #959595;}
   
   @media screen and (max-width: 810px) {
-    #section1, #section2, #section3, #section4, #section5, #section6,#section7  {
+    #section1, #section2, #section3, #section4, #section5, #sectionnew, #section6,#section7  {
       margin-left: 150px;
     }
   }
@@ -186,6 +198,7 @@ text-align: center;
             <li><a href="#section3" style="text-align: left">Statistics</a></li>
             <li><a href="#section4" style="text-align: left">Recommendations</a></li>
             <li><a href="#section5" style="text-align: left">Alerts</a></li>
+            <li><a href="#sectionnew" style="text-align: left">Map</a></li>
             <li><a href="#section6" style="text-align: left">About us</a></li>
             <li><a href="#section7" style="text-align: left">Contact us</a></li>
           </ul>
@@ -419,7 +432,77 @@ text-align: center;
                     </div>
                 </div> 
             </div>    
-            <br><br><br>    
+            <br><br><br>   
+        
+            <div id="sectionnew"  style="border-radius: 15px; padding: 35px;">         
+                    <div class="row" style="font-size:20px">    
+                    <h1 style="text-align: center">Map</h1>
+                    <br>
+                    
+                    <div class = "container" style="text-align: center"> 
+                    <button style="width:20%" class="toggle-button-on" id="tb1" onclick="buttonToggler1()"> Temperature </button>
+                    <button style="width:20%" class="toggle-button-on" id="tb2" onclick="buttonToggler2()"> Humidity </button>
+                    <button style="width:20%" class="toggle-button-on" id="tb3" onclick="buttonToggler3()"> Light </button>
+                    <button style="width:20%" class="toggle-button-on" id="tb4" onclick="buttonToggler4()"> Moisture </button>
+                    </div> 
+
+                    <br><br>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10" style="height:600px">
+                        <div class="container" style=" width:100%; height:500px;" id="overlay-images">
+                          <img src="https://i.ibb.co/LvbcgsN/Screenshot-2019-09-13-14-11-01.png" style="position: absolute; top:0; left:0; height:600px; width:1000px; z-index: 1; visibility:visible"> 
+                          
+                          <img class="wp" style="position:absolute; top:30px; left:200px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#1  temperature: 79&#176F  humidity: 66% light: 0.27  mositure: 0.24">
+                          <img class="wp" style="position:absolute; top:35px; left:400px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#2  temperature: 79&#176F  humidity: 67% light: 0.24  mositure: 0.30">
+                          <img class="wp" style="position:absolute; top:35px; left:600px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#3  temperature: 78&#176F  humidity: 65% light: 0.20  mositure: 0.33">
+                          <img class="wp" style="position:absolute; top:40px; left:800px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#4  temperature: 77&#176F  humidity: 63% light: 0.19  mositure: 0.32">
+
+                          <img class="wp" style="position:absolute; top:90px; left:200px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#5  temperature: 82&#176F  humidity: 67% light: 0.32  mositure: 0.22">
+                          <img class="wp" style="position:absolute; top:90px; left:400px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#6  temperature: 79&#176F  humidity: 68% light: 0.33  mositure: 0.21">
+                          <img class="wp" style="position:absolute; top:90px; left:600px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#7  temperature: 77&#176F  humidity: 67% light: 0.28  mositure: 0.18">
+                          <img class="wp" style="position:absolute; top:90px; left:800px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#8  temperature: 76&#176F  humidity: 62% light: 0.19  mositure: 0.25">
+                          
+                          <img class="wp" style="position:absolute; top:150px; left:200px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#9  temperature: 77&#176F  humidity: 66% light: 0.36  mositure: 0.31">
+                          <img class="wp" style="position:absolute; top:150px; left:400px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#10  temperature: 76&#176F  humidity: 67% light: 0.37  mositure: 0.15">
+                          <img class="wp" style="position:absolute; top:150px; left:600px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#11  temperature: 77&#176F  humidity: 67% light: 0.28  mositure: 0.16">
+                          <img class="wp" style="position:absolute; top:150px; left:800px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#12  temperature: 78&#176F  humidity: 68% light: 0.24  mositure: 0.27">
+
+                          <img class="wp" style="position:absolute; top:450px; left:200px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#13  temperature: 80&#176F  humidity: 61% light: 0.40  mositure: 0.24">
+                          <img class="wp" style="position:absolute; top:440px; left:400px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#14  temperature: 79&#176F  humidity: 66% light: 0.38  mositure: 0.16">
+                          <img class="wp" style="position:absolute; top:440px; left:600px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#15  temperature: 79&#176F  humidity: 68% light: 0.36  mositure: 0.17">
+                          <img class="wp" style="position:absolute; top:420px; left:800px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#16  temperature: 77&#176F  humidity: 67% light: 0.38  mositure: 0.23">
+
+                          <img class="wp" style="position:absolute; top:510px; left:200px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#17  temperature: 77&#176F  humidity: 62% light: 0.42  mositure: 0.30">
+                          <img class="wp" style="position:absolute; top:490px; left:400px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#18  temperature: 80&#176F  humidity: 64% light: 0.39  mositure: 0.26">
+                          <img class="wp" style="position:absolute; top:480px; left:600px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#19  temperature: 78&#176F  humidity: 64% light: 0.36  mositure: 0.19">
+                          <img class="wp" style="position:absolute; top:470px; left:800px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#20  temperature: 78&#176F  humidity: 67% light: 0.36  mositure: 0.21">
+
+                          <img class="wp" style="position:absolute; top:560px; left:200px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#21  temperature: 79&#176F  humidity: 63% light: 0.44  mositure: 0.36">
+                          <img class="wp" style="position:absolute; top:550px; left:400px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#22  temperature: 82&#176F  humidity: 63% light: 0.42  mositure: 0.33">
+                          <img class="wp" style="position:absolute; top:550px; left:600px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#23  temperature: 81&#176F  humidity: 62% light: 0.38  mositure: 0.27">
+                          <img class="wp" style="position:absolute; top:530px; left:800px; width:15px; height:15px; z-index:6; visibility: hidden" src="https://i.ibb.co/7QCy5c9/Screenshot-2019-09-13-17-removebg-preview.png" title="ESP#24  temperature: 78&#176F  humidity: 63% light: 0.40  mositure: 0.32">
+                          
+
+                          <!--<img src="sensorpos.png" id="sp2" style="position: absolute; top:8; left:5; height:10px; width:10px; z-index: 7;  visibility: visible"> -->
+                          <!-- sensor points end-->
+                          
+                          <img  src="https://i.ibb.co/L6ZJbSF/tempwarn2-removebg-preview.png" id="overlay1" style="position: absolute; top:0; left:0; height:600px; width:1000px; z-index: 2; opacity:0.6; visibility: hidden"> 
+                          <img  src="https://i.ibb.co/YPQfGhV/humidwarn3-removebg-preview.png" id="overlay2" style="position: absolute; top:0; left:0; height:600px; width:1000px; z-index: 3; opacity:0.6; visibility: hidden"> 
+                          <img  src="https://i.ibb.co/jwcTwSz/lightwarn.png" id="overlay3" style="position: absolute; top:0; left:0; height:600px; width:1000px; z-index: 4; opacity:0.6; visibility: hidden"> 
+                          <img  src="https://i.ibb.co/7ghpfZV/moistwarn6-removebg-preview.png" id="overlay4" style="position: absolute; top:0; left:0; height:600px; width:1000px; z-index: 5; opacity:0.6; visibility: hidden"> 
+                        </div>
+                        
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                 <br><br>
+                </div> 
+                <br><br>  
+            </div>
+
+            <br><br><br> 
             <div id="section6"  style="border-radius: 15px; padding: 35px;">         
                 <div class="row" style="font-size:20px">    
                     <h1 style="text-align: center">About Us</h1>
@@ -532,6 +615,63 @@ This project uses various sensors (soil moisture, temperature, light, humidity) 
 <script data-plotly="garciag:32" sharekey-plotly="NEbpegEe0YDii7POD9OIPq" src="https://plot.ly/embed.js" async></script>
 
 <script>
+function warningPointFunction(){
+    var l = document.getElementsByClassName("wp");
+    console.log(l);
+    for(i=0; i<l.length; i++){
+        l[i].style.visibility="visible";
+    }
+}
+
+function buttonToggler1(){
+ let button = document.getElementById('tb1');
+ if (button.getAttribute('class') == 'toggle-button-on'){
+   button.setAttribute('class', 'toggle-button-off');
+   document.getElementById('overlay1').style.visibility = 'visible';
+   warningPointFunction();
+  }
+ else if (button.getAttribute('class') == 'toggle-button-off'){
+   button.setAttribute('class', 'toggle-button-on');
+   document.getElementById('overlay1').style.visibility =  'hidden';
+ }
+}
+function buttonToggler2(){
+ let button = document.getElementById('tb2');
+ if (button.getAttribute('class') == 'toggle-button-on'){
+   button.setAttribute('class', 'toggle-button-off');
+   document.getElementById('overlay2').style.visibility = 'visible';
+   warningPointFunction();
+  }
+ else if (button.getAttribute('class') == 'toggle-button-off'){
+   button.setAttribute('class', 'toggle-button-on');
+   document.getElementById('overlay2').style.visibility =  'hidden';
+ }
+}
+function buttonToggler3(){
+ let button = document.getElementById('tb3');
+ if (button.getAttribute('class') == 'toggle-button-on'){
+   button.setAttribute('class', 'toggle-button-off');
+   document.getElementById('overlay3').style.visibility = 'visible';
+   warningPointFunction();
+  }
+ else if (button.getAttribute('class') == 'toggle-button-off'){
+   button.setAttribute('class', 'toggle-button-on');
+   document.getElementById('overlay3').style.visibility =  'hidden';
+ }
+}
+function buttonToggler4(){
+ let button = document.getElementById('tb4');
+ if (button.getAttribute('class') == 'toggle-button-on'){
+   button.setAttribute('class', 'toggle-button-off');
+   document.getElementById('overlay4').style.visibility = 'visible';
+   warningPointFunction();
+  }
+ else if (button.getAttribute('class') == 'toggle-button-off'){
+   button.setAttribute('class', 'toggle-button-on');
+   document.getElementById('overlay4').style.visibility =  'hidden';
+ }
+}
+
 
 $(document).ready(function () {
 $('#myModal').modal('show');
