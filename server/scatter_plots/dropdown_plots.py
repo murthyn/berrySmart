@@ -1,5 +1,5 @@
-import plotly.graph_objects as go
 import plotly
+from plotly import graph_objs as go
 
 import requests
 import numpy as np
@@ -153,7 +153,7 @@ def request_handler(request):
         mode = 'lines+markers'
     ))
 
-    fig.update_layout(
+    fig.layout.update(
         updatemenus=[
             go.layout.Updatemenu(
                 active=0,
@@ -193,7 +193,7 @@ def request_handler(request):
         ])
 
     # Set title
-    fig.update_layout(title_text="Entire Farm",xaxis = dict(title = 'Time (hours)'))
+    fig.layout.update(title_text="Entire Farm",xaxis = dict(title = 'Time (hours)'))
     fig.update_xaxes(autorange="reversed")
     #fig.show()
     return plotly.offline.plot(fig,output_type='div')
