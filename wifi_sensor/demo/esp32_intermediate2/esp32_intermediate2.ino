@@ -54,7 +54,7 @@ char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
 //-----------SLEEPING-------------//
 
-const float SLEEP_TIME = 60; // in seconds
+const float SLEEP_TIME = 20; // in seconds
 const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
 RTC_DATA_ATTR int packetNumber = 1;
 //-------------------------------//
@@ -103,7 +103,7 @@ bool sendingBuffer(){
         sprintf(message, "%s", dataBuffer[0]);
         strcat(message, "#");
         strcat(message, dataBuffer[1]);
-        float light = analogRead(A7) / 4096.0;
+        float light = 1 - analogRead(A7) / 4096.0;
 //        float soil_moisture = analogRead(A14) / 4096.0; //moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
         float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
         if (soil_moisture > 1.0){

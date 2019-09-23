@@ -16,7 +16,7 @@ dht DHT;
 
 #define DHT11_PIN 19
 
-const float SLEEP_TIME = 60; // in seconds
+const float SLEEP_TIME = 20; // in seconds
 const float MICRO_S_TO_S = 1000000; // conversion factor
 
 const float moisture_upper = 0.84;
@@ -51,7 +51,7 @@ void loop(){
         char message[500];
 
         // Get sensor readings
-        float light = analogRead(A7) / 4096.0;
+        float light = 1 - analogRead(A7) / 4096.0;
 //        float soil_moisture = analogRead(A14) / 4096.0;
         float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
         if (soil_moisture > 1.0){

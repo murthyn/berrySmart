@@ -20,7 +20,7 @@ int endBuffer = 0;
 
 //--------SLEEPING---------//
 
-const float SLEEP_TIME = 60; // in seconds
+const float SLEEP_TIME = 20; // in seconds
 const float MICRO_S_TO_S = 1000000; // conversion factor (do not change)
 RTC_DATA_ATTR int packetNumber = 1;
 
@@ -44,10 +44,10 @@ const uint16_t OUT_BUFFER_SIZE = 10000; //size of buffer to hold HTTP response
 char request_buffer[IN_BUFFER_SIZE]; //char array buffer to hold HTTP request
 char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
-//const char* server_ssid = "Nikhil's iPhone";  //SSID for 6.08 Lab
-//const char* server_password = "nikhilhotspot"; //Password for 6.08 Lab
-const char* server_ssid = "MIT";  //SSID for 6.08 Lab
-const char* server_password = ""; //Password for 6.08 Lab
+const char* server_ssid = "Nikhil's iPhone";  //SSID for 6.08 Lab
+const char* server_password = "nikhilhotspot"; //Password for 6.08 Lab
+//const char* server_ssid = "MIT";  //SSID for 6.08 Lab
+//const char* server_password = ""; //Password for 6.08 Lab
 
 // 6s08
 // iesc6s08
@@ -68,7 +68,7 @@ void post() {
     sprintf(body, "text=%s", dataBuffer[0]);
     char message[200];
     
-    float light = analogRead(A7) / 4096.0;
+    float light = 1 - analogRead(A7) / 4096.0;
 //    float soil_moisture = analogRead(A14) / 4096.0; //moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
     float soil_moisture = moisture_upper/(moisture_upper - moisture_lower) - (analogRead(A14) / 4096.0)/(moisture_upper - moisture_lower);
     if (soil_moisture > 1.0){
